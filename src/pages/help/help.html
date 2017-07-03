@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button
+            menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Help</ion-title>
+    <ion-buttons right>
+      <button ion-button
+              (click)="skip()">
+        Start
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <h1>Hello, welcome to Pukete</h1>
+  <p>The app that will help you to manage money between you and your friends.</p>
+  <p>Pressing the "Start" button will take you to the main page in which you can do the maths.</p>
+  <p>The
+    <ion-icon name="person-add"></ion-icon> adds a new person and allows you to enter the name and the expenses. That person will be added and counted
+    on the "All" tag. Also if you wish, you can add a title for the event.</p>
+  <p>The "tags" are the types of expenses that person is counted. If you like to remove any tag, click on the person's name
+    or any tag.</p>
+  <p>The available tags are:</p>
+  <p>
+    <ion-badge item-start>All</ion-badge><small> The person is included on food, drinks and others.</small>
+  </p>
+  <p>
+    <ion-badge item-start
+               color="light">Nothing</ion-badge> <small> The person has paid but it didn't consume, so it'll get all the money back.</small>
+  </p>
+  <ion-badge color="danger">Drinks</ion-badge>
+  <ion-badge color="secondary">Food</ion-badge>
+  <ion-badge color="dark">Others</ion-badge>
+  <p>After you finished adding or editing everyone, click on the calculator icon
+    <ion-icon name="calculator"></ion-icon> to see how much each one has to give or get from the pot.</p>
+  <p>The lists are saved, and you can see them on the menu along with this help page.</p>
+  <p>At the end, you can share anywhre you want.</p>
+
+</ion-content>

@@ -1,0 +1,47 @@
+help-page {
+    .calculator-button{
+        margin-right: 20px;
+    }
+    .person-item{
+        padding: 0px !important;
+    }
+
+    .event-input{
+        padding: 0px;
+    }
+
+}
+
+#drinks-input{
+        border-color: #f53d3d;
+            max-width: 30%;
+    float: left;
+    margin-right: 5px;
+    }
+
+#food-input{
+    border-color: #32db64;
+        max-width: 30%;
+    float: left;
+    margin-right: 5px;
+}
+
+#others-input{
+    border-color: #222;
+        max-width: 30%;
+    float: left;
+}
+
+.resume-alert{
+        >div {
+            .person-gets{
+                color: #32db64;
+            }
+            .person-gives{
+                color: #f53d3d;
+            }
+            .person-details{
+                color: #434a54;
+            }
+        }
+    }

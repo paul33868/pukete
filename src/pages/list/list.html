@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button
+            menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>My lists</ion-title>
+    <ion-buttons right>
+      <button ion-button
+              icon-only
+              (click)="clearList()">
+        <ion-icon name="trash"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
+  <ion-list>
+    <ion-item *ngFor="let item of itemsList">
+      <p (click)="itemTapped($event, item)"> {{ item }} </p>
+      <button ion-button
+              color="danger"
+              (click)="removeList(item)"
+              item-end>
+              <ion-icon name="trash"></ion-icon>
+      </button>
+    </ion-item>
+
+  </ion-list>
+</ion-content>
