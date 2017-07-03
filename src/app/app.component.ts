@@ -25,7 +25,6 @@ export class PuketeApp {
     public splashScreen: SplashScreen,
     private nativeStorage: NativeStorage
   ) {
-
     this.initializeApp();
     this.displayHelpPage();
 

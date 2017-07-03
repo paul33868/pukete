@@ -368,6 +368,24 @@ export class IndexPage {
   }
 
   clearList() {
-    this.persons = [];
+    let confirm;
+    confirm = this.alertCtrl.create({
+      title: 'Clear current list?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+            console.log('No clicked');
+          }
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.persons = [];
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
 }
