@@ -274,6 +274,7 @@ export class IndexPage {
     });
 
     let finalMessage = this.eventName !== '' ? ' for ' + this.eventName : '';
+    this.resultsToShare = finalMessage + this.resultsToShare;
     let final = this.alertCtrl.create({
       title: '<small><strong>' + 'Total: $' + (totalDrinks + totalFood + totalOthers).toFixed(2) + finalMessage + '<small><strong>',
       subTitle: '<small>' + 'Drinks: $' + totalDrinks.toFixed(2) + ' - ' + 'Food: $' + totalFood.toFixed(2) + ' - ' + 'Others: $' + totalOthers.toFixed(2) + '</small>',

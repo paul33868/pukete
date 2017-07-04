@@ -8,38 +8,87 @@
     <ion-buttons right>
       <button ion-button
               (click)="skip()">
-        Start
+        SKIP
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <h1>Hello, welcome to Pukete</h1>
-  <p>The app that will help you to manage money between you and your friends.</p>
-  <p>Pressing the "Start" button will take you to the main page in which you can do the maths.</p>
-  <p>The
-    <ion-icon name="person-add"></ion-icon> icon adds a new person and allows you to enter the name and the expenses. That person will be added and counted
-    on the "All" tag. Also if you wish, you can add a title for the event.</p>
-  <p>The "tags" are the types of expenses that person is counted on. If you like to remove any tag, click on the person's name
-    or any tag.</p>
-  <p>The available tags are:</p>
-  <p>
-    <ion-badge item-start>All</ion-badge><small> The person is included on food, drinks and others.</small>
-  </p>
-  <p>
-    <ion-badge item-start
-               color="light">Nothing</ion-badge> <small> The person has paid but it didn't consume, so it'll get all the money back.</small>
-  </p>
-  <ion-badge color="danger">Drinks</ion-badge>
-  <ion-badge color="secondary">Food</ion-badge>
-  <ion-badge color="dark">Others</ion-badge>
-  <p>After you finished adding or editing everyone, click on the calculator
-    <ion-icon name="calculator"></ion-icon> icon to see how much each one has to give or get from the pot.</p>
-  <p>The lists are saved once you do the maths or you can press the
-    <ion-icon name="archive"></ion-icon> icon.</p>
-  <p>At the end, you can share anywhre you want.</p>
-  <p>Anytime, you can press the
-    <ion-icon name="menu"></ion-icon> icon to display all the options.</p>
+<ion-content>
+  <ion-slides pager>
+    <ion-slide>
+      <img src="assets/icon.png" />
+      <h1>Welcome to Pukete</h1>
+      <p>The app that will help you to manage money between you and your friends.</p>
+    </ion-slide>
 
+    <ion-slide>
+      <ion-item>
+        <ion-avatar item-start>
+          <ion-icon name="person-add"></ion-icon>
+        </ion-avatar>
+        <h1>Add a person</h1>
+        <p>You can enter the name and the expenses</p>
+      </ion-item>
+      <ion-item>
+        <ion-avatar item-start>
+          <ion-icon name="create"></ion-icon>
+        </ion-avatar>
+        <h1>Add a title</h1>
+        <p>It's optional</p>
+      </ion-item>
+      <ion-item>
+        <ion-avatar item-start>
+          <ion-icon name="pricetags"></ion-icon>
+        </ion-avatar>
+        <h1>Edit consumptions</h1>
+        <p>Touch the person's name or any tag.</p>
+        <p>
+          <ion-badge item-start>All</ion-badge> includes everything.</p>
+        <p>
+          <ion-badge item-start
+                     color="light">Nothing</ion-badge> Paid but didn't consume so it'll get all the money back.</p>
+        <p>
+          <ion-badge item-start
+                     color="danger">Drinks</ion-badge>
+          <ion-badge item-start
+                     color="secondary">Food</ion-badge>
+          <ion-badge item-start
+                     color="dark">Others</ion-badge>
+        </p>
+      </ion-item>
+      <ion-item>
+        <ion-avatar item-start>
+          <ion-icon name="calculator"></ion-icon>
+        </ion-avatar>
+        <h1>Calculate</h1>
+        <p>See how much everyone has to give or get to/from the pot.</p>
+      </ion-item>
+    </ion-slide>
+
+    <ion-slide>
+      <ion-item>
+        <ion-avatar item-start>
+          <ion-icon name="archive"></ion-icon>
+        </ion-avatar>
+        <h1>All under cotrol</h1>
+        <p>The lists are saved once you do the maths or press the archive icon.</p>
+      </ion-item>
+      <ion-item>
+        <ion-avatar item-start>
+          <ion-icon name="share-alt"></ion-icon>
+        </ion-avatar>
+        <h1>Share</h1>
+        <p>At the end, you can share anywhre you want.</p>
+      </ion-item>
+      <ion-item>
+        <ion-avatar item-start>
+          <ion-icon name="help-circle"></ion-icon>
+        </ion-avatar>
+        <h1>Any doubts?</h1>
+        <p>Anytime, you can press the menu to display all the options.</p>
+      </ion-item>
+    </ion-slide>
+
+  </ion-slides>
 </ion-content>

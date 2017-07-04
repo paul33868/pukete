@@ -27,7 +27,6 @@ export class PuketeApp {
   ) {
     this.initializeApp();
     this.displayHelpPage();
-
     this.pages = [
       { title: 'Pukete', component: IndexPage, icon: 'calculator' },
       { title: 'My lists', component: ListPage, icon: 'list' },
