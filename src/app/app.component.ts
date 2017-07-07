@@ -27,6 +27,7 @@ export class PuketeApp {
   ) {
     this.initializeApp();
     this.displayHelpPage();
+    //this.rootPage = IndexPage;
     this.pages = [
       { title: 'Pukete', component: IndexPage, icon: 'calculator' },
       { title: 'My lists', component: ListPage, icon: 'list' },
@@ -43,11 +44,9 @@ export class PuketeApp {
           this.isFirstTime = false;
         }
         if (this.isFirstTime) {
-          console.log('first');
           this.rootPage = HelpPage;
         }
         else {
-          console.log('dasdsa');
           this.rootPage = IndexPage;
         }
       },
@@ -57,8 +56,6 @@ export class PuketeApp {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });

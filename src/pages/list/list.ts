@@ -2,54 +2,56 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { NativeStorage } from '@ionic-native/native-storage';
 import { IndexPage } from "../index/index";
+import { PuketeEvent } from "../../model/event";
 
 @Component({
   selector: 'page-list',
   templateUrl: 'list.html'
 })
 export class ListPage {
-  items: any = [];
-  itemsList: any = [];
+  private events: Array<PuketeEvent> = [];
+  private items: Array<PuketeEvent> = [];
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     private nativeStorage: NativeStorage,
-    public alertCtrl: AlertController
-  ) {
-    this.initItems();
+    public alertCtrl: AlertController) {
+    this.init();
   }
 
-  initItems() {
+  init() {
     this.nativeStorage.keys()
       .then(
       data => {
-        this.items = data;
-        this.initializeItems();
+        data.forEach((event, i) => {
+          this.nativeStorage.getItem(data[i])
+            .then(
+            data => { this.items.push(data); this.initializeItems(); },
+            error => { console.error(`Error getting the event: ${error}`) });
+        });
       },
       error => console.error(error)
       );
   }
 
   initializeItems() {
-    this.itemsList = this.items;
+    this.events = this.items;
   }
 
-  itemTapped(event, list) {
+  goToPuketePage(eventID) {
     this.navCtrl.setRoot(IndexPage, {
-      list: list
+      eventID: eventID
     });
   }
 
-  clearList() {
+  removeEvents() {
     let confirm = this.alertCtrl.create({
-      title: 'Remove all lists?',
+      title: 'Remove all events?',
       buttons: [
         {
           text: 'No',
-          handler: () => {
-            console.log('No clicked');
-          }
+          handler: () => { }
         },
         {
           text: 'Yes',
@@ -57,12 +59,11 @@ export class ListPage {
             this.nativeStorage.clear()
               .then(
               data => {
-                console.error('Removed all items!');
-                this.initItems();
+                console.info('Removed all events!');
+                this.items = [];
                 this.initializeItems();
               },
-              error => console.error(error)
-              );
+              error => { console.error(`Error deleting the events: ${error}`) });
           }
         }
       ]
@@ -70,41 +71,42 @@ export class ListPage {
     confirm.present();
   }
 
-  removeList(list) {
-    let confirm = this.alertCtrl.create({
+  removeEvent(event: PuketeEvent) {
+    let alert = this.alertCtrl.create({
       title: 'Remove list?',
       buttons: [
         {
           text: 'No',
-          handler: () => {
-            console.log('No clicked');
-          }
+          handler: () => { }
         },
         {
           text: 'Yes',
           handler: () => {
-            this.nativeStorage.remove(list)
+            this.nativeStorage.remove(event.id.toString())
               .then(
               data => {
-                console.error('Removed ' + list);
-                this.initItems();
+                this.items.forEach((PuketeEvent, i) => {
+                  if (event.id === PuketeEvent.id) {
+                    this.items.splice(i, 1)
+                  }
+                });
+                console.info('Removed event ID: ' + event);
                 this.initializeItems();
               },
-              error => console.error(error)
-              );
+              (error) => { console.error(`Error deleting event: ${error}`) });
           }
         }
       ]
     });
-    confirm.present();
+    alert.present();
   }
 
-  getItems(ev: any) {
+  getEvents(ev: any) {
     this.initializeItems();
     let val = ev.target.value;
     if (val && val.trim() != '') {
-      this.itemsList = this.itemsList.filter((item) => {
-        return (item.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      this.events = this.events.filter((event) => {
+        return (event.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
       })
     }
   }

@@ -8,51 +8,46 @@
     <ion-buttons right>
       <button ion-button
               icon-only
-              (click)="saveList()"
-              [disabled]="persons.length < 1">
-        <ion-icon name="archive"></ion-icon>
-      </button>
-      <button ion-button
-              icon-only
-              (click)="clearList()"
-              [disabled]="persons.length < 1">
-        <ion-icon name="trash"></ion-icon>
+              (click)="addEvent()"
+              [disabled]="event?.persons?.length < 1">
+        <ion-icon name="add-circle"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <ion-list *ngIf="persons.length > 0">
+  <ion-list *ngIf="event?.persons?.length > 0">
     <ion-item class="event-input">
       <ion-input type="text"
                  placeholder="Event (optional)"
-                 [(ngModel)]="eventName"></ion-input>
+                 [(ngModel)]="event.name"
+                 (blur)="finishEditingName()"></ion-input>
     </ion-item>
 
-    <ion-item *ngFor="let person of persons"
+    <ion-item *ngFor="let person of event?.persons"
               class="person-item">
-      <p (click)="editExpenses(person)">{{person.person}} - <strong>${{person.balance | number:'1.2-2'}}</strong></p>
+      <p (click)="editPersonExpenses(person)">{{person.name}} - <strong>${{person.drinkAmount + person.foodAmount + person.othersAmount | number:'1.2-2'}}</strong></p>
       <div>
         <ion-badge item-end
                    color="light"
-                   *ngIf="!person.drinks && !person.food && !person.others"
-                   (click)="editExpenses(person)">Nothing</ion-badge>
+                   *ngIf="!person.inDrink && !person.inFood && !person.inOthers"
+                   (click)="editPersonExpenses(person)">Nothing</ion-badge>
         <ion-badge item-end
-                   *ngIf="person.drinks && person.food && person.others"
-                   (click)="editExpenses(person)">All</ion-badge>
+                   *ngIf="person.inDrink && person.inFood && person.inOthers"
+                   (click)="editPersonExpenses(person)">All</ion-badge>
         <ion-badge item-end
                    color="danger"
-                   *ngIf="person.drinks && (!person.food || !person.others)"
-                   (click)="editExpenses(person)">Drinks</ion-badge>
+                   *ngIf="person.inDrink && (!person.inFood || !person.inOthers)"
+                   (click)="editPersonExpenses(person)">Drinks</ion-badge>
         <ion-badge item-end
                    color="secondary"
-                   *ngIf="person.food && (!person.drinks || !person.others)"
-                   (click)="editExpenses(person)">Food</ion-badge>
+                   *ngIf="person.inFood && (!person.inDrink || !person.inOthers)"
+                   (click)="editPersonExpenses(person)">Food</ion-badge>
         <ion-badge item-end
                    color="dark"
-                   *ngIf="person.others && (!person.drinks || !person.food)"
-                   (click)="editExpenses(person)">Others</ion-badge>
+                   *ngIf="person.inOthers && (!person.inDrink || !person.inFood)"
+                   (click)="editPersonExpenses(person)">Others</ion-badge>
       </div>
       <button ion-button
               color="secondary"
@@ -84,7 +79,7 @@
       <button ion-button
               icon-only
               (click)="calculate()"
-              [disabled]="persons.length < 2">
+              [disabled]="event?.persons?.length < 2">
         <ion-icon name="calculator"></ion-icon>
       </button>
     </ion-buttons>
