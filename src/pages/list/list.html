@@ -4,7 +4,7 @@
             menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>My lists</ion-title>
+    <ion-title>{{dictionary?.list?.title}}</ion-title>
     <ion-buttons right>
       <button ion-button
               icon-only
@@ -17,7 +17,8 @@
 </ion-header>
 
 <ion-content>
-  <ion-searchbar (ionInput)="getEvents($event)"></ion-searchbar>
+  <ion-searchbar (ionInput)="getEvents($event)"
+                 placeholder="{{dictionary?.list?.inputs?.search}}"></ion-searchbar>
   <ion-list>
     <ion-item *ngFor="let puketeEvent of events">
       <p (click)="goToPuketePage(puketeEvent.id)"> {{ puketeEvent.name }} </p>

@@ -26,14 +26,29 @@ export class PuketeApp {
     private nativeStorage: NativeStorage
   ) {
     this.initializeApp();
+    this.setLanguage();
     this.displayHelpPage();
-    //this.rootPage = IndexPage;
     this.pages = [
       { title: 'Pukete', component: IndexPage, icon: 'calculator' },
       { title: 'My lists', component: ListPage, icon: 'list' },
       { title: 'Help', component: HelpPage, icon: 'help' }
 
     ];
+  }
+
+  setLanguage() {
+    // Set language
+    this.nativeStorage.getItem('language')
+      .then(
+      data => {
+        console.info('There is a language already set');
+      },
+      error => {
+        this.nativeStorage.setItem('language', 'en')
+          .then(
+          () => { console.info('Changed language') },
+          (error) => { console.error(`Error storing event: ${JSON.stringify(error)}`) });
+      });
   }
 
   displayHelpPage() {
@@ -52,6 +67,8 @@ export class PuketeApp {
       },
       error => console.error(error)
       );
+
+
   }
 
   initializeApp() {

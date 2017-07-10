@@ -4,7 +4,7 @@
             menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Pukete</ion-title>
+    <ion-title>{{dictionary?.index?.title}}</ion-title>
     <ion-buttons right>
       <button ion-button
               icon-only
@@ -20,7 +20,7 @@
   <ion-list *ngIf="event?.persons?.length > 0">
     <ion-item class="event-input">
       <ion-input type="text"
-                 placeholder="Event (optional)"
+                 placeholder="{{dictionary?.index?.inputs?.event}}"
                  [(ngModel)]="event.name"
                  (blur)="finishEditingName()"></ion-input>
     </ion-item>
@@ -32,22 +32,22 @@
         <ion-badge item-end
                    color="light"
                    *ngIf="!person.inDrink && !person.inFood && !person.inOthers"
-                   (click)="editPersonExpenses(person)">Nothing</ion-badge>
+                   (click)="editPersonExpenses(person)">{{dictionary?.index?.labels?.nothing}}</ion-badge>
         <ion-badge item-end
                    *ngIf="person.inDrink && person.inFood && person.inOthers"
-                   (click)="editPersonExpenses(person)">All</ion-badge>
+                   (click)="editPersonExpenses(person)">{{dictionary?.index?.labels?.all}}</ion-badge>
         <ion-badge item-end
                    color="danger"
                    *ngIf="person.inDrink && (!person.inFood || !person.inOthers)"
-                   (click)="editPersonExpenses(person)">Drinks</ion-badge>
+                   (click)="editPersonExpenses(person)">{{dictionary?.index?.labels?.drinks}}</ion-badge>
         <ion-badge item-end
                    color="secondary"
                    *ngIf="person.inFood && (!person.inDrink || !person.inOthers)"
-                   (click)="editPersonExpenses(person)">Food</ion-badge>
+                   (click)="editPersonExpenses(person)">{{dictionary?.index?.labels?.food}}</ion-badge>
         <ion-badge item-end
                    color="dark"
                    *ngIf="person.inOthers && (!person.inDrink || !person.inFood)"
-                   (click)="editPersonExpenses(person)">Others</ion-badge>
+                   (click)="editPersonExpenses(person)">{{dictionary?.index?.labels?.others}}</ion-badge>
       </div>
       <button ion-button
               color="secondary"

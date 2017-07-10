@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { NavParams, AlertController } from "ionic-angular";
+import { NavParams, AlertController, Platform } from "ionic-angular";
 import { NativeStorage } from '@ionic-native/native-storage';
 import { PuketeEvent } from "../../model/event";
 import { Person } from "../../model/person";
 import { SocialSharing } from "@ionic-native/social-sharing";
+import { enDictionary } from "../../utils/en-dictionary";
+import { esDictionary } from "../../utils/es-dictionary.";
 
 @Component({
   selector: 'index-page',
@@ -14,13 +16,32 @@ export class IndexPage {
   private event: PuketeEvent;
   private resultsToShare: string;
   private results: string;
+  private dictionary: any;
 
   constructor(
     private alertCtrl: AlertController,
     private nativeStorage: NativeStorage,
     private navParams: NavParams,
-    private socialSharing: SocialSharing) {
+    private socialSharing: SocialSharing,
+    private platform: Platform) {
     this.init();
+    this.setDictionary();
+  }
+
+  setDictionary() {
+    this.nativeStorage.getItem('language')
+      .then(
+      data => {
+        switch (data) {
+          case 'en':
+            this.dictionary = enDictionary
+            break;
+          case 'es':
+            this.dictionary = esDictionary
+            break;
+        }
+      },
+      error => { console.error(`Error getting the dictionary: ${error}`) });
   }
 
   init() {
@@ -37,8 +58,18 @@ export class IndexPage {
       this.nativeStorage.keys()
         .then(
         data => {
-          if (data.length > 0) {
-            this.nativeStorage.getItem(data[data.length - 1])
+          // Here we ask if it's greater than 1 becasue the language occupies the last place, and it'll always be the last item on the array of the local storage
+          if (data.length > 1) {
+            // If the last item is not the language
+            let wantedData;
+            if (data[data.length - 1] !== 'language') {
+              wantedData = data[data.length - 1];
+            }
+            // If the last item is the language, we grab the one before
+            else {
+              wantedData = data[data.length - 2];
+            }
+            this.nativeStorage.getItem(wantedData)
               .then(
               data => { this.event = data },
               error => { console.error(`Error getting the last event: ${error}`) });
@@ -46,6 +77,7 @@ export class IndexPage {
           else {
             // If we don't have a last item, then, create the event
             this.event = new PuketeEvent(new Date().getTime());
+            console.info(`New event created`);
           }
         },
         error => { console.error(`Error getting the events: ${error}`) });
@@ -55,14 +87,14 @@ export class IndexPage {
 
   addEvent() {
     let alert = this.alertCtrl.create({
-      title: 'Add new event?',
+      title: this.dictionary.index.popups.addEvent.title,
       buttons: [
         {
-          text: 'No',
+          text: this.dictionary.index.popups.addEvent.noButton,
           handler: () => { return }
         },
         {
-          text: 'Yes',
+          text: this.dictionary.index.popups.addEvent.yesButton,
           handler: () => {
             this.event = new PuketeEvent(new Date().getTime());
           }
@@ -74,31 +106,31 @@ export class IndexPage {
 
   addPerson() {
     let alert = this.alertCtrl.create({
-      title: 'Add person',
-      subTitle: 'Add name and expenses',
+      title: this.dictionary.index.popups.addPerson.title,
+      subTitle: this.dictionary.index.popups.addPerson.subtitle,
       inputs: [
         {
           name: 'name',
-          placeholder: 'Person',
+          placeholder: this.dictionary.index.popups.addPerson.inputs.person,
           type: 'text'
         },
         {
           name: 'drinkAmount',
-          placeholder: 'Drinks',
+          placeholder: this.dictionary.index.popups.addPerson.inputs.drinks,
           id: 'drinks-input',
           type: 'number',
           min: 0
         },
         {
           name: 'foodAmount',
-          placeholder: 'Food',
+          placeholder: this.dictionary.index.popups.addPerson.inputs.food,
           id: 'food-input',
           type: 'number',
           min: 0
         },
         {
           name: 'othersAmount',
-          placeholder: 'Others',
+          placeholder: this.dictionary.index.popups.addPerson.inputs.others,
           id: 'others-input',
           type: 'number',
           min: 0
@@ -106,11 +138,11 @@ export class IndexPage {
       ],
       buttons: [
         {
-          text: 'Cancel',
+          text: this.dictionary.index.popups.addPerson.buttons.cancel,
           handler: data => { }
         },
         {
-          text: 'Save',
+          text: this.dictionary.index.popups.addPerson.buttons.save,
           handler: data => {
             let personAlreadyExist: boolean = false;
             // First we need to check there's somebody in the event
@@ -135,7 +167,7 @@ export class IndexPage {
               this.save();
             }
             else {
-              console.log('Person already exist!');
+              console.error('Person already exist!');
               return;
             }
           }
@@ -149,14 +181,14 @@ export class IndexPage {
     this.event.persons.forEach((personInEvent, i) => {
       if (person.name.toLowerCase() === personInEvent.name.toLowerCase()) {
         let alert = this.alertCtrl.create({
-          title: 'Remove person?',
+          title: this.dictionary.index.popups.removePerson.title,
           buttons: [
             {
-              text: 'No',
+              text: this.dictionary.index.popups.removePerson.noButton,
               handler: () => { }
             },
             {
-              text: 'Yes',
+              text: this.dictionary.index.popups.removePerson.yesButton,
               handler: () => {
                 this.event.persons.splice(i, 1)
                 this.save();
@@ -171,12 +203,12 @@ export class IndexPage {
 
   editPerson(person: Person) {
     let alert = this.alertCtrl.create({
-      title: 'Edit person',
-      subTitle: 'Edit ' + person.name + "'s expenses",
+      title: this.dictionary.index.popups.editPerson.title,
+      subTitle: person.name,
       inputs: [
         {
           name: 'drinkAmount',
-          placeholder: 'Drinks',
+          placeholder: this.dictionary.index.popups.editPerson.inputs.drinks,
           type: 'number',
           id: 'drinks-input',
           value: person.drinkAmount.toString(),
@@ -184,7 +216,7 @@ export class IndexPage {
         },
         {
           name: 'foodAmount',
-          placeholder: 'Food',
+          placeholder: this.dictionary.index.popups.editPerson.inputs.food,
           type: 'number',
           id: 'food-input',
           value: person.foodAmount.toString(),
@@ -192,7 +224,7 @@ export class IndexPage {
         },
         {
           name: 'othersAmount',
-          placeholder: 'Others',
+          placeholder: this.dictionary.index.popups.editPerson.inputs.others,
           type: 'number',
           id: 'others-input',
           value: person.othersAmount.toString(),
@@ -201,11 +233,11 @@ export class IndexPage {
       ],
       buttons: [
         {
-          text: 'Cancel',
+          text: this.dictionary.index.popups.editPerson.buttons.cancel,
           handler: data => { }
         },
         {
-          text: 'Save',
+          text: this.dictionary.index.popups.editPerson.buttons.save,
           handler: data => {
             person.drinkAmount = (data.drinkAmount === '' || data.drinkAmount < 0) ? 0 : +data.drinkAmount;
             person.foodAmount = (data.foodAmount === '' || data.foodAmount < 0) ? 0 : +data.foodAmount;
@@ -220,35 +252,35 @@ export class IndexPage {
 
   editPersonExpenses(person: Person) {
     let alert = this.alertCtrl.create({
-      title: 'I am in for:',
-      subTitle: 'Edit ' + person.name + "'s consumptions",
+      title: this.dictionary.index.popups.editPersonExpenses.title,
+      subTitle: person.name,
       inputs: [
         {
           type: 'checkbox',
-          label: 'Drinks',
+          label: this.dictionary.index.popups.editPersonExpenses.inputs.drinks,
           value: 'inDrink',
           checked: person.inDrink
         },
         {
           type: 'checkbox',
-          label: 'Food',
+          label: this.dictionary.index.popups.editPersonExpenses.inputs.food,
           value: 'inFood',
           checked: person.inFood
         },
         {
           type: 'checkbox',
-          label: 'Others',
+          label: this.dictionary.index.popups.editPersonExpenses.inputs.others,
           value: 'inOthers',
           checked: person.inOthers
         },
       ],
       buttons: [
         {
-          text: 'Cancel',
+          text: this.dictionary.index.popups.editPersonExpenses.buttons.cancel,
           handler: data => { }
         },
         {
-          text: 'Save',
+          text: this.dictionary.index.popups.editPersonExpenses.buttons.save,
           handler: data => {
             person.inDrink = data.includes("inDrink")
             person.inFood = data.includes("inFood")
@@ -301,22 +333,43 @@ export class IndexPage {
 
       person.balance = person.drinkAmount + person.foodAmount + person.othersAmount - person.expenses;
 
-      this.results += `<div><h6 class='person-${(person.balance > 0) ? 'gets' : 'gives'}'> ${person.name} ${(person.balance > 0) ? ' gets ' : ' gives '} $${Math.abs(person.balance).toFixed(2)} <small class='person-details'> (Spent: $${(Math.abs(+person.expenses)).toFixed(2)})</small></h6>`;
-      this.resultsToShare += `${person.name} ${(person.balance > 0) ? ' gets ' : ' gives '} $${Math.abs(person.balance).toFixed(2)} '\n'`;
+      this.results += `<div><h6 class='person-${(person.balance >= 0) ? 'gets' : 'gives'}'>
+                      ${person.name} ${(person.balance >= 0) ?
+          this.dictionary.index.popups.calculate.gets :
+          this.dictionary.index.popups.calculate.gives}
+                      : $${Math.abs(person.balance).toFixed(2)}
+                      <small class='person-details'> (${this.dictionary.index.popups.calculate.spent}
+                      : $${(Math.abs(+person.expenses)).toFixed(2)})</small>
+                      </h6>`;
+
+      this.resultsToShare += `${person.name} ${(person.balance >= 0) ?
+        this.dictionary.index.popups.calculate.gets :
+        this.dictionary.index.popups.calculate.gives}: $${Math.abs(person.balance).toFixed(2)} (${this.dictionary.index.popups.calculate.spent}: $${(Math.abs(+person.expenses)).toFixed(2)})\n`;
     });
 
     let alert = this.alertCtrl.create({
-      title: `<small><strong>Total for ${this.event.name ? this.event.name : 'the event'} : $${this.event.totalAmount.toFixed(2)}<small><strong>`,
-      subTitle: `<small>Drinks: $${this.event.drinkAmount.toFixed(2)} ${this.event.personsForDrink === 0 ? "<span class='person-gives'>NO CONSUMPTION!</span>" : ''} - Food: $${this.event.foodAmount.toFixed(2)} ${this.event.personsForFood === 0 ? "<span class='person-gives'>NO CONSUMPTION!</span>" : ''} - Others: $${this.event.othersAmount.toFixed(2)} ${this.event.personsForOthers === 0 ? "<span class='person-gives'>NO CONSUMPTION!</span>" : ''}</small>`,
+      title: `<small><strong>${this.dictionary.index.popups.calculate.totalFor}
+             ${this.event.name ? this.event.name : this.dictionary.index.popups.calculate.theEvent}:
+             $${this.event.totalAmount.toFixed(2)}<small><strong>`,
+      subTitle: `<small>${this.dictionary.index.popups.calculate.drinks}:
+                        $${this.event.drinkAmount.toFixed(2)}
+                        ${this.event.personsForDrink === 0 ? "<span class='person-gives'>" + this.dictionary.index.popups.calculate.noConsumption + '</span>' : ''} </br>
+                        ${this.dictionary.index.popups.calculate.food}:
+                        $${this.event.foodAmount.toFixed(2)}
+                        ${this.event.personsForFood === 0 ? "<span class='person-gives'>" + this.dictionary.index.popups.calculate.noConsumption + '</span>' : ''} </br>
+                        ${this.dictionary.index.popups.calculate.others}:
+                        $${this.event.othersAmount.toFixed(2)}
+                        ${this.event.personsForOthers === 0 ? "<span class='person-gives'>" + this.dictionary.index.popups.calculate.noConsumption + '</span>' : ''}
+                </small>`,
       message: `${this.results}</div>`,
       cssClass: 'resume-alert',
       buttons: [
         {
-          text: 'Cancel',
+          text: this.dictionary.index.popups.calculate.buttons.cancel,
           handler: () => { }
         },
         {
-          text: 'Share',
+          text: this.dictionary.index.popups.calculate.buttons.share,
           handler: () => { this.share() }
         },
       ]
@@ -326,11 +379,11 @@ export class IndexPage {
 
   share() {
     let options = {
-      message: `'Total for ' ${this.event.name ? this.event.name : 'the event'} ': ' ${this.event.totalAmount.toFixed(2)} '\n' ${this.resultsToShare}`,
-      subject: `'Total for ' ${this.event.name ? this.event.name : 'the event'} ': ' ${this.event.totalAmount.toFixed(2)}`,
+      message: `${this.dictionary.index.popups.share.totalFor} ${this.event.name ? this.event.name : this.dictionary.index.popups.share.theEvent}: $${this.event.totalAmount.toFixed(2)} \n` + this.resultsToShare,
+      subject: `${this.dictionary.index.popups.share.totalFor} ${this.event.name ? this.event.name : this.dictionary.index.popups.share.theEvent}: $${this.event.totalAmount.toFixed(2)}`,
       files: null,
       url: null,
-      chooserTitle: `'Total for ' ${this.event.name ? this.event.name : 'the event'} ': ' ${this.event.totalAmount.toFixed(2)}`,
+      chooserTitle: `${this.dictionary.index.popups.share.totalFor} ${this.event.name ? this.event.name : this.dictionary.index.popups.share.theEvent}: $${this.event.totalAmount.toFixed(2)}`,
     }
 
     this.socialSharing.shareWithOptions(options)
