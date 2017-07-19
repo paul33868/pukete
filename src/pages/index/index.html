@@ -4,7 +4,10 @@
             menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>{{dictionary?.index?.title}}</ion-title>
+    <ion-input type="text"
+               placeholder="{{dictionary?.index?.inputs?.event}}"
+               [(ngModel)]="event.name"
+               (blur)="finishEditingName()"></ion-input>
     <ion-buttons right>
       <button ion-button
               icon-only
@@ -17,52 +20,66 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-list *ngIf="event?.persons?.length > 0">
-    <ion-item class="event-input">
-      <ion-input type="text"
-                 placeholder="{{dictionary?.index?.inputs?.event}}"
-                 [(ngModel)]="event.name"
-                 (blur)="finishEditingName()"></ion-input>
-    </ion-item>
+  <ion-card *ngFor="let person of event?.persons">
+    <ion-card-header *ngIf="person.name">
+      {{person.name}} <strong>{{dictionary?.index?.alreadyPaid}}: ${{(person.drinkAmount - -person.foodAmount - -person.othersAmount) |
+      number:'1.2-2'}}</strong>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item class="persons-input">
+        <ion-input type="text"
+                   placeholder="{{dictionary?.index?.inputs?.person}}"
+                   [(ngModel)]="person.name">
+        </ion-input>
+        <button ion-button
+                icon-only
+                item-end
+                clear
+                color="danger"
+                (click)="removePerson(person)">
+        <ion-icon name="trash"></ion-icon>
+      </button>
+      </ion-item>
 
-    <ion-item *ngFor="let person of event?.persons"
-              class="person-item">
-      <p (click)="editPersonExpenses(person)">{{person.name}} - <strong>${{person.drinkAmount + person.foodAmount + person.othersAmount | number:'1.2-2'}}</strong></p>
-      <div>
-        <ion-badge item-end
-                   color="light"
-                   *ngIf="!person.inDrink && !person.inFood && !person.inOthers"
-                   (click)="editPersonExpenses(person)">{{dictionary?.index?.labels?.nothing}}</ion-badge>
-        <ion-badge item-end
-                   *ngIf="person.inDrink && person.inFood && person.inOthers"
-                   (click)="editPersonExpenses(person)">{{dictionary?.index?.labels?.all}}</ion-badge>
-        <ion-badge item-end
-                   color="danger"
-                   *ngIf="person.inDrink && (!person.inFood || !person.inOthers)"
-                   (click)="editPersonExpenses(person)">{{dictionary?.index?.labels?.drinks}}</ion-badge>
-        <ion-badge item-end
-                   color="secondary"
-                   *ngIf="person.inFood && (!person.inDrink || !person.inOthers)"
-                   (click)="editPersonExpenses(person)">{{dictionary?.index?.labels?.food}}</ion-badge>
-        <ion-badge item-end
-                   color="dark"
-                   *ngIf="person.inOthers && (!person.inDrink || !person.inFood)"
-                   (click)="editPersonExpenses(person)">{{dictionary?.index?.labels?.others}}</ion-badge>
+      <div class="checkbox-container">
+        <p class="expenses-descriptions-first">Already paid in: </p>
+        <div class="expenses-container">
+          <ion-input type="text"
+                     [(ngModel)]="person.drinkAmount">
+          </ion-input>
+          <span class="expenses-input-description">Drinks</span>
+        </div>
+        <div class="expenses-container">
+          <ion-input type="text"
+                     [(ngModel)]="person.foodAmount">
+          </ion-input>
+          <span class="expenses-input-description">Food</span>
+        </div>
+        <div class="expenses-container">
+          <ion-input type="text"
+                     [(ngModel)]="person.othersAmount">
+          </ion-input>
+          <span class="expenses-input-description">Others</span>
+        </div>
       </div>
-      <button ion-button
-              color="secondary"
-              item-end
-              (click)="editPerson(person)">
-                <ion-icon name="create"></ion-icon>
-      </button>
-      <button ion-button
-              color="danger"
-              (click)="removePerson(person)"
-              item-end>
-              <ion-icon name="trash"></ion-icon>
-      </button>
-    </ion-item>
-  </ion-list>
+
+      <div class="checkbox-container">
+        <p class="expenses-descriptions-second">Is counted on: </p>
+        <ion-item class="checkbox-counted">
+          <ion-label>{{dictionary?.index?.labels?.drinks}}</ion-label>
+          <ion-checkbox [(ngModel)]="person.inDrink"></ion-checkbox>
+        </ion-item>
+        <ion-item class="checkbox-counted">
+          <ion-label>{{dictionary?.index?.labels?.food}}</ion-label>
+          <ion-checkbox [(ngModel)]="person.inFood"></ion-checkbox>
+        </ion-item>
+        <ion-item class="checkbox-counted">
+          <ion-label>{{dictionary?.index?.labels?.others}}</ion-label>
+          <ion-checkbox [(ngModel)]="person.inOthers"></ion-checkbox>
+        </ion-item>
+      </div>
+    </ion-card-content>
+  </ion-card>
 
 </ion-content>
 

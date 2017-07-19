@@ -6,6 +6,7 @@ import { Person } from "../../model/person";
 import { SocialSharing } from "@ionic-native/social-sharing";
 import { enDictionary } from "../../utils/en-dictionary";
 import { esDictionary } from "../../utils/es-dictionary.";
+import { Masks } from "../../utils/masks";
 
 @Component({
   selector: 'index-page',
@@ -17,6 +18,7 @@ export class IndexPage {
   private resultsToShare: string;
   private results: string;
   private dictionary: any;
+  private currencyMask = Masks.currency;
 
   constructor(
     private alertCtrl: AlertController,
@@ -24,8 +26,12 @@ export class IndexPage {
     private navParams: NavParams,
     private socialSharing: SocialSharing,
     private platform: Platform) {
-    this.init();
-    this.setDictionary();
+    //this.init();
+    //this.setDictionary();
+    this.dictionary = enDictionary
+    this.event = new PuketeEvent(new Date().getTime());
+    let person: Person = new Person();
+    this.event.persons.push(person);
   }
 
   setDictionary() {
@@ -105,76 +111,9 @@ export class IndexPage {
   }
 
   addPerson() {
-    let alert = this.alertCtrl.create({
-      title: this.dictionary.index.popups.addPerson.title,
-      subTitle: this.dictionary.index.popups.addPerson.subtitle,
-      inputs: [
-        {
-          name: 'name',
-          placeholder: this.dictionary.index.popups.addPerson.inputs.person,
-          type: 'text'
-        },
-        {
-          name: 'drinkAmount',
-          placeholder: this.dictionary.index.popups.addPerson.inputs.drinks,
-          id: 'drinks-input',
-          type: 'number',
-          min: 0
-        },
-        {
-          name: 'foodAmount',
-          placeholder: this.dictionary.index.popups.addPerson.inputs.food,
-          id: 'food-input',
-          type: 'number',
-          min: 0
-        },
-        {
-          name: 'othersAmount',
-          placeholder: this.dictionary.index.popups.addPerson.inputs.others,
-          id: 'others-input',
-          type: 'number',
-          min: 0
-        },
-      ],
-      buttons: [
-        {
-          text: this.dictionary.index.popups.addPerson.buttons.cancel,
-          handler: data => { }
-        },
-        {
-          text: this.dictionary.index.popups.addPerson.buttons.save,
-          handler: data => {
-            let personAlreadyExist: boolean = false;
-            // First we need to check there's somebody in the event
-            if (this.event.persons) {
-              this.event.persons.forEach(person => {
-                if (person.name.toLowerCase() !== data.name.toLowerCase()) {
-                  personAlreadyExist = false;
-                }
-                else {
-                  personAlreadyExist = true;
-                }
-              });
-            }
-
-            // If the person's name doesn't exist on array
-            if (!personAlreadyExist) {
-              let person: Person = new Person(data.name);
-              person.drinkAmount = (data.drinkAmount === '' || data.drinkAmount < 0) ? 0 : +data.drinkAmount;
-              person.foodAmount = (data.foodAmount === '' || data.foodAmount < 0) ? 0 : +data.foodAmount;
-              person.othersAmount = (data.othersAmount === '' || data.othersAmount < 0) ? 0 : +data.othersAmount;
-              this.event.persons.push(person);
-              this.save();
-            }
-            else {
-              console.error('Person already exist!');
-              return;
-            }
-          }
-        }
-      ]
-    });
-    alert.present();
+    let person: Person = new Person();
+    this.event.persons.push(person);
+    this.save();
   }
 
   removePerson(person: Person) {

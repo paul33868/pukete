@@ -7,6 +7,70 @@ index-page {
         padding: 0px;
     }
 
+    .persons-input{
+        padding-left: 0px;
+    }
+
+    .expenses-descriptions-first{
+        margin: 0;
+        font-size: x-small;
+        padding-right: 10px;
+        text-align: left;
+        vertical-align: middle;
+        display: table-cell;
+    }
+
+    .expenses-descriptions-second{
+        margin: 0;
+        font-size: x-small;
+        text-align: left;
+        vertical-align: middle;
+        display: table-cell;
+    }
+
+
+    ion-checkbox{
+        margin-right: 5px !important;
+        button{
+            padding: 0px;
+        }
+    }
+
+    .checkbox-container{
+        display: table;
+        max-height: 45px;
+        height: 45px;
+        width: 100%;
+        ion-input{
+            float: left;
+            padding-left: 0px;
+        }
+        .item-inner{
+            border-bottom: 0px !important;
+            ion-label{
+                margin: 0px !important;
+                font-size: x-small !important;
+            }
+        }
+        .expenses-container{
+            display: grid !important;
+            max-width: 63px;
+            float: left;
+            margin-top: 10px;
+            input{
+                margin: 0px;
+            }
+            span{
+                    font-size: x-small !important;
+            }
+        }
+    }
+
+    .checkbox-counted {
+        max-width: 63px;
+        float: left;
+        padding-left: 0px;
+    }
 }
 
 #drinks-input{

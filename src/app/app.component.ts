@@ -1,39 +1,49 @@
-import { Component, ViewChild } from '@angular/core';
-import { Platform, MenuController, Nav } from 'ionic-angular';
+import { Component, ViewChild, OnDestroy } from '@angular/core';
+import { Platform, MenuController, Nav, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { IndexPage } from "../pages/index/index";
 import { ListPage } from "../pages/list/list";
 import { NativeStorage } from "@ionic-native/native-storage";
 import { HelpPage } from "../pages/help/help";
+import { enDictionary } from "../utils/en-dictionary";
+import { esDictionary } from "../utils/es-dictionary.";
 
 @Component({
   templateUrl: 'app.html'
 })
-export class PuketeApp {
-  @ViewChild(Nav) nav: Nav;
 
-  // make HelloIonicPage the root (or first) page
-  rootPage;
-  pages: Array<{ title: string, component: any, icon: string }>;
-  isFirstTime: boolean = true;
+export class PuketeApp implements OnDestroy {
+  @ViewChild(Nav) nav: Nav;
+  private rootPage;
+  private pages: Array<{ title: string, component: any, icon: string }>;
+  private isFirstTime: boolean = true;
+  private dictionary: any;
 
   constructor(
-    public platform: Platform,
-    public menu: MenuController,
-    public statusBar: StatusBar,
-    public splashScreen: SplashScreen,
-    private nativeStorage: NativeStorage
-  ) {
+    private platform: Platform,
+    private menu: MenuController,
+    private statusBar: StatusBar,
+    private splashScreen: SplashScreen,
+    private nativeStorage: NativeStorage,
+    private events: Events) {
     this.initializeApp();
-    this.setLanguage();
-    this.displayHelpPage();
-    this.pages = [
-      { title: 'Pukete', component: IndexPage, icon: 'calculator' },
-      { title: 'My lists', component: ListPage, icon: 'list' },
-      { title: 'Help', component: HelpPage, icon: 'help' }
+    //this.setLanguage();
+    //this.displayHelpPage();
+    //this.updateLanguage();
+    this.setDictionary('en');
+    this.rootPage = IndexPage;
+  }
 
-    ];
+  updateLanguage() {
+    this.events.subscribe('language:changed', (language) => {
+      console.log('changed' + language);
+      this.setDictionary(language);
+    });
+  }
+
+  ngOnDestroy() {
+    this.events.unsubscribe('language:changed');
   }
 
   setLanguage() {
@@ -41,12 +51,18 @@ export class PuketeApp {
     this.nativeStorage.getItem('language')
       .then(
       data => {
+        this.setDictionary(data);
         console.info('There is a language already set');
+        this.setPages();
       },
       error => {
         this.nativeStorage.setItem('language', 'en')
           .then(
-          () => { console.info('Changed language') },
+          () => {
+            console.info('Changed language');
+            this.dictionary = enDictionary
+            this.setPages();
+          },
           (error) => { console.error(`Error storing event: ${JSON.stringify(error)}`) });
       });
   }
@@ -81,5 +97,25 @@ export class PuketeApp {
   openPage(page) {
     this.menu.close();
     this.nav.setRoot(page.component);
+  }
+
+  setPages() {
+    this.pages = [
+      { title: this.dictionary.menu.calculator, component: IndexPage, icon: 'calculator' },
+      { title: this.dictionary.menu.list, component: ListPage, icon: 'list' },
+      { title: this.dictionary.menu.help, component: HelpPage, icon: 'help' }
+    ];
+  }
+
+  setDictionary(language: string) {
+    switch (language) {
+      case 'en':
+        this.dictionary = enDictionary
+        break;
+      case 'es':
+        this.dictionary = esDictionary
+        break;
+    }
+    this.setPages();
   }
 }

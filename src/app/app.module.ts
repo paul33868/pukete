@@ -9,6 +9,7 @@ import { SocialSharing } from "@ionic-native/social-sharing";
 import { ListPage } from "../pages/list/list";
 import { NativeStorage } from "@ionic-native/native-storage";
 import { HelpPage } from "../pages/help/help";
+import { TextMaskModule } from 'angular2-text-mask';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { HelpPage } from "../pages/help/help";
   imports: [
     BrowserModule,
     IonicModule.forRoot(PuketeApp),
+    TextMaskModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

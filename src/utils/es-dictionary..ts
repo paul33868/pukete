@@ -1,8 +1,10 @@
 export var esDictionary = {
     index: {
-        title: "Pukete",
+        title: "Calculadora",
+        alreadyPaid: "ya pago",
         inputs: {
-            event: "Evento (optional)"
+            event: "Evento (optional)",
+            person: "Nombre de la persona (ej: Juan)"
         },
         labels: {
             nothing: "Nada",
@@ -100,5 +102,10 @@ export var esDictionary = {
                 yesButton: "Si",
             },
         }
+    },
+    menu: {
+        calculator: "Calculadora",
+        list: "Eventos",
+        help: "Ayuda"
     }
 };

@@ -1,8 +1,10 @@
 export var enDictionary = {
     index: {
-        title: "Pukete",
+        title: "Calculator",
+        alreadyPaid: "already paid",
         inputs: {
-            event: "Event (optional)"
+            event: "Event (optional)",
+            person: "Person's name (e.g.: John)"
         },
         labels: {
             nothing: "Nothing",
@@ -100,5 +102,10 @@ export var enDictionary = {
                 yesButton: "Yes",
             },
         }
+    },
+    menu: {
+        calculator: "Calculator",
+        list: "Events",
+        help: "Help"
     }
 };

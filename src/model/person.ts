@@ -11,7 +11,6 @@ export class Person {
     public expenses: number = 0;
     public balance: number = 0;
 
-    constructor(name: string) {
-        this.name = name;
+    constructor() {
     }
 }

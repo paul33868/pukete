@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Nav } from "ionic-angular";
+import { Nav, Events } from "ionic-angular";
 import { IndexPage } from "../index/index";
 import { NativeStorage } from "@ionic-native/native-storage";
 
@@ -12,7 +12,8 @@ export class HelpPage {
 
   constructor(
     private nav: Nav,
-    private nativeStorage: NativeStorage) {
+    private nativeStorage: NativeStorage,
+    private events: Events) {
     this.setDictionary()
   }
 
@@ -30,7 +31,10 @@ export class HelpPage {
   selectedLanguage(language: string) {
     this.nativeStorage.setItem('language', language)
       .then(
-      () => { console.info('Changed language') },
+      () => {
+        console.info('Changed language');
+        this.events.publish('language:changed', language);
+      },
       (error) => { console.error(`Error storing event: ${JSON.stringify(error)}`) });
   }
 }
