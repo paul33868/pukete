@@ -26,12 +26,8 @@ export class IndexPage {
     private navParams: NavParams,
     private socialSharing: SocialSharing,
     private platform: Platform) {
-    //this.init();
-    //this.setDictionary();
-    this.dictionary = enDictionary
-    this.event = new PuketeEvent(new Date().getTime());
-    let person: Person = new Person();
-    this.event.persons.push(person);
+    this.init();
+    this.setDictionary();
   }
 
   setDictionary() {
@@ -83,6 +79,7 @@ export class IndexPage {
           else {
             // If we don't have a last item, then, create the event
             this.event = new PuketeEvent(new Date().getTime());
+            this.addPerson();
             console.info(`New event created`);
           }
         },
@@ -140,98 +137,6 @@ export class IndexPage {
     });
   }
 
-  editPerson(person: Person) {
-    let alert = this.alertCtrl.create({
-      title: this.dictionary.index.popups.editPerson.title,
-      subTitle: person.name,
-      inputs: [
-        {
-          name: 'drinkAmount',
-          placeholder: this.dictionary.index.popups.editPerson.inputs.drinks,
-          type: 'number',
-          id: 'drinks-input',
-          value: person.drinkAmount.toString(),
-          min: 0
-        },
-        {
-          name: 'foodAmount',
-          placeholder: this.dictionary.index.popups.editPerson.inputs.food,
-          type: 'number',
-          id: 'food-input',
-          value: person.foodAmount.toString(),
-          min: 0
-        },
-        {
-          name: 'othersAmount',
-          placeholder: this.dictionary.index.popups.editPerson.inputs.others,
-          type: 'number',
-          id: 'others-input',
-          value: person.othersAmount.toString(),
-          min: 0
-        },
-      ],
-      buttons: [
-        {
-          text: this.dictionary.index.popups.editPerson.buttons.cancel,
-          handler: data => { }
-        },
-        {
-          text: this.dictionary.index.popups.editPerson.buttons.save,
-          handler: data => {
-            person.drinkAmount = (data.drinkAmount === '' || data.drinkAmount < 0) ? 0 : +data.drinkAmount;
-            person.foodAmount = (data.foodAmount === '' || data.foodAmount < 0) ? 0 : +data.foodAmount;
-            person.othersAmount = (data.othersAmount === '' || data.othersAmount < 0) ? 0 : +data.othersAmount;
-            this.save();
-          }
-        }
-      ]
-    });
-    alert.present();
-  }
-
-  editPersonExpenses(person: Person) {
-    let alert = this.alertCtrl.create({
-      title: this.dictionary.index.popups.editPersonExpenses.title,
-      subTitle: person.name,
-      inputs: [
-        {
-          type: 'checkbox',
-          label: this.dictionary.index.popups.editPersonExpenses.inputs.drinks,
-          value: 'inDrink',
-          checked: person.inDrink
-        },
-        {
-          type: 'checkbox',
-          label: this.dictionary.index.popups.editPersonExpenses.inputs.food,
-          value: 'inFood',
-          checked: person.inFood
-        },
-        {
-          type: 'checkbox',
-          label: this.dictionary.index.popups.editPersonExpenses.inputs.others,
-          value: 'inOthers',
-          checked: person.inOthers
-        },
-      ],
-      buttons: [
-        {
-          text: this.dictionary.index.popups.editPersonExpenses.buttons.cancel,
-          handler: data => { }
-        },
-        {
-          text: this.dictionary.index.popups.editPersonExpenses.buttons.save,
-          handler: data => {
-            person.inDrink = data.includes("inDrink")
-            person.inFood = data.includes("inFood")
-            person.inOthers = data.includes("inOthers")
-            this.save();
-          }
-        }
-      ]
-    });
-    alert.present();
-  }
-
   calculate() {
     this.resultsToShare = '';
     this.results = '';
@@ -270,7 +175,7 @@ export class IndexPage {
       person.expenses += person.inFood ? this.event.foodAmountPerPerson : 0;
       person.expenses += person.inOthers ? this.event.othersAmountPerPerson : 0;
 
-      person.balance = person.drinkAmount + person.foodAmount + person.othersAmount - person.expenses;
+      person.balance = +person.drinkAmount + +person.foodAmount + +person.othersAmount - person.expenses;
 
       this.results += `<div><h6 class='person-${(person.balance >= 0) ? 'gets' : 'gives'}'>
                       ${person.name} ${(person.balance >= 0) ?

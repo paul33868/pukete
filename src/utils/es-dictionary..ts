@@ -4,7 +4,9 @@ export var esDictionary = {
         alreadyPaid: "ya pago",
         inputs: {
             event: "Evento (optional)",
-            person: "Nombre de la persona (ej: Juan)"
+            person: "Nombre de la persona (ej: Juan)",
+            alreadyPaid: "Ya pago en: ",
+            isCounted: "Contado en :"
         },
         labels: {
             nothing: "Nada",

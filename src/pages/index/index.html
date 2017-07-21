@@ -6,6 +6,7 @@
     </button>
     <ion-input type="text"
                placeholder="{{dictionary?.index?.inputs?.event}}"
+               *ngIf="event?.name"
                [(ngModel)]="event.name"
                (blur)="finishEditingName()"></ion-input>
     <ion-buttons right>
@@ -21,50 +22,50 @@
 
 <ion-content padding>
   <ion-card *ngFor="let person of event?.persons">
-    <ion-card-header *ngIf="person.name">
-      {{person.name}} <strong>{{dictionary?.index?.alreadyPaid}}: ${{(person.drinkAmount - -person.foodAmount - -person.othersAmount) |
+    <ion-item *ngIf="person?.name">
+      {{person?.name}} <strong>{{dictionary?.index?.alreadyPaid}}: ${{(person.drinkAmount - -person.foodAmount - -person.othersAmount) |
       number:'1.2-2'}}</strong>
-    </ion-card-header>
+      <button ion-button
+              icon-only
+              item-end
+              clear
+              color="danger"
+              (click)="removePerson(person)">
+        <ion-icon name="trash"></ion-icon>
+        </button>
+    </ion-item>
     <ion-card-content>
       <ion-item class="persons-input">
         <ion-input type="text"
                    placeholder="{{dictionary?.index?.inputs?.person}}"
                    [(ngModel)]="person.name">
         </ion-input>
-        <button ion-button
-                icon-only
-                item-end
-                clear
-                color="danger"
-                (click)="removePerson(person)">
-        <ion-icon name="trash"></ion-icon>
-      </button>
       </ion-item>
 
       <div class="checkbox-container">
-        <p class="expenses-descriptions-first">Already paid in: </p>
+        <p class="expenses-descriptions-first">{{dictionary?.index?.inputs?.alreadyPaid}}</p>
         <div class="expenses-container">
-          <ion-input type="text"
+          <ion-input type="number"
                      [(ngModel)]="person.drinkAmount">
           </ion-input>
-          <span class="expenses-input-description">Drinks</span>
+          <span class="expenses-input-description">{{dictionary?.index?.labels?.drinks}}</span>
         </div>
         <div class="expenses-container">
-          <ion-input type="text"
+          <ion-input type="number"
                      [(ngModel)]="person.foodAmount">
           </ion-input>
-          <span class="expenses-input-description">Food</span>
+          <span class="expenses-input-description">{{dictionary?.index?.labels?.food}}</span>
         </div>
         <div class="expenses-container">
-          <ion-input type="text"
+          <ion-input type="number"
                      [(ngModel)]="person.othersAmount">
           </ion-input>
-          <span class="expenses-input-description">Others</span>
+          <span class="expenses-input-description">{{dictionary?.index?.labels?.others}}</span>
         </div>
       </div>
 
       <div class="checkbox-container">
-        <p class="expenses-descriptions-second">Is counted on: </p>
+        <p class="expenses-descriptions-second">{{dictionary?.index?.inputs?.isCounted}}</p>
         <ion-item class="checkbox-counted">
           <ion-label>{{dictionary?.index?.labels?.drinks}}</ion-label>
           <ion-checkbox [(ngModel)]="person.inDrink"></ion-checkbox>

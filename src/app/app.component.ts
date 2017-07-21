@@ -28,16 +28,14 @@ export class PuketeApp implements OnDestroy {
     private nativeStorage: NativeStorage,
     private events: Events) {
     this.initializeApp();
-    //this.setLanguage();
-    //this.displayHelpPage();
-    //this.updateLanguage();
-    this.setDictionary('en');
-    this.rootPage = IndexPage;
+    this.setLanguage();
+    this.displayHelpPage();
+    this.updateLanguage();
   }
 
   updateLanguage() {
     this.events.subscribe('language:changed', (language) => {
-      console.log('changed' + language);
+      console.info('changed' + language);
       this.setDictionary(language);
     });
   }
