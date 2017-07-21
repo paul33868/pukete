@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button
+            menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{dictionary?.settings?.title}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label>{{dictionary?.settings?.language}}</ion-label>
+    <ion-select [(ngModel)]="language"
+                (ionChange)="selectedLanguage($event)">
+      <ion-option value="en">{{dictionary?.settings?.english}}</ion-option>
+      <ion-option value="es">{{dictionary?.settings?.spanish}}</ion-option>
+    </ion-select>
+  </ion-item>
+</ion-content>

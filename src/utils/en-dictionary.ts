@@ -108,6 +108,13 @@ export var enDictionary = {
     menu: {
         calculator: "Calculator",
         list: "Events",
-        help: "Help"
+        help: "Help",
+        settings: "Settings"
+    },
+    settings: {
+        title: "Settings",
+        language: "Language",
+        english: "English",
+        spanish: "Spanish"
     }
 };

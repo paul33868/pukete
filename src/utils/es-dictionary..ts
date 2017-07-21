@@ -108,6 +108,13 @@ export var esDictionary = {
     menu: {
         calculator: "Calculadora",
         list: "Eventos",
-        help: "Ayuda"
+        help: "Ayuda",
+        settings: "Ajustes"
+    },
+    settings: {
+        title: "Ayuda",
+        language: "Idioma",
+        english: "Inglés",
+        spanish: "Español",
     }
 };

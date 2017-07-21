@@ -8,6 +8,7 @@ import { NativeStorage } from "@ionic-native/native-storage";
 import { HelpPage } from "../pages/help/help";
 import { enDictionary } from "../utils/en-dictionary";
 import { esDictionary } from "../utils/es-dictionary.";
+import { SettingsPage } from "../pages/settings/settings";
 
 @Component({
   templateUrl: 'app.html'
@@ -101,7 +102,8 @@ export class PuketeApp implements OnDestroy {
     this.pages = [
       { title: this.dictionary.menu.calculator, component: IndexPage, icon: 'calculator' },
       { title: this.dictionary.menu.list, component: ListPage, icon: 'list' },
-      { title: this.dictionary.menu.help, component: HelpPage, icon: 'help' }
+      { title: this.dictionary.menu.help, component: HelpPage, icon: 'help' },
+      { title: this.dictionary.menu.settings, component: SettingsPage, icon: 'settings' }
     ];
   }
 

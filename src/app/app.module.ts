@@ -10,13 +10,15 @@ import { ListPage } from "../pages/list/list";
 import { NativeStorage } from "@ionic-native/native-storage";
 import { HelpPage } from "../pages/help/help";
 import { TextMaskModule } from 'angular2-text-mask';
+import { SettingsPage } from "../pages/settings/settings";
 
 @NgModule({
   declarations: [
     PuketeApp,
     IndexPage,
     ListPage,
-    HelpPage
+    HelpPage,
+    SettingsPage
   ],
   imports: [
     BrowserModule,
@@ -28,7 +30,8 @@ import { TextMaskModule } from 'angular2-text-mask';
     PuketeApp,
     IndexPage,
     ListPage,
-    HelpPage
+    HelpPage,
+    SettingsPage
   ],
   providers: [
     StatusBar,

@@ -14,7 +14,7 @@ export class HelpPage {
     private nav: Nav,
     private nativeStorage: NativeStorage,
     private events: Events) {
-    this.setDictionary()
+    this.setDictionary();
   }
 
   setDictionary() {
@@ -26,15 +26,5 @@ export class HelpPage {
 
   skip() {
     this.nav.setRoot(IndexPage);
-  }
-
-  selectedLanguage(language: string) {
-    this.nativeStorage.setItem('language', language)
-      .then(
-      () => {
-        console.info('Changed language');
-        this.events.publish('language:changed', language);
-      },
-      (error) => { console.error(`Error storing event: ${JSON.stringify(error)}`) });
   }
 }
