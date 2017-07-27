@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { NavParams, AlertController, Platform } from "ionic-angular";
+import { Component, ViewChild } from '@angular/core';
+import { NavParams, AlertController, Platform, ToastController } from "ionic-angular";
 import { NativeStorage } from '@ionic-native/native-storage';
 import { PuketeEvent } from "../../model/event";
 import { Person } from "../../model/person";
@@ -19,15 +19,17 @@ export class IndexPage {
   private results: string;
   private dictionary: any;
   private currencyMask = Masks.currency;
+  private errorsOnTheEvent: boolean = true;
 
   constructor(
     private alertCtrl: AlertController,
     private nativeStorage: NativeStorage,
     private navParams: NavParams,
     private socialSharing: SocialSharing,
-    private platform: Platform) {
-    this.init();
-    this.setDictionary();
+    private platform: Platform,
+    private toastCtrl: ToastController) {
+    this.platform.is('cordova') ? this.init() : this.addNewEvent();
+    this.platform.is('cordova') ? this.setDictionary() : this.dictionary = enDictionary;
   }
 
   setDictionary() {
@@ -78,14 +80,18 @@ export class IndexPage {
           }
           else {
             // If we don't have a last item, then, create the event
-            this.event = new PuketeEvent(new Date().getTime());
-            this.addPerson();
-            console.info(`New event created`);
+            this.addNewEvent();
           }
         },
         error => { console.error(`Error getting the events: ${error}`) });
     }
 
+  }
+
+  addNewEvent() {
+    this.event = new PuketeEvent(new Date().getTime());
+    this.addPerson();
+    console.info(`New event created`);
   }
 
   addEvent() {
@@ -99,7 +105,7 @@ export class IndexPage {
         {
           text: this.dictionary.index.popups.addEvent.yesButton,
           handler: () => {
-            this.event = new PuketeEvent(new Date().getTime());
+            this.addNewEvent();
           }
         }
       ]
@@ -108,9 +114,20 @@ export class IndexPage {
   }
 
   addPerson() {
-    let person: Person = new Person();
+    this.errorsOnTheEvent = true;
+    let person: Person = new Person(new Date().getTime());
     this.event.persons.push(person);
-    this.save();
+    if (this.platform.is('cordova')) {
+      this.save();
+    }
+  }
+
+  showAddPersonErrorAlert(message: string) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 5000
+    });
+    toast.present();
   }
 
   removePerson(person: Person) {
@@ -127,7 +144,9 @@ export class IndexPage {
               text: this.dictionary.index.popups.removePerson.yesButton,
               handler: () => {
                 this.event.persons.splice(i, 1)
-                this.save();
+                if (this.platform.is('cordova')) {
+                  this.save();
+                }
               }
             }
           ]
@@ -214,7 +233,11 @@ export class IndexPage {
         },
         {
           text: this.dictionary.index.popups.calculate.buttons.share,
-          handler: () => { this.share() }
+          handler: () => {
+            if (this.platform.is('cordova')) {
+              this.share()
+            }
+          }
         },
       ]
     });
@@ -245,5 +268,29 @@ export class IndexPage {
 
   finishEditingName() {
     this.save();
+  }
+
+  checkPersonsName(selectedPerson: Person) {
+    if (this.event.persons.length >= 2) {
+      this.errorsOnTheEvent = false;
+    }
+    if (selectedPerson.name === undefined || selectedPerson.name === '') {
+      selectedPerson.error = 'Please add a name';
+      this.errorsOnTheEvent = true;
+      return;
+    }
+    this.event.persons.forEach(person => {
+      person.error = '';
+    });
+    for (var index1 = 0; index1 < this.event.persons.length; index1++) {
+      for (var index2 = 1; index2 < this.event.persons.length; index2++) {
+        if (this.event.persons[index1].id !== this.event.persons[index2].id && this.event.persons[index1].name.toLocaleLowerCase() === this.event.persons[index2].name.toLocaleLowerCase()) {
+          this.event.persons[index1].error = 'Another person already has this name';
+          this.event.persons[index2].error = 'Another person already has this name';
+          this.errorsOnTheEvent = true;
+          return;
+        }
+      }
+    }
   }
 }

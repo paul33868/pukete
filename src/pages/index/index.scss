@@ -9,6 +9,14 @@ index-page {
 
     .persons-input{
         padding-left: 0px;
+        margin-bottom: 5px;
+        input{
+            margin-left: 0px;
+        }
+    }
+
+    .error-message{
+        color: #f53d3d !important;
     }
 
     .expenses-descriptions-first{
@@ -74,8 +82,8 @@ index-page {
 }
 
 #drinks-input{
-        border-color: #f53d3d;
-            max-width: 30%;
+    border-color: #f53d3d;
+    max-width: 30%;
     float: left;
     margin-right: 5px;
     }

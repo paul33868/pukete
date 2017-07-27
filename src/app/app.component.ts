@@ -29,8 +29,8 @@ export class PuketeApp implements OnDestroy {
     private nativeStorage: NativeStorage,
     private events: Events) {
     this.initializeApp();
-    this.setLanguage();
-    this.displayHelpPage();
+    this.platform.is('cordova') ? this.setLanguage() : this.dictionary = enDictionary;
+    this.platform.is('cordova') ? this.displayHelpPage() : this.rootPage = IndexPage;
     this.updateLanguage();
   }
 

@@ -38,9 +38,13 @@
       <ion-item class="persons-input">
         <ion-input type="text"
                    placeholder="{{dictionary?.index?.inputs?.person}}"
-                   [(ngModel)]="person.name">
+                   [(ngModel)]="person.name"
+                   (blur)="checkPersonsName(person)"
+                   (keyup)="checkPersonsName(person)"
+                   required>
         </ion-input>
       </ion-item>
+      <span class="error-message">{{person.error}}</span>
 
       <div class="checkbox-container">
         <p class="expenses-descriptions-first">{{dictionary?.index?.inputs?.alreadyPaid}}</p>
@@ -97,7 +101,7 @@
       <button ion-button
               icon-only
               (click)="calculate()"
-              [disabled]="event?.persons?.length < 2">
+              [disabled]="errorsOnTheEvent">
         <ion-icon name="calculator"></ion-icon>
       </button>
     </ion-buttons>

@@ -1,6 +1,7 @@
 import { PuketeEvent } from "./event";
 
 export class Person {
+    public id: number;
     public name: string;
     public inDrink: boolean = true;
     public inFood: boolean = true;
@@ -10,7 +11,9 @@ export class Person {
     public othersAmount: number = 0;
     public expenses: number = 0;
     public balance: number = 0;
+    public error: string = '';
 
-    constructor() {
+    constructor(createdID: number) {
+        this.id = createdID;
     }
 }
