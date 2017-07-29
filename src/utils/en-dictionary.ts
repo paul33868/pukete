@@ -2,8 +2,10 @@ export var enDictionary = {
     index: {
         title: "Calculator",
         alreadyPaid: "already paid",
+        alreadyHasNameError: "Another person already has this name",
+        noNameError: "Please add a name",
         inputs: {
-            event: "Event (optional)",
+            event: "Event's name (optional)",
             person: "Person's name (e.g.: John)",
             alreadyPaid: "Already paid in: ",
             isCounted: "Is counted on:"
@@ -11,9 +13,6 @@ export var enDictionary = {
         labels: {
             nothing: "Nothing",
             all: "All",
-            drinks: "Drinks",
-            food: "Food",
-            others: "Others"
         },
         popups: {
             addEvent: {
@@ -21,48 +20,10 @@ export var enDictionary = {
                 noButton: "No",
                 yesButton: "Yes",
             },
-            addPerson: {
-                title: "Add person",
-                subtitle: "Add name and expenses",
-                inputs: {
-                    person: "Person",
-                    drinks: "Drinks",
-                    food: "Food",
-                    others: "Others"
-                },
-                buttons: {
-                    cancel: "Cancel",
-                    save: "Save"
-                }
-            },
             removePerson: {
                 title: "Remove person?",
                 noButton: "No",
                 yesButton: "Yes",
-            },
-            editPerson: {
-                title: "Edit amount spent by:",
-                inputs: {
-                    drinks: "Drinks",
-                    food: "Food",
-                    others: "Others"
-                },
-                buttons: {
-                    cancel: "Cancel",
-                    save: "Save"
-                }
-            },
-            editPersonExpenses: {
-                title: "Edit consumptions for:",
-                inputs: {
-                    drinks: "Drinks",
-                    food: "Food",
-                    others: "Others"
-                },
-                buttons: {
-                    cancel: "Cancel",
-                    save: "Save"
-                }
             },
             calculate: {
                 spent: "Spent",
@@ -70,9 +31,6 @@ export var enDictionary = {
                 gives: "gives",
                 totalFor: "Total for",
                 theEvent: "the event",
-                drinks: "Drinks",
-                food: "Food",
-                others: "Others",
                 noConsumption: "NO CONSUMPTION!",
                 buttons: {
                     cancel: "Cancel",
@@ -116,5 +74,10 @@ export var enDictionary = {
         language: "Language",
         english: "English",
         spanish: "Spanish"
+    },
+    help: {
+        title: "Help",
+        appTitle: "Pukete",
+        slogan: "Clean numbers keep friendship :)"
     }
 };

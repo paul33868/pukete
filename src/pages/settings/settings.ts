@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Nav, Events } from "ionic-angular";
+import { Nav, Events, Platform } from "ionic-angular";
 import { IndexPage } from "../index/index";
 import { NativeStorage } from "@ionic-native/native-storage";
 import { enDictionary } from "../../utils/en-dictionary";
@@ -16,8 +16,14 @@ export class SettingsPage {
   constructor(
     private nav: Nav,
     private nativeStorage: NativeStorage,
-    private events: Events) {
-    this.setDictionary();
+    private events: Events,
+    private platform: Platform) {
+    if (this.platform.is('cordova')) {
+      this.setDictionary();
+    }
+    else {
+      this.setLanguage('en');
+    }
   }
 
   private setDictionary() {

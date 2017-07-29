@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavParams, AlertController, Platform, ToastController } from "ionic-angular";
 import { NativeStorage } from '@ionic-native/native-storage';
 import { PuketeEvent } from "../../model/event";
@@ -6,7 +6,6 @@ import { Person } from "../../model/person";
 import { SocialSharing } from "@ionic-native/social-sharing";
 import { enDictionary } from "../../utils/en-dictionary";
 import { esDictionary } from "../../utils/es-dictionary.";
-import { Masks } from "../../utils/masks";
 
 @Component({
   selector: 'index-page',
@@ -14,11 +13,12 @@ import { Masks } from "../../utils/masks";
 })
 
 export class IndexPage {
+  private errorsOnTheEventsName: boolean;
   private event: PuketeEvent;
   private resultsToShare: string;
   private results: string;
   private dictionary: any;
-  private currencyMask = Masks.currency;
+  private language: string;
   private errorsOnTheEvent: boolean = true;
 
   constructor(
@@ -28,8 +28,15 @@ export class IndexPage {
     private socialSharing: SocialSharing,
     private platform: Platform,
     private toastCtrl: ToastController) {
-    this.platform.is('cordova') ? this.init() : this.addNewEvent();
-    this.platform.is('cordova') ? this.setDictionary() : this.dictionary = enDictionary;
+    if (this.platform.is('cordova')) {
+      this.setDictionary();
+      this.init();
+    }
+    else {
+      this.dictionary = enDictionary;
+      this.language = 'en';
+      this.addNewEvent();
+    }
   }
 
   setDictionary() {
@@ -38,10 +45,12 @@ export class IndexPage {
       data => {
         switch (data) {
           case 'en':
-            this.dictionary = enDictionary
+            this.dictionary = enDictionary;
+            this.language = 'en';
             break;
           case 'es':
-            this.dictionary = esDictionary
+            this.dictionary = esDictionary;
+            this.language = 'es';
             break;
         }
       },
@@ -89,7 +98,7 @@ export class IndexPage {
   }
 
   addNewEvent() {
-    this.event = new PuketeEvent(new Date().getTime());
+    this.event = new PuketeEvent(new Date().getTime(), this.language);
     this.addPerson();
     console.info(`New event created`);
   }
@@ -161,48 +170,49 @@ export class IndexPage {
     this.results = '';
 
     // Reset all values
-    this.event.personsForDrink = 0;
-    this.event.personsForFood = 0;
-    this.event.personsForOthers = 0;
-    this.event.drinkAmount = 0;
-    this.event.foodAmount = 0;
-    this.event.othersAmount = 0;
+    this.event.personsForExpense1 = 0;
+    this.event.personsForExpense2 = 0;
+    this.event.personsForExpense3 = 0;
+    this.event.expense1Amount = 0;
+    this.event.expense2Amount = 0;
+    this.event.expense3Amount = 0;
 
     // Loop throug the event to get the final values
     this.event.persons.forEach(person => {
-      this.event.personsForDrink += person.inDrink ? 1 : 0;
-      this.event.personsForFood += person.inFood ? 1 : 0;
-      this.event.personsForOthers += person.inOthers ? 1 : 0;
+      this.event.personsForExpense1 += person.inExpense1 ? 1 : 0;
+      this.event.personsForExpense2 += person.inExpense2 ? 1 : 0;
+      this.event.personsForExpense3 += person.inExpense3 ? 1 : 0;
 
       // Add to the event
-      this.event.drinkAmount += +person.drinkAmount;
-      this.event.foodAmount += +person.foodAmount;
-      this.event.othersAmount += +person.othersAmount;
+      this.event.expense1Amount += +person.expense1Amount;
+      this.event.expense2Amount += +person.expense2Amount;
+      this.event.expense3Amount += +person.expense3Amount;
     });
 
     // Calculate final values of the event
-    this.event.totalAmount = this.event.drinkAmount + this.event.foodAmount + this.event.othersAmount;
-    this.event.drinkAmountPerPerson = this.event.drinkAmount / this.event.personsForDrink;
-    this.event.foodAmountPerPerson = this.event.foodAmount / this.event.personsForFood;
-    this.event.othersAmountPerPerson = this.event.othersAmount / this.event.personsForOthers;
+    this.event.totalAmount = this.event.expense1Amount + this.event.expense2Amount + this.event.expense3Amount;
+    this.event.expense1AmountPerPerson = this.event.expense1Amount / this.event.personsForExpense1;
+    this.event.expense2AmountPerPerson = this.event.expense2Amount / this.event.personsForExpense2;
+    this.event.expense3AmountPerPerson = this.event.expense3Amount / this.event.personsForExpense3;
 
     this.event.persons.forEach(person => {
       // Reset expenses
       person.expenses = 0;
       // Add the expenses
-      person.expenses += person.inDrink ? this.event.drinkAmountPerPerson : 0;
-      person.expenses += person.inFood ? this.event.foodAmountPerPerson : 0;
-      person.expenses += person.inOthers ? this.event.othersAmountPerPerson : 0;
+      person.expenses += person.inExpense1 ? this.event.expense1AmountPerPerson : 0;
+      person.expenses += person.inExpense2 ? this.event.expense2AmountPerPerson : 0;
+      person.expenses += person.inExpense3 ? this.event.expense3AmountPerPerson : 0;
 
-      person.balance = +person.drinkAmount + +person.foodAmount + +person.othersAmount - person.expenses;
+      person.balance = +person.expense1Amount + +person.expense2Amount + +person.expense3Amount - person.expenses;
 
       this.results += `<div><h6 class='person-${(person.balance >= 0) ? 'gets' : 'gives'}'>
                       ${person.name} ${(person.balance >= 0) ?
           this.dictionary.index.popups.calculate.gets :
-          this.dictionary.index.popups.calculate.gives}
-                      : $${Math.abs(person.balance).toFixed(2)}
-                      <small class='person-details'> (${this.dictionary.index.popups.calculate.spent}
-                      : $${(Math.abs(+person.expenses)).toFixed(2)})</small>
+          this.dictionary.index.popups.calculate.gives}:
+                      $${Math.abs(person.balance).toFixed(2)}
+                      <small class='person-details'>
+                      (${this.dictionary.index.popups.calculate.spent}:
+                      $${(Math.abs(+person.expenses)).toFixed(2)})</small>
                       </h6>`;
 
       this.resultsToShare += `${person.name} ${(person.balance >= 0) ?
@@ -214,15 +224,15 @@ export class IndexPage {
       title: `<small><strong>${this.dictionary.index.popups.calculate.totalFor}
              ${this.event.name ? this.event.name : this.dictionary.index.popups.calculate.theEvent}:
              $${this.event.totalAmount.toFixed(2)}<small><strong>`,
-      subTitle: `<small>${this.dictionary.index.popups.calculate.drinks}:
-                        $${this.event.drinkAmount.toFixed(2)}
-                        ${this.event.personsForDrink === 0 ? "<span class='person-gives'>" + this.dictionary.index.popups.calculate.noConsumption + '</span>' : ''} </br>
-                        ${this.dictionary.index.popups.calculate.food}:
-                        $${this.event.foodAmount.toFixed(2)}
-                        ${this.event.personsForFood === 0 ? "<span class='person-gives'>" + this.dictionary.index.popups.calculate.noConsumption + '</span>' : ''} </br>
-                        ${this.dictionary.index.popups.calculate.others}:
-                        $${this.event.othersAmount.toFixed(2)}
-                        ${this.event.personsForOthers === 0 ? "<span class='person-gives'>" + this.dictionary.index.popups.calculate.noConsumption + '</span>' : ''}
+      subTitle: `<small>${this.event.expense1Label}:
+                        $${this.event.expense1Amount.toFixed(2)}
+                        ${this.event.personsForExpense1 === 0 ? "<span class='person-gives'>" + this.dictionary.index.popups.calculate.noConsumption + '</span>' : ''} </br>
+                        ${this.event.expense2Label}:
+                        $${this.event.expense2Amount.toFixed(2)}
+                        ${this.event.personsForExpense2 === 0 ? "<span class='person-gives'>" + this.dictionary.index.popups.calculate.noConsumption + '</span>' : ''} </br>
+                        ${this.event.expense3Label}:
+                        $${this.event.expense3Amount.toFixed(2)}
+                        ${this.event.personsForExpense3 === 0 ? "<span class='person-gives'>" + this.dictionary.index.popups.calculate.noConsumption + '</span>' : ''}
                 </small>`,
       message: `${this.results}</div>`,
       cssClass: 'resume-alert',
@@ -267,30 +277,47 @@ export class IndexPage {
   }
 
   finishEditingName() {
-    this.save();
+    if (this.platform.is('cordova')) {
+      this.save();
+    }
   }
 
   checkPersonsName(selectedPerson: Person) {
     if (this.event.persons.length >= 2) {
       this.errorsOnTheEvent = false;
     }
-    if (selectedPerson.name === undefined || selectedPerson.name === '') {
-      selectedPerson.error = 'Please add a name';
-      this.errorsOnTheEvent = true;
-      return;
-    }
     this.event.persons.forEach(person => {
       person.error = '';
     });
     for (var index1 = 0; index1 < this.event.persons.length; index1++) {
       for (var index2 = 1; index2 < this.event.persons.length; index2++) {
-        if (this.event.persons[index1].id !== this.event.persons[index2].id && this.event.persons[index1].name.toLocaleLowerCase() === this.event.persons[index2].name.toLocaleLowerCase()) {
-          this.event.persons[index1].error = 'Another person already has this name';
-          this.event.persons[index2].error = 'Another person already has this name';
+        if (this.event.persons[index1].name !== undefined && this.event.persons[index1].name !== '') {
+          if (this.event.persons[index2].name !== undefined && this.event.persons[index2].name !== '') {
+            if (this.event.persons[index1].id !== this.event.persons[index2].id && this.event.persons[index1].name.toLowerCase() === this.event.persons[index2].name.toLowerCase()) {
+              this.event.persons[index1].error = this.dictionary.index.alreadyHasNameError;
+              this.event.persons[index2].error = this.dictionary.index.alreadyHasNameError;
+              this.errorsOnTheEvent = true;
+            }
+          }
+          else {
+            this.event.persons[index2].error = this.dictionary.index.noNameError;
+            this.errorsOnTheEvent = true;
+          }
+        }
+        else {
+          this.event.persons[index1].error = this.dictionary.index.noNameError;
           this.errorsOnTheEvent = true;
-          return;
         }
       }
+    }
+  }
+
+  checkEventName() {
+    if (this.event.expense1Label === '' || this.event.expense2Label === '' || this.event.expense3Label === '') {
+      this.errorsOnTheEventsName = true;
+    }
+    else {
+      this.errorsOnTheEventsName = false;
     }
   }
 }

@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { Nav, Events } from "ionic-angular";
+import { Nav, Events, Platform } from "ionic-angular";
 import { IndexPage } from "../index/index";
 import { NativeStorage } from "@ionic-native/native-storage";
+import { enDictionary } from "../../utils/en-dictionary";
 
 @Component({
   selector: 'help-page',
@@ -9,12 +10,21 @@ import { NativeStorage } from "@ionic-native/native-storage";
 })
 export class HelpPage {
   private language: string;
+  private dictionary: any;
 
   constructor(
     private nav: Nav,
     private nativeStorage: NativeStorage,
-    private events: Events) {
-    this.setDictionary();
+    private events: Events,
+    private platform: Platform) {
+
+    if (this.platform.is('cordova')) {
+      this.setDictionary();
+    }
+    else {
+      this.language = 'en';
+      this.dictionary = enDictionary;
+    }
   }
 
   setDictionary() {

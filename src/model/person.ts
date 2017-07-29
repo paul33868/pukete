@@ -3,12 +3,12 @@ import { PuketeEvent } from "./event";
 export class Person {
     public id: number;
     public name: string;
-    public inDrink: boolean = true;
-    public inFood: boolean = true;
-    public inOthers: boolean = true;
-    public drinkAmount: number = 0;
-    public foodAmount: number = 0;
-    public othersAmount: number = 0;
+    public inExpense1: boolean = true;
+    public inExpense2: boolean = true;
+    public inExpense3: boolean = true;
+    public expense1Amount: number = 0;
+    public expense2Amount: number = 0;
+    public expense3Amount: number = 0;
     public expenses: number = 0;
     public balance: number = 0;
     public error: string = '';

@@ -29,8 +29,15 @@ export class PuketeApp implements OnDestroy {
     private nativeStorage: NativeStorage,
     private events: Events) {
     this.initializeApp();
-    this.platform.is('cordova') ? this.setLanguage() : this.dictionary = enDictionary;
-    this.platform.is('cordova') ? this.displayHelpPage() : this.rootPage = IndexPage;
+    if (this.platform.is('cordova')) {
+      this.setLanguage();
+      this.displayHelpPage()
+    }
+    else {
+      this.dictionary = enDictionary;
+      this.rootPage = ListPage;
+      this.setPages();
+    }
     this.updateLanguage();
   }
 
@@ -77,7 +84,7 @@ export class PuketeApp implements OnDestroy {
           this.rootPage = HelpPage;
         }
         else {
-          this.rootPage = IndexPage;
+          this.rootPage = ListPage;
         }
       },
       error => console.error(error)

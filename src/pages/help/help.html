@@ -4,7 +4,7 @@
             menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Help</ion-title>
+    <ion-title>{{dictionary?.help?.title}}</ion-title>
     <ion-buttons right>
       <button ion-button
               (click)="skip()">
@@ -18,8 +18,8 @@
   <ion-slides pager>
     <ion-slide>
       <img src="assets/icon.png" />
-      <h1>Welcome to Pukete</h1>
-      <p>The app that will help you to manage money between you and your friends.</p>
+      <h1>{{dictionary?.help?.appTitle}}</h1>
+      <p>{{dictionary?.help?.slogan}}</p>
     </ion-slide>
 
     <ion-slide>
@@ -63,30 +63,6 @@
         </ion-avatar>
         <h1>Calculate</h1>
         <p>See how much everyone has to give or get to/from the pot.</p>
-      </ion-item>
-    </ion-slide>
-
-    <ion-slide>
-      <ion-item>
-        <ion-avatar item-start>
-          <ion-icon name="archive"></ion-icon>
-        </ion-avatar>
-        <h1>All under cotrol</h1>
-        <p>The lists are saved after every action, so you don't have to worry abount saving.</p>
-      </ion-item>
-      <ion-item>
-        <ion-avatar item-start>
-          <ion-icon name="share-alt"></ion-icon>
-        </ion-avatar>
-        <h1>Share</h1>
-        <p>At the end, you can share anywhre you want.</p>
-      </ion-item>
-      <ion-item>
-        <ion-avatar item-start>
-          <ion-icon name="help-circle"></ion-icon>
-        </ion-avatar>
-        <h1>Any doubts?</h1>
-        <p>Anytime, you can press the menu to display all the options.</p>
       </ion-item>
     </ion-slide>
 

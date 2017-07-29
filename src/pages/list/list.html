@@ -21,7 +21,7 @@
                  placeholder="{{dictionary?.list?.inputs?.search}}"></ion-searchbar>
   <ion-list>
     <ion-item *ngFor="let puketeEvent of events">
-      <p (click)="goToPuketePage(puketeEvent.id)"> {{ puketeEvent.name }} </p>
+      <p (click)="goToPage(puketeEvent.id)"> {{ puketeEvent.name }} </p>
       <button ion-button
               color="danger"
               (click)="removeEvent(puketeEvent)"

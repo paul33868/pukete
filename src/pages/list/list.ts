@@ -69,7 +69,7 @@ export class ListPage {
     this.events = this.items;
   }
 
-  goToPuketePage(eventID) {
+  goToPage(eventID) {
     this.navCtrl.setRoot(IndexPage, {
       eventID: eventID
     });
