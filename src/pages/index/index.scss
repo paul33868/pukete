@@ -2,11 +2,26 @@ index-page {
     .error-message{
         color: #f53d3d !important;
     }
+    .error-event-message{
+        color: #f53d3d;
+        margin-left: 16px;
+        font-size: smaller;
+    }
     .checkbox-container{
         display: table-cell;
         div {
                 display: flex;
         }
+    }
+    .calculate-button{
+        margin: 0px;
+    }
+    .persons-input{
+        padding-left: 0px;
+    }
+    .bottom-description{
+        position: absolute;
+        bottom: 10px;
     }
 }
 

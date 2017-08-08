@@ -11,6 +11,8 @@ import { NativeStorage } from "@ionic-native/native-storage";
 import { HelpPage } from "../pages/help/help";
 import { TextMaskModule } from 'angular2-text-mask';
 import { SettingsPage } from "../pages/settings/settings";
+import { ResultsPage } from "../pages/results/results";
+import { EventDetailsPage } from "../pages/event-details/event-details";
 
 @NgModule({
   declarations: [
@@ -18,7 +20,9 @@ import { SettingsPage } from "../pages/settings/settings";
     IndexPage,
     ListPage,
     HelpPage,
-    SettingsPage
+    SettingsPage,
+    ResultsPage,
+    EventDetailsPage
   ],
   imports: [
     BrowserModule,
@@ -31,7 +35,9 @@ import { SettingsPage } from "../pages/settings/settings";
     IndexPage,
     ListPage,
     HelpPage,
-    SettingsPage
+    SettingsPage,
+    ResultsPage,
+    EventDetailsPage
   ],
   providers: [
     StatusBar,

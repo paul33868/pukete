@@ -7,7 +7,7 @@ import { ListPage } from "../pages/list/list";
 import { NativeStorage } from "@ionic-native/native-storage";
 import { HelpPage } from "../pages/help/help";
 import { enDictionary } from "../utils/en-dictionary";
-import { esDictionary } from "../utils/es-dictionary.";
+import { esDictionary } from "../utils/es-dictionary";
 import { SettingsPage } from "../pages/settings/settings";
 
 @Component({
@@ -29,9 +29,12 @@ export class PuketeApp implements OnDestroy {
     private nativeStorage: NativeStorage,
     private events: Events) {
     this.initializeApp();
+  }
+
+  init() {
     if (this.platform.is('cordova')) {
       this.setLanguage();
-      this.displayHelpPage()
+      this.displayHelpPage();
     }
     else {
       this.dictionary = enDictionary;
@@ -58,7 +61,6 @@ export class PuketeApp implements OnDestroy {
       .then(
       data => {
         this.setDictionary(data);
-        console.info('There is a language already set');
         this.setPages();
       },
       error => {
@@ -89,14 +91,13 @@ export class PuketeApp implements OnDestroy {
       },
       error => console.error(error)
       );
-
-
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      this.init();
     });
   }
 
@@ -107,7 +108,6 @@ export class PuketeApp implements OnDestroy {
 
   setPages() {
     this.pages = [
-      { title: this.dictionary.menu.calculator, component: IndexPage, icon: 'calculator' },
       { title: this.dictionary.menu.list, component: ListPage, icon: 'list' },
       { title: this.dictionary.menu.help, component: HelpPage, icon: 'help' },
       { title: this.dictionary.menu.settings, component: SettingsPage, icon: 'settings' }

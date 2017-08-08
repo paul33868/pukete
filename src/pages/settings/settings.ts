@@ -3,7 +3,7 @@ import { Nav, Events, Platform } from "ionic-angular";
 import { IndexPage } from "../index/index";
 import { NativeStorage } from "@ionic-native/native-storage";
 import { enDictionary } from "../../utils/en-dictionary";
-import { esDictionary } from "../../utils/es-dictionary.";
+import { esDictionary } from "../../utils/es-dictionary";
 
 @Component({
   selector: 'settings-page',
@@ -22,11 +22,11 @@ export class SettingsPage {
       this.setDictionary();
     }
     else {
-      this.setLanguage('en');
+      this.setLanguage('es');
     }
   }
 
-  private setDictionary() {
+  setDictionary() {
     this.nativeStorage.getItem('language')
       .then(
       data => {
@@ -35,18 +35,23 @@ export class SettingsPage {
       error => { console.error(`Error getting the dictionary: ${error}`) });
   }
 
-  private selectedLanguage(language: string) {
-    this.nativeStorage.setItem('language', language)
-      .then(
-      () => {
-        console.info('Changed language');
-        this.events.publish('language:changed', language);
-        this.setLanguage(language);
-      },
-      (error) => { console.error(`Error storing event: ${JSON.stringify(error)}`) });
+  selectedLanguage(language: string) {
+    if (this.platform.is('cordova')) {
+      this.nativeStorage.setItem('language', language)
+        .then(
+        () => {
+          console.info('Changed language');
+          this.events.publish('language:changed', language);
+          this.setLanguage(language);
+        },
+        (error) => { console.error(`Error storing event: ${JSON.stringify(error)}`) });
+    }
+    else {
+      this.setLanguage(language);
+    }
   }
 
-  private setLanguage(data) {
+  setLanguage(data) {
     switch (data) {
       case 'en':
         this.dictionary = enDictionary

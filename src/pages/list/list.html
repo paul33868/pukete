@@ -8,9 +8,8 @@
     <ion-buttons right>
       <button ion-button
               icon-only
-              (click)="removeEvents()"
-              [disabled]="events?.length < 1">
-        <ion-icon name="trash"></ion-icon>
+              (click)="addEvent()">
+        <ion-icon name="add-circle"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -21,7 +20,8 @@
                  placeholder="{{dictionary?.list?.inputs?.search}}"></ion-searchbar>
   <ion-list>
     <ion-item *ngFor="let puketeEvent of events">
-      <p (click)="goToPage(puketeEvent.id)"> {{ puketeEvent.name }} </p>
+      <h2 (click)="goToPage(puketeEvent)">{{ puketeEvent.name }}</h2>
+      <p (click)="goToPage(puketeEvent)">{{dictionary?.list?.created}}: {{ puketeEvent.creationDate }}</p>
       <button ion-button
               color="danger"
               (click)="removeEvent(puketeEvent)"

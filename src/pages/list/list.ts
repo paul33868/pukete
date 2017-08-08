@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, Platform } from 'ionic-angular';
 import { NativeStorage } from '@ionic-native/native-storage';
 import { IndexPage } from "../index/index";
 import { PuketeEvent } from "../../model/event";
 import { enDictionary } from "../../utils/en-dictionary";
-import { esDictionary } from "../../utils/es-dictionary.";
+import { esDictionary } from "../../utils/es-dictionary";
 
 @Component({
   selector: 'page-list',
@@ -14,30 +14,46 @@ export class ListPage {
   private events: Array<PuketeEvent> = [];
   private items: Array<PuketeEvent> = [];
   private dictionary: any;
+  private language: string;
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
+    private navCtrl: NavController,
+    private navParams: NavParams,
     private nativeStorage: NativeStorage,
-    public alertCtrl: AlertController) {
-    this.setDictionary();
-    this.init();
+    private alertCtrl: AlertController,
+    private platform: Platform) {
+  }
+
+  ionViewWillEnter() {
+    if (this.platform.is('cordova')) {
+      this.setDictionary();
+      this.init();
+    }
+    else {
+      this.setLanguage('es');
+    }
   }
 
   setDictionary() {
     this.nativeStorage.getItem('language')
       .then(
       data => {
-        switch (data) {
-          case 'en':
-            this.dictionary = enDictionary
-            break;
-          case 'es':
-            this.dictionary = esDictionary
-            break;
-        }
+        this.setLanguage(data);
       },
       error => { console.error(`Error getting the dictionary: ${error}`) });
+  }
+
+  setLanguage(data) {
+    switch (data) {
+      case 'en':
+        this.dictionary = enDictionary
+        this.language = 'en';
+        break;
+      case 'es':
+        this.dictionary = esDictionary
+        this.language = 'es';
+        break;
+    }
   }
 
   init() {
@@ -46,14 +62,10 @@ export class ListPage {
       data => {
         data.forEach((event, i) => {
           if (event !== 'language') {
+            this.items = [];
             this.nativeStorage.getItem(data[i])
               .then(
               data => {
-                // We contemplate the case the user has deleted the name of the list
-                if (data['name'] === '') {
-                  // In that case we need to add one
-                  data['name'] = this.dictionary.list.noNameList;
-                }
                 this.items.push(data);
                 this.initializeItems();
               },
@@ -66,39 +78,26 @@ export class ListPage {
   }
 
   initializeItems() {
+    this.events = [];
     this.events = this.items;
   }
 
-  goToPage(eventID) {
-    this.navCtrl.setRoot(IndexPage, {
-      eventID: eventID
+  goToPage(selectedEvent: PuketeEvent) {
+    this.navCtrl.push(IndexPage, {
+      event: selectedEvent
     });
   }
 
-  removeEvents() {
-    let confirm = this.alertCtrl.create({
-      title: this.dictionary.list.popups.removeEvents.title,
-      buttons: [
-        {
-          text: this.dictionary.list.popups.removeEvents.noButton,
-          handler: () => { }
-        },
-        {
-          text: this.dictionary.list.popups.removeEvents.yesButton,
-          handler: () => {
-            this.nativeStorage.clear()
-              .then(
-              data => {
-                console.info('Removed all events!');
-                this.items = [];
-                this.initializeItems();
-              },
-              error => { console.error(`Error deleting the events: ${error}`) });
-          }
-        }
-      ]
-    });
-    confirm.present();
+  addEvent() {
+    let event = new PuketeEvent(new Date().getTime(), this.language);
+    console.info(`New event created`);
+    if (this.platform.is('cordova')) {
+      this.nativeStorage.setItem(event.id.toString(), event)
+        .then(
+        () => { console.info('Stored event!') },
+        (error) => { console.error(`Error storing event: ${JSON.stringify(error)}`) });
+    }
+    this.goToPage(event);
   }
 
   removeEvent(event: PuketeEvent) {
@@ -136,7 +135,7 @@ export class ListPage {
     let val = ev.target.value;
     if (val && val.trim() != '') {
       this.events = this.events.filter((event) => {
-        return (event.name.toLowerCase().indexOf(val.toLowerCase()) > -1);
+        return (event.name.toLowerCase().indexOf(val.toLowerCase()) > -1 || event.creationDate.indexOf(val) > -1);
       })
     }
   }

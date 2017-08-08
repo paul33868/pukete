@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button
+            menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{dictionary?.eventDetails?.title}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <h1 class="expense-title">{{dictionary?.eventDetails?.expenses}}</h1>
+      <ion-item class="expense-input">
+        <ion-input type="text"
+                   placeholder="{{dictionary?.eventDetails?.newExpensePlaceholder}}"
+                   (blur)="checkNewEventName($event)"
+                   (keyup)="checkNewEventName($event)"
+                   [(ngModel)]="newEvent"
+                   required
+                   [attr.maxlength]="15">
+        </ion-input>
+        <button ion-button
+                icon-only
+                item-end
+                clear
+                (click)="addExpense()"
+                [disabled]="newEvent === undefined || newEvent === '' || newEventErrorDescription !== ''">
+            <ion-icon name="add-circle"></ion-icon>
+            </button>
+      </ion-item>
+      <span class="error-message-header">{{newEventErrorDescription}}</span>
+    </ion-card-header>
+
+    <ion-card-content *ngFor="let expense of event?.expenses">
+      <ion-item class="expense-input">
+        <ion-input type="text"
+                   placeholder="{{dictionary?.eventDetails?.expensePlaceholder}}"
+                   [(ngModel)]="expense.name"
+                   (blur)="editEventExpenseName(expense, $event)"
+                   (keyup)="editEventExpenseName(expense, $event)"
+                   required
+                   [attr.maxlength]="15">
+        </ion-input>
+        <button ion-button
+                icon-only
+                item-end
+                clear
+                color="danger"
+                (click)="removeExpense(expense)">
+            <ion-icon name="trash"></ion-icon>
+            </button>
+      </ion-item>
+      <span class="error-message">{{expense.error}}</span>
+    </ion-card-content>
+
+  </ion-card>
+
+</ion-content>

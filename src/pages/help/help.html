@@ -8,7 +8,7 @@
     <ion-buttons right>
       <button ion-button
               (click)="skip()">
-        SKIP
+        {{dictionary?.help?.skip}}
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -21,50 +21,5 @@
       <h1>{{dictionary?.help?.appTitle}}</h1>
       <p>{{dictionary?.help?.slogan}}</p>
     </ion-slide>
-
-    <ion-slide>
-      <ion-item>
-        <ion-avatar item-start>
-          <ion-icon name="person-add"></ion-icon>
-        </ion-avatar>
-        <h1>Add a person</h1>
-        <p>You can enter the name and the expenses</p>
-      </ion-item>
-      <ion-item>
-        <ion-avatar item-start>
-          <ion-icon name="create"></ion-icon>
-        </ion-avatar>
-        <h1>Add a title</h1>
-        <p>It's optional</p>
-      </ion-item>
-      <ion-item>
-        <ion-avatar item-start>
-          <ion-icon name="pricetags"></ion-icon>
-        </ion-avatar>
-        <h1>Edit consumptions</h1>
-        <p>Touch the person's name or any tag.</p>
-        <p>
-          <ion-badge item-start>All</ion-badge> includes everything.</p>
-        <p>
-          <ion-badge item-start
-                     color="light">Nothing</ion-badge> Paid but didn't consume so it'll get all the money back.</p>
-        <p>
-          <ion-badge item-start
-                     color="danger">Drinks</ion-badge>
-          <ion-badge item-start
-                     color="secondary">Food</ion-badge>
-          <ion-badge item-start
-                     color="dark">Others</ion-badge>
-        </p>
-      </ion-item>
-      <ion-item>
-        <ion-avatar item-start>
-          <ion-icon name="calculator"></ion-icon>
-        </ion-avatar>
-        <h1>Calculate</h1>
-        <p>See how much everyone has to give or get to/from the pot.</p>
-      </ion-item>
-    </ion-slide>
-
   </ion-slides>
 </ion-content>

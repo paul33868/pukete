@@ -4,129 +4,105 @@
             menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-input type="text"
-               placeholder="{{dictionary?.index?.inputs?.event}}"
-               *ngIf="event?.name"
-               [(ngModel)]="event.name"
-               (blur)="finishEditingName()"></ion-input>
+    <ion-title>{{dictionary?.index?.event}}</ion-title>
     <ion-buttons right>
-      <button ion-button
-              icon-only
-              (click)="addEvent()"
-              [disabled]="event?.persons?.length < 1">
-        <ion-icon name="add-circle"></ion-icon>
-      </button>
-    </ion-buttons>
-  </ion-navbar>
-</ion-header>
-
-<ion-content padding>
-  <ion-card *ngFor="let person of event?.persons">
-    <ion-item *ngIf="person?.name">
-      <strong>{{person?.name}}</strong> {{dictionary?.index?.alreadyPaid}}: <strong>${{(person.expense1Amount - -person.expense2Amount - -person.expense3Amount) |
-      number:'1.2-2'}}</strong>
-      <button ion-button
-              icon-only
-              item-end
-              clear
-              color="danger"
-              (click)="removePerson(person)">
-        <ion-icon name="trash"></ion-icon>
-        </button>
-    </ion-item>
-    <ion-card-content>
-      <ion-item>
-        <ion-input type="text"
-                   placeholder="{{dictionary?.index?.inputs?.person}}"
-                   [(ngModel)]="person.name"
-                   (blur)="checkPersonsName(person)"
-                   (keyup)="checkPersonsName(person)"
-                   required>
-        </ion-input>
-      </ion-item>
-      <span class="error-message">{{person.error}}</span>
-
-      <div class="checkbox-container">
-        <p>{{dictionary?.index?.inputs?.alreadyPaid}}</p>
-        <div>
-          <ion-input type="text"
-                     [(ngModel)]="event.expense1Label"
-                     required
-                     (keyup)="checkEventName()">
-          </ion-input>
-          <ion-input type="number"
-                     [(ngModel)]="person.expense1Amount"
-                     min="0">
-          </ion-input>
-        </div>
-        <div>
-          <ion-input type="text"
-                     [(ngModel)]="event.expense2Label"
-                     required
-                     (keyup)="checkEventName()">
-          </ion-input>
-          <ion-input type="number"
-                     [(ngModel)]="person.expense2Amount"
-                     min="0">
-          </ion-input>
-        </div>
-        <div>
-          <ion-input type="text"
-                     [(ngModel)]="event.expense3Label"
-                     required
-                     (keyup)="checkEventName()">
-          </ion-input>
-          <ion-input type="number"
-                     [(ngModel)]="person.expense3Amount"
-                     min="0">
-          </ion-input>
-        </div>
-      </div>
-
-      <div class="checkbox-container">
-        <p>{{dictionary?.index?.inputs?.isCounted}}</p>
-        <div>
-          <ion-item>
-            <ion-label>{{event?.expense1Label}}</ion-label>
-            <ion-checkbox [(ngModel)]="person.inExpense1"></ion-checkbox>
-          </ion-item>
-        </div>
-        <div>
-          <ion-item>
-            <ion-label>{{event?.expense2Label}}</ion-label>
-            <ion-checkbox [(ngModel)]="person.inExpense2"></ion-checkbox>
-          </ion-item>
-        </div>
-        <div>
-          <ion-item>
-            <ion-label>{{event?.expense3Label}}</ion-label>
-            <ion-checkbox [(ngModel)]="person.inExpense3"></ion-checkbox>
-          </ion-item>
-        </div>
-      </div>
-      <span class="error-message"
-            *ngIf="event.expense1Label === '' || event.expense2Label === '' || event.expense3Label === ''">Please provide a name for all the expenses</span>
-    </ion-card-content>
-  </ion-card>
-
-</ion-content>
-
-<ion-footer>
-  <ion-toolbar>
-    <ion-buttons left>
       <button ion-button
               icon-only
               (click)="addPerson()">
         <ion-icon name="person-add"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-buttons right>
-      <button ion-button
-              icon-only
-              (click)="calculate()"
-              [disabled]="errorsOnTheEvent || errorsOnTheEventsName">
-        <ion-icon name="calculator"></ion-icon>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-input type="text"
+               placeholder="{{dictionary?.index?.inputs?.event}}"
+               [(ngModel)]="event.name"
+               (blur)="checkEvent()"
+               (keyup)="checkEvent()"
+               [attr.maxlength]="15">
+    </ion-input>
+    <button ion-button
+            icon-only
+            item-end
+            clear
+            (click)="editEvent(event)">
+            <ion-icon name="settings"></ion-icon>
+            </button>
+  </ion-item>
+  <span class="error-event-message"
+        *ngIf="this.event.name.length <= 0">{{dictionary?.index?.noNameEventError}}</span>
+  <ion-card *ngFor="let person of event?.persons">
+    <ion-card-content>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-item class="persons-input">
+              <ion-input type="text"
+                         placeholder="{{dictionary?.index?.inputs?.person}}"
+                         [(ngModel)]="person.name"
+                         (blur)="checkEvent(person)"
+                         (keyup)="checkEvent(person)"
+                         autofocus
+                         required
+                         [attr.maxlength]="10">
+              </ion-input>
+              <button ion-button
+                      icon-only
+                      item-end
+                      clear
+                      color="danger"
+                      *ngIf="person?.name"
+                      (click)="removePerson(person)">
+            <ion-icon name="trash"></ion-icon>
+            </button>
+            </ion-item>
+          </ion-col>
+          <ion-col col-4
+                   *ngIf="person?.name">
+            <span class="bottom-description">{{dictionary?.index?.alreadyPaid}}</span>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngFor="let personExpense of person?.expenses">
+          <ion-col col-4>
+            <ion-item class="persons-input">
+              <span item-start>$</span>
+              <ion-input type="number"
+                         [(ngModel)]="personExpense.amount"
+                         min="0"
+                         (blur)="checkEvent(person)"
+                         (keyup)="checkEvent(person)"
+                         required
+                         [attr.maxlength]="5">
+              </ion-input>
+            </ion-item>
+          </ion-col>
+          <ion-col col-6>
+            <span class="bottom-description">{{dictionary?.index?.for}} <strong>{{personExpense?.expense?.name}}</strong> {{dictionary?.index?.and}}
+              <strong *ngIf="personExpense.isIn">{{dictionary?.index?.ItIs}}</strong>
+            <strong *ngIf="!personExpense.isIn">{{dictionary?.index?.ItIsNot}}</strong>{{dictionary?.index?.counted}}
+            </span>
+          </ion-col>
+          <ion-col col-2>
+            <ion-toggle checked="personExpense.isIn"
+                        [(ngModel)]="personExpense.isIn"></ion-toggle>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <span class="error-message">{{person.error}}</span>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+<ion-footer>
+  <button ion-button
+          icon-left
+          full
+          class="calculate-button"
+          (click)="calculate()"
+          [disabled]="errorsOnTheEvent || errorsOnTheEventsName">
+        <ion-icon name="calculator"></ion-icon>{{dictionary?.index?.calculate}}
       </button>
-    </ion-buttons>
-  </ion-toolbar>
 </ion-footer>

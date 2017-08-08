@@ -1,61 +1,57 @@
 export var enDictionary = {
     index: {
-        title: "Calculator",
-        alreadyPaid: "already paid",
-        alreadyHasNameError: "Another person already has this name",
-        noNameError: "Please add a name",
+        alreadyPaid: 'already paid',
+        alreadyHasNameError: 'Another person already has this name',
+        noNameError: 'Please add a name',
+        validAmountError: "Please provide a valid amount for all the expenses",
+        noNameEventError: 'The event must have a name',
+        event: 'Event',
+        for: 'for ',
+        and: ' and ',
+        ItIs: 'its ',
+        ItIsNot: "it isn't ",
+        counted: 'counted',
+        calculate: 'Calculate',
         inputs: {
-            event: "Event's name (optional)",
-            person: "Person's name (e.g.: John)",
-            alreadyPaid: "Already paid in: ",
-            isCounted: "Is counted on:"
-        },
-        labels: {
-            nothing: "Nothing",
-            all: "All",
+            event: "Event's name",
+            person: "Person's name"
         },
         popups: {
-            addEvent: {
-                title: "Add new event?",
-                noButton: "No",
-                yesButton: "Yes",
-            },
             removePerson: {
-                title: "Remove person?",
-                noButton: "No",
-                yesButton: "Yes",
-            },
-            calculate: {
-                spent: "Spent",
-                gets: "gets",
-                gives: "gives",
-                totalFor: "Total for",
-                theEvent: "the event",
-                noConsumption: "NO CONSUMPTION!",
-                buttons: {
-                    cancel: "Cancel",
-                    share: "Share"
-                }
-            },
-            share: {
-                spent: "Spent",
-                totalFor: "Total for",
-                theEvent: "the event"
+                title: 'Remove person?',
+                noButton: 'No',
+                yesButton: 'Yes',
             }
         }
     },
+    eventDetails: {
+        title: "Event's details",
+        expenses: 'Expenses',
+        newExpensePlaceholder: 'New expense',
+        expensePlaceholder: "Expense's name",
+        alredyExpenseError: 'There is already an expense with that name',
+        noNameExpenseError: 'Please add a name for the expense',
+        popups: {
+            removeExpense: {
+                title: "Remove expense?",
+                subtitle: "It will be removed from the persons expenses also.",
+                noButton: "No",
+                yesButton: "Yes"
+            },
+            expenseError: {
+                title: "Error",
+                subtitle: "The event must have at least one expense."
+            },
+        }
+
+    },
     list: {
         title: 'My events',
-        noNameList: 'No name event',
+        created: 'Created on',
         inputs: {
             search: "Search event"
         },
         popups: {
-            removeEvents: {
-                title: "Remove all events?",
-                noButton: "No",
-                yesButton: "Yes",
-            },
             removeEvent: {
                 title: "Remove event?",
                 noButton: "No",
@@ -64,7 +60,7 @@ export var enDictionary = {
         }
     },
     menu: {
-        calculator: "Calculator",
+        menu: "Menu",
         list: "Events",
         help: "Help",
         settings: "Settings"
@@ -78,6 +74,22 @@ export var enDictionary = {
     help: {
         title: "Help",
         appTitle: "Pukete",
-        slogan: "Clean numbers keep friendship :)"
+        slogan: "Clean numbers keep friendship :)",
+        skip: "skip"
+    },
+    results: {
+        title: "Results",
+        totalFor: "Total for ",
+        spentInTotal: "spent in total: ",
+        and: " and",
+        gets: "gets ",
+        gives: "gives ",
+        isEven: "is even",
+        paid: " paid ",
+        for: " for ",
+        counted: "it was counted",
+        notCounted: "it wasn't counted",
+        noConsumption: " there's been payments but no consuption.",
+        attention: "Attention, in "
     }
 };

@@ -3,6 +3,7 @@ import { Nav, Events, Platform } from "ionic-angular";
 import { IndexPage } from "../index/index";
 import { NativeStorage } from "@ionic-native/native-storage";
 import { enDictionary } from "../../utils/en-dictionary";
+import { esDictionary } from "../../utils/es-dictionary";
 
 @Component({
   selector: 'help-page',
@@ -22,16 +23,30 @@ export class HelpPage {
       this.setDictionary();
     }
     else {
-      this.language = 'en';
-      this.dictionary = enDictionary;
+      this.setLanguage('es');
     }
   }
 
   setDictionary() {
     this.nativeStorage.getItem('language')
       .then(
-      data => { this.language = data; },
-      error => { console.error(`Error getting the language: ${error}`) });
+      data => {
+        this.setLanguage(data);
+      },
+      error => { console.error(`Error getting the dictionary: ${error}`) });
+  }
+
+  setLanguage(data) {
+    switch (data) {
+      case 'en':
+        this.dictionary = enDictionary
+        this.language = 'en';
+        break;
+      case 'es':
+        this.dictionary = esDictionary
+        this.language = 'es';
+        break;
+    }
   }
 
   skip() {

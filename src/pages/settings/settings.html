@@ -9,12 +9,21 @@
 </ion-header>
 
 <ion-content>
-  <ion-item>
-    <ion-label>{{dictionary?.settings?.language}}</ion-label>
-    <ion-select [(ngModel)]="language"
-                (ionChange)="selectedLanguage($event)">
-      <ion-option value="en">{{dictionary?.settings?.english}}</ion-option>
-      <ion-option value="es">{{dictionary?.settings?.spanish}}</ion-option>
-    </ion-select>
-  </ion-item>
+  <ion-item-group>
+    <ion-item-divider color="light">{{dictionary?.settings?.language}}</ion-item-divider>
+    <ion-item>
+      <ion-label>{{dictionary?.settings?.language}}</ion-label>
+      <ion-select [(ngModel)]="language"
+                  (ionChange)="selectedLanguage($event)">
+        <ion-option value="en">{{dictionary?.settings?.english}}</ion-option>
+        <ion-option value="es">{{dictionary?.settings?.spanish}}</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-item-group>
+  <ion-item-group>
+    <ion-item-divider color="light">Default expenses</ion-item-divider>
+    <ion-item>Drink</ion-item>
+    <ion-item>Food</ion-item>
+    <ion-item>Others</ion-item>
+  </ion-item-group>
 </ion-content>
