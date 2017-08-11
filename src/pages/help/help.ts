@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { Nav, Events, Platform } from "ionic-angular";
-import { IndexPage } from "../index/index";
 import { NativeStorage } from "@ionic-native/native-storage";
 import { enDictionary } from "../../utils/en-dictionary";
 import { esDictionary } from "../../utils/es-dictionary";
+import { ListPage } from "../list/list";
 
 @Component({
   selector: 'help-page',
@@ -28,10 +28,10 @@ export class HelpPage {
   }
 
   setDictionary() {
-    this.nativeStorage.getItem('language')
+    this.nativeStorage.getItem('settings')
       .then(
       data => {
-        this.setLanguage(data);
+        this.setLanguage(data.language);
       },
       error => { console.error(`Error getting the dictionary: ${error}`) });
   }
@@ -50,6 +50,6 @@ export class HelpPage {
   }
 
   skip() {
-    this.nav.setRoot(IndexPage);
+    this.nav.setRoot(ListPage);
   }
 }

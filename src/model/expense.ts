@@ -1,6 +1,3 @@
-import { PuketeEvent } from "./event";
-import { Person } from "./person";
-
 export class Expense {
     public id: number;
     public name: string;

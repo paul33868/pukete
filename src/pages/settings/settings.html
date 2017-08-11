@@ -21,9 +21,36 @@
     </ion-item>
   </ion-item-group>
   <ion-item-group>
-    <ion-item-divider color="light">Default expenses</ion-item-divider>
-    <ion-item>Drink</ion-item>
-    <ion-item>Food</ion-item>
-    <ion-item>Others</ion-item>
+    <ion-item-divider color="light">{{dictionary?.settings?.defaultExpense}}</ion-item-divider>
+    <ion-item>
+      <ion-input type="text"
+                 placeholder="New expense"
+                 (blur)="checkNewEventName($event)"
+                 (keyup)="checkNewEventName($event)"
+                 [(ngModel)]="newEvent"
+                 required
+                 [attr.maxlength]="15">
+      </ion-input>
+      <button ion-button
+              icon-only
+              item-end
+              clear
+              (click)="addDefaultExpense()"
+              [disabled]="newEvent === undefined || newEvent === '' || newEventErrorDescription !== ''">
+            <ion-icon name="add-circle"></ion-icon>
+            </button>
+    </ion-item>
+    <ion-item *ngFor="let defaultExpense of defaultExpenses">
+      {{defaultExpense}}
+      <button ion-button
+              icon-only
+              item-end
+              clear
+              color="danger"
+              [disabled]="defaultExpenses.length < 1"
+              (click)="removeDefaultExpense(defaultExpense)">
+            <ion-icon name="trash"></ion-icon>
+      </button>
+    </ion-item>
   </ion-item-group>
 </ion-content>

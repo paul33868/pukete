@@ -65,10 +65,23 @@ export var esDictionary = {
         settings: "Ajustes"
     },
     settings: {
-        title: "Ayuda",
+        title: "Ajustes",
         language: "Idioma",
         english: "Inglés",
         spanish: "Español",
+        defaultExpense: 'Gastos por defecto',
+        popups: {
+            removeExpense: {
+                title: "Quitar gasto por defecto?",
+                noButton: "No",
+                yesButton: "Sí",
+            },
+        },
+        alredyExpenseError: 'Otro gasto ya tiene este nombre',
+        noNameExpenseError: 'Por favor introduzca un nombre',
+        defaultLabel1: 'Bebidas',
+        defaultLabel2: 'Comida',
+        defaultLabel3: 'Otros'
     },
     help: {
         title: "Ayuda",

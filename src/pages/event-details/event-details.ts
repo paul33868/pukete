@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Nav, Events, Platform, NavParams, AlertController } from "ionic-angular";
-import { IndexPage } from "../index/index";
 import { NativeStorage } from "@ionic-native/native-storage";
 import { enDictionary } from "../../utils/en-dictionary";
 import { esDictionary } from "../../utils/es-dictionary";
@@ -35,10 +34,10 @@ export class EventDetailsPage {
   }
 
   setDictionary() {
-    this.nativeStorage.getItem('language')
+    this.nativeStorage.getItem('settings')
       .then(
       data => {
-        this.setLanguage(data);
+        this.setLanguage(data.language);
       },
       error => { console.error(`Error getting the dictionary: ${error}`) });
   }

@@ -11,20 +11,17 @@ export class PuketeEvent {
     public resultsToShare: string;
     public results: string;
 
-    constructor(id: number, language: string) {
+    constructor(id: number, language: string, defaultExpenses: Array<string>) {
         this.id = id;
         this.persons = [];
+        defaultExpenses.forEach((expense, i) => {
+            this.expenses.push(new Expense(expense, (new Date().getTime() + i)));
+        });
         switch (language) {
             case 'en':
-                this.expenses.push(new Expense('Drinks', new Date().getTime()));
-                this.expenses.push(new Expense('Food', (new Date().getTime() + 1)));
-                this.expenses.push(new Expense('Others', (new Date().getTime() + 2)));
                 this.name = 'My new event';
                 break;
             case 'es':
-                this.expenses.push(new Expense('Comida', new Date().getTime()));
-                this.expenses.push(new Expense('Bebidas', new Date().getTime() + 1));
-                this.expenses.push(new Expense('Otros', new Date().getTime() + 2));
                 this.name = 'Mi nuevo evento';
                 break;
             default:

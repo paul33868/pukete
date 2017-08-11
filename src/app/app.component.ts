@@ -2,7 +2,6 @@ import { Component, ViewChild, OnDestroy } from '@angular/core';
 import { Platform, MenuController, Nav, Events } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { IndexPage } from "../pages/index/index";
 import { ListPage } from "../pages/list/list";
 import { NativeStorage } from "@ionic-native/native-storage";
 import { HelpPage } from "../pages/help/help";
@@ -20,6 +19,7 @@ export class PuketeApp implements OnDestroy {
   private pages: Array<{ title: string, component: any, icon: string }>;
   private isFirstTime: boolean = true;
   private dictionary: any;
+  private expenses: Array<string> = [];
 
   constructor(
     private platform: Platform,
@@ -37,9 +37,8 @@ export class PuketeApp implements OnDestroy {
       this.displayHelpPage();
     }
     else {
-      this.dictionary = enDictionary;
+      this.setDictionary('es');
       this.rootPage = ListPage;
-      this.setPages();
     }
     this.updateLanguage();
   }
@@ -57,18 +56,20 @@ export class PuketeApp implements OnDestroy {
 
   setLanguage() {
     // Set language
-    this.nativeStorage.getItem('language')
+    this.nativeStorage.getItem('settings')
       .then(
       data => {
-        this.setDictionary(data);
+        this.setDictionary(data.language);
         this.setPages();
       },
       error => {
-        this.nativeStorage.setItem('language', 'en')
+        // Set default labels for the 1 time. It's going to be in english.
+        this.expenses = ['Drinks', 'Food', 'Others'];
+        this.nativeStorage.setItem('settings', { language: 'en', defaultExpenses: this.expenses })
           .then(
           () => {
             console.info('Changed language');
-            this.dictionary = enDictionary
+            this.setDictionary('en');
             this.setPages();
           },
           (error) => { console.error(`Error storing event: ${JSON.stringify(error)}`) });

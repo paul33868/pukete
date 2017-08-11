@@ -15,6 +15,7 @@ export class ListPage {
   private items: Array<PuketeEvent> = [];
   private dictionary: any;
   private language: string;
+  private defaultExpenses: Array<string>;
 
   constructor(
     private navCtrl: NavController,
@@ -31,14 +32,16 @@ export class ListPage {
     }
     else {
       this.setLanguage('es');
+      this.defaultExpenses = [this.dictionary.settings.defaultLabel1, this.dictionary.settings.defaultLabel2, this.dictionary.settings.defaultLabel3];
     }
   }
 
   setDictionary() {
-    this.nativeStorage.getItem('language')
+    this.nativeStorage.getItem('settings')
       .then(
       data => {
-        this.setLanguage(data);
+        this.setLanguage(data.language);
+        this.defaultExpenses = data.defaultExpenses;
       },
       error => { console.error(`Error getting the dictionary: ${error}`) });
   }
@@ -61,7 +64,7 @@ export class ListPage {
       .then(
       data => {
         data.forEach((event, i) => {
-          if (event !== 'language') {
+          if (event !== 'settings' && event !== 'language') {
             this.items = [];
             this.nativeStorage.getItem(data[i])
               .then(
@@ -89,7 +92,7 @@ export class ListPage {
   }
 
   addEvent() {
-    let event = new PuketeEvent(new Date().getTime(), this.language);
+    let event = new PuketeEvent(new Date().getTime(), this.language, this.defaultExpenses);
     console.info(`New event created`);
     if (this.platform.is('cordova')) {
       this.nativeStorage.setItem(event.id.toString(), event)

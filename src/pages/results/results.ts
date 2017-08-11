@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Nav, Events, Platform, NavParams } from "ionic-angular";
-import { IndexPage } from "../index/index";
 import { NativeStorage } from "@ionic-native/native-storage";
 import { enDictionary } from "../../utils/en-dictionary";
 import { esDictionary } from "../../utils/es-dictionary";
@@ -15,8 +14,7 @@ export class ResultsPage {
   private dictionary: any;
   private language: string;
   private event: PuketeEvent;
-  private resultsToShare: string;
-  private no
+  private resultsToShare: string = '';
 
   constructor(
     private nav: Nav,
@@ -43,10 +41,10 @@ export class ResultsPage {
   }
 
   setDictionary() {
-    this.nativeStorage.getItem('language')
+    this.nativeStorage.getItem('settings')
       .then(
       data => {
-        this.setLanguage(data);
+        this.setLanguage(data.language);
       },
       error => { console.error(`Error getting the dictionary: ${error}`) });
   }

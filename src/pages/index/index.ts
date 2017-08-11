@@ -1,4 +1,4 @@
-import { Component, ViewChildren } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavParams, AlertController, Platform, NavController } from "ionic-angular";
 import { NativeStorage } from '@ionic-native/native-storage';
 import { PuketeEvent } from "../../model/event";
@@ -6,7 +6,6 @@ import { Person } from "../../model/person";
 import { enDictionary } from "../../utils/en-dictionary";
 import { esDictionary } from "../../utils/es-dictionary";
 import { ResultsPage } from "../results/results";
-import { Expense } from "../../model/expense";
 import { EventDetailsPage } from "../event-details/event-details";
 
 @Component({
@@ -15,7 +14,6 @@ import { EventDetailsPage } from "../event-details/event-details";
 })
 
 export class IndexPage {
-  private errorsOnTheEventsName: boolean = false;
   private event: PuketeEvent;
   private results: string;
   private dictionary: any;
@@ -38,10 +36,10 @@ export class IndexPage {
   }
 
   setDictionary() {
-    this.nativeStorage.getItem('language')
+    this.nativeStorage.getItem('settings')
       .then(
       data => {
-        this.setLanguage(data);
+        this.setLanguage(data.language);
       },
       error => { console.error(`Error getting the dictionary: ${error}`) });
   }

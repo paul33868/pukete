@@ -69,7 +69,20 @@ export var enDictionary = {
         title: "Settings",
         language: "Language",
         english: "English",
-        spanish: "Spanish"
+        spanish: "Spanish",
+        defaultExpense: 'Default expenses',
+        popups: {
+            removeExpense: {
+                title: "Remove default expense?",
+                noButton: "No",
+                yesButton: "Yes",
+            },
+        },
+        alredyExpenseError: 'There is already an expense with that name',
+        noNameExpenseError: 'Please add a name for the expense',
+        defaultLabel1: 'Drinks',
+        defaultLabel2: 'Food',
+        defaultLabel3: 'Others'
     },
     help: {
         title: "Help",

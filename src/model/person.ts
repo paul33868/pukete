@@ -1,4 +1,4 @@
-import { PuketeEvent } from "./event";
+
 import { Expense } from "./expense";
 
 export class Person {
