@@ -22,13 +22,12 @@
   </ion-item-group>
   <ion-item-group>
     <ion-item-divider color="light">{{dictionary?.settings?.defaultExpense}}</ion-item-divider>
-    <ion-item>
+    <ion-item class="event-name-input">
       <ion-input type="text"
                  placeholder="New expense"
                  (blur)="checkNewEventName($event)"
                  (keyup)="checkNewEventName($event)"
                  [(ngModel)]="newEvent"
-                 required
                  [attr.maxlength]="15">
       </ion-input>
       <button ion-button
@@ -40,6 +39,8 @@
             <ion-icon name="add-circle"></ion-icon>
             </button>
     </ion-item>
+    <span class="error-message"
+          *ngIf="newEventErrorDescription !== ''">{{newEventErrorDescription}}</span>
     <ion-item *ngFor="let defaultExpense of defaultExpenses">
       {{defaultExpense}}
       <button ion-button
@@ -51,6 +52,26 @@
               (click)="removeDefaultExpense(defaultExpense)">
             <ion-icon name="trash"></ion-icon>
       </button>
+    </ion-item>
+  </ion-item-group>
+  <ion-item-group>
+    <ion-item-divider color="light">{{dictionary?.settings?.currencySymbol}}</ion-item-divider>
+    <ion-item>
+      <ion-label>{{dictionary?.settings?.language}}</ion-label>
+      <ion-select [(ngModel)]="defaultCurrencySymbol"
+                  (ionChange)="selectedCurrency($event)">
+        <ion-option value="$">{{dictionary?.settings?.currencies.default}}</ion-option>
+        <ion-option value="€">{{dictionary?.settings?.currencies.euro}}</ion-option>
+        <ion-option value="£">{{dictionary?.settings?.currencies.pound}}</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-item-group>
+  <ion-item-group>
+    <ion-item-divider color="light">{{dictionary?.settings?.contact}}</ion-item-divider>
+    <ion-item (click)="sendEmail()">
+      {{dictionary?.settings?.contactText}}
+      <ion-icon name="mail"
+                item-end></ion-icon>
     </ion-item>
   </ion-item-group>
 </ion-content>

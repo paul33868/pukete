@@ -11,6 +11,7 @@ import { esDictionary } from "../../utils/es-dictionary";
 export class SettingsPage {
   private dictionary: any;
   private language: string;
+  private defaultCurrencySymbol: string = '$';
   private defaultExpenses: Array<string> = [];
   private newEvent: string = '';
   private newEventErrorDescription: string = '';
@@ -27,6 +28,7 @@ export class SettingsPage {
     else {
       this.setLanguage('es');
       this.defaultExpenses = [this.dictionary.settings.defaultLabel1, this.dictionary.settings.defaultLabel2, this.dictionary.settings.defaultLabel3];
+      this.defaultCurrencySymbol = '$';
     }
   }
 
@@ -36,6 +38,7 @@ export class SettingsPage {
       data => {
         this.setLanguage(data.language);
         this.defaultExpenses = data.defaultExpenses;
+        this.defaultCurrencySymbol = data.defaultCurrencySymbol;
       },
       error => { console.error(`Error getting the dictionary: ${error}`) });
   }
@@ -45,7 +48,11 @@ export class SettingsPage {
     let expenses: Array<string> = [];
     this.setLanguage(selectedLanguage);
     expenses = [this.dictionary.settings.defaultLabel1, this.dictionary.settings.defaultLabel2, this.dictionary.settings.defaultLabel3];
-    this.save(selectedLanguage, expenses);
+    this.save(selectedLanguage, expenses, this.defaultCurrencySymbol);
+  }
+
+  selectedCurrency(selectedCurrency: string) {
+    this.save(this.language, this.defaultExpenses, selectedCurrency);
   }
 
   setLanguage(data) {
@@ -78,7 +85,7 @@ export class SettingsPage {
               }
             });
             console.info('Removed default expense: ' + event);
-            this.save(this.language, this.defaultExpenses);
+            this.save(this.language, this.defaultExpenses, this.defaultCurrencySymbol);
           }
         }
       ]
@@ -86,9 +93,9 @@ export class SettingsPage {
     alert.present();
   }
 
-  save(selectedLanguage?: string, expenses?: Array<string>) {
+  save(selectedLanguage?: string, expenses?: Array<string>, defaultCurrencySymbol?: string) {
     if (this.platform.is('cordova')) {
-      this.nativeStorage.setItem('settings', { language: selectedLanguage, defaultExpenses: expenses })
+      this.nativeStorage.setItem('settings', { language: selectedLanguage, defaultExpenses: expenses, defaultCurrencySymbol: this.defaultCurrencySymbol })
         .then(
         () => {
           console.info('Changed language');
@@ -117,8 +124,14 @@ export class SettingsPage {
 
   addDefaultExpense() {
     this.defaultExpenses.push(this.newEvent);
+    this.newEvent = '';
+    this.newEventErrorDescription = '';
     if (this.platform.is('cordova')) {
-      this.save(this.language, this.defaultExpenses);
+      this.save(this.language, this.defaultExpenses, this.defaultCurrencySymbol);
     }
+  }
+
+  sendEmail() {
+    window.open(`mailto:${'gil.a.pablo@gmail.com'}`, '_system');
   }
 }

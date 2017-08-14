@@ -21,6 +21,11 @@ export var esDictionary = {
                 title: '¿Quitar persona?',
                 noButton: 'No',
                 yesButton: 'Sí',
+            },
+            addAmountToExpense: {
+                title: 'Agregar dinero al gasto',
+                noButton: 'Cancelar',
+                yesButton: 'Guardar',
             }
         }
     },
@@ -70,9 +75,17 @@ export var esDictionary = {
         english: "Inglés",
         spanish: "Español",
         defaultExpense: 'Gastos por defecto',
+        contact: 'Contacto',
+        currencySymbol: 'Símbolo de moneda por defecto',
+        currencies: {
+            default: 'Por defecto ($)',
+            euro: 'Euro (€)',
+            pound: 'Libra (£)'
+        },
+        contactText: '¿Alguna duda o error que reportar?',
         popups: {
             removeExpense: {
-                title: "Quitar gasto por defecto?",
+                title: "¿Quitar gasto por defecto?",
                 noButton: "No",
                 yesButton: "Sí",
             },

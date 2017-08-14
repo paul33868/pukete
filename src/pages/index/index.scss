@@ -10,7 +10,7 @@ index-page {
     .checkbox-container{
         display: table-cell;
         div {
-                display: flex;
+            display: flex;
         }
     }
     .calculate-button{
@@ -18,10 +18,21 @@ index-page {
     }
     .persons-input{
         padding-left: 0px;
+        span{
+            margin-right: 0px !important;
+        }
+        input{
+            margin-left: 2px !important;
+            margin-right: 0px !important;
+        }
     }
     .bottom-description{
         position: absolute;
         bottom: 10px;
+        font-size: smaller;
+    }
+    .add-expense-button{
+        margin-right: 0px !important;
     }
 }
 

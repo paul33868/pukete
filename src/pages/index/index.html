@@ -34,66 +34,79 @@
   </ion-item>
   <span class="error-event-message"
         *ngIf="this.event.name.length <= 0">{{dictionary?.index?.noNameEventError}}</span>
-  <ion-card *ngFor="let person of event?.persons">
-    <ion-card-content>
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            <ion-item class="persons-input">
-              <ion-input type="text"
-                         placeholder="{{dictionary?.index?.inputs?.person}}"
-                         [(ngModel)]="person.name"
-                         (blur)="checkEvent(person)"
-                         (keyup)="checkEvent(person)"
-                         autofocus
-                         required
-                         [attr.maxlength]="10">
-              </ion-input>
-              <button ion-button
-                      icon-only
-                      item-end
-                      clear
-                      color="danger"
-                      *ngIf="person?.name"
-                      (click)="removePerson(person)">
+  <img src="assets/sampleLogoEvent.jpg"
+       *ngIf="event.persons.length == 0" />
+  <div *ngIf="event.persons.length > 0">
+    <ion-card *ngFor="let person of event?.persons">
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-item class="persons-input">
+                <ion-input type="text"
+                           placeholder="{{dictionary?.index?.inputs?.person}}"
+                           [(ngModel)]="person.name"
+                           (blur)="checkEvent(person)"
+                           (keyup)="checkEvent(person)"
+                           autofocus
+                           required
+                           [attr.maxlength]="10">
+                </ion-input>
+                <button ion-button
+                        icon-only
+                        item-end
+                        clear
+                        color="danger"
+                        *ngIf="person?.name"
+                        (click)="removePerson(person)">
             <ion-icon name="trash"></ion-icon>
             </button>
-            </ion-item>
-          </ion-col>
-          <ion-col col-4
-                   *ngIf="person?.name">
-            <span class="bottom-description">{{dictionary?.index?.alreadyPaid}}</span>
-          </ion-col>
-        </ion-row>
-        <ion-row *ngFor="let personExpense of person?.expenses">
-          <ion-col col-4>
-            <ion-item class="persons-input">
-              <span item-start>$</span>
-              <ion-input type="number"
-                         [(ngModel)]="personExpense.amount"
-                         min="0"
-                         (blur)="checkEvent(person)"
-                         (keyup)="checkEvent(person)"
-                         required
-                         [attr.maxlength]="5">
-              </ion-input>
-            </ion-item>
-          </ion-col>
-          <ion-col col-6>
-            <span class="bottom-description">{{dictionary?.index?.for}} <strong>{{personExpense?.expense?.name}}</strong> {{dictionary?.index?.and}}
+              </ion-item>
+            </ion-col>
+            <ion-col col-4
+                     *ngIf="person?.name">
+              <span class="bottom-description">{{dictionary?.index?.alreadyPaid}}</span>
+            </ion-col>
+          </ion-row>
+          <ion-row *ngFor="let personExpense of person?.expenses">
+            <ion-col col-5>
+              <ion-item class="persons-input">
+                <span item-start>{{defaultCurrency}}</span>
+                <ion-input type="number"
+                           [(ngModel)]="personExpense.amount"
+                           min="0"
+                           (blur)="checkEvent(person)"
+                           (keyup)="checkEvent(person)"
+                           [attr.maxlength]="5"
+                           placeholder="__.__">
+                </ion-input>
+                <button ion-button
+                        icon-only
+                        item-end
+                        clear
+                        class="add-expense-button"
+                        *ngIf="personExpense.amount > 0"
+                        (click)="addAmountToExpense(person, personExpense.expense.id)">
+            <ion-icon name="add-circle"></ion-icon>
+            </button>
+              </ion-item>
+            </ion-col>
+            <ion-col col-5>
+              <span class="bottom-description">{{dictionary?.index?.for}} <strong>{{personExpense?.expense?.name}}</strong> {{dictionary?.index?.and}}
               <strong *ngIf="personExpense.isIn">{{dictionary?.index?.ItIs}}</strong>
             <strong *ngIf="!personExpense.isIn">{{dictionary?.index?.ItIsNot}}</strong>{{dictionary?.index?.counted}}
             </span>
-          </ion-col>
-          <ion-col col-2>
-            <ion-toggle checked="personExpense.isIn"
-                        [(ngModel)]="personExpense.isIn"></ion-toggle>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-      <span class="error-message">{{person.error}}</span>
-    </ion-card-content>
-  </ion-card>
+            </ion-col>
+            <ion-col col-2>
+              <ion-toggle checked="personExpense.isIn"
+                          [(ngModel)]="personExpense.isIn"></ion-toggle>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <span class="error-message">{{person.error}}</span>
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>
 
 <ion-footer>

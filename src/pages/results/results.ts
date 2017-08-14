@@ -5,6 +5,7 @@ import { enDictionary } from "../../utils/en-dictionary";
 import { esDictionary } from "../../utils/es-dictionary";
 import { PuketeEvent } from "../../model/event";
 import { SocialSharing } from "@ionic-native/social-sharing";
+import { Person } from "../../model/person";
 
 @Component({
   selector: 'results-page',
@@ -15,6 +16,9 @@ export class ResultsPage {
   private language: string;
   private event: PuketeEvent;
   private resultsToShare: string = '';
+  private iconToShow: string = 'arrow-dropright-circle';
+  private personIDToDisplay: number;
+  private defaultCurrency: string;
 
   constructor(
     private nav: Nav,
@@ -29,7 +33,13 @@ export class ResultsPage {
     }
     else {
       this.setLanguage('es');
+      this.defaultCurrency = '$';
     }
+  }
+
+  showHideExpenseDetails(person: Person) {
+    this.personIDToDisplay = person.id;
+    person.arrowToDisplayed = person.arrowToDisplayed === 'arrow-dropup-circle' ? 'arrow-dropdown-circle' : 'arrow-dropup-circle';
   }
 
   checkNoCunsumption() {
@@ -45,6 +55,7 @@ export class ResultsPage {
       .then(
       data => {
         this.setLanguage(data.language);
+        this.defaultCurrency = data.defaultCurrencySymbol;
       },
       error => { console.error(`Error getting the dictionary: ${error}`) });
   }

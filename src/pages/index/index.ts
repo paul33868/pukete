@@ -19,6 +19,7 @@ export class IndexPage {
   private dictionary: any;
   private language: string;
   private errorsOnTheEvent: boolean = true;
+  private defaultCurrency: string;
 
   constructor(
     private alertCtrl: AlertController,
@@ -32,6 +33,7 @@ export class IndexPage {
     }
     else {
       this.setLanguage('es');
+      this.defaultCurrency = '$';
     }
   }
 
@@ -40,6 +42,7 @@ export class IndexPage {
       .then(
       data => {
         this.setLanguage(data.language);
+        this.defaultCurrency = data.defaultCurrencySymbol;
       },
       error => { console.error(`Error getting the dictionary: ${error}`) });
   }
@@ -62,13 +65,12 @@ export class IndexPage {
     let newPerson: Person = new Person(new Date().getTime());
     this.event.expenses.forEach(eventExpense => {
       newPerson.expenses.push({
-        amount: 0,
         expense: eventExpense,
         isIn: true
       });
       eventExpense.persons += 1;
     });
-    this.event.persons.push(newPerson);
+    this.event.persons.unshift(newPerson);
     if (this.platform.is('cordova')) {
       this.save();
     }
@@ -115,6 +117,9 @@ export class IndexPage {
         person.balance = 0;
         person.totalSpent = 0;
         person.expenses.forEach(personExpense => {
+          if (personExpense.amount === undefined || personExpense.amount.toString() === '') {
+            personExpense.amount = 0;
+          }
           if (expense.id === personExpense.expense.id) {
             // Add to the money to the event
             expense.total += +personExpense.amount;
@@ -161,7 +166,7 @@ export class IndexPage {
     this.event.persons.forEach(person => {
       person.error = '';
       person.expenses.forEach(personExpense => {
-        if (personExpense.amount === undefined || personExpense.amount.toString() === '' || personExpense.amount < 0) {
+        if (personExpense.amount < 0) {
           person.error = this.dictionary.index.validAmountError;
           this.errorsOnTheEvent = true;
         }
@@ -197,5 +202,38 @@ export class IndexPage {
     this.navCtrl.push(EventDetailsPage, {
       selectedEvent: this.event
     });
+  }
+
+  addAmountToExpense(person: Person, expenseID: number) {
+    let addAmountToExpenseAlert = this.alertCtrl.create({
+      title: this.dictionary.index.popups.addAmountToExpense.title,
+      inputs: [
+        {
+          name: 'extraAmount',
+          placeholder: '__.__',
+          type: 'number'
+        },
+      ],
+      buttons: [
+        {
+          text: this.dictionary.index.popups.addAmountToExpense.noButton,
+          handler: data => {
+            console.info('Cancel adding extra amount to the expense');
+          }
+        },
+        {
+          text: this.dictionary.index.popups.addAmountToExpense.yesButton,
+          handler: data => {
+            person.expenses.forEach(personExpense => {
+              if (personExpense.expense.id === expenseID) {
+                personExpense.amount = +personExpense.amount + +data.extraAmount;
+              }
+              this.checkEvent();
+            });
+          }
+        }
+      ]
+    });
+    addAmountToExpenseAlert.present();
   }
 }

@@ -103,6 +103,8 @@ export class EventDetailsPage {
   addExpense() {
     let newExpense: Expense = new Expense(this.newEvent, new Date().getTime());
     this.event.expenses.push(newExpense);
+    this.newEvent = '';
+    this.newEventErrorDescription = '';
     this.event.persons.forEach((personInEvent, i) => {
       personInEvent.expenses.push({
         amount: 0,

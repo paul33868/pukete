@@ -21,6 +21,11 @@ export var enDictionary = {
                 title: 'Remove person?',
                 noButton: 'No',
                 yesButton: 'Yes',
+            },
+            addAmountToExpense: {
+                title: 'Add money to expense',
+                noButton: 'Cancel',
+                yesButton: 'Save',
             }
         }
     },
@@ -56,7 +61,7 @@ export var enDictionary = {
                 title: "Remove event?",
                 noButton: "No",
                 yesButton: "Yes",
-            },
+            }
         }
     },
     menu: {
@@ -71,6 +76,14 @@ export var enDictionary = {
         english: "English",
         spanish: "Spanish",
         defaultExpense: 'Default expenses',
+        contact: 'Contact',
+        contactText: 'Any doubts or bugs to report?',
+        currencySymbol: 'Default currency symbol',
+        currencies: {
+            default: 'Default ($)',
+            euro: 'Euro (€)',
+            pound: 'Pound (£)'
+        },
         popups: {
             removeExpense: {
                 title: "Remove default expense?",

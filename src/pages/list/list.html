@@ -18,7 +18,9 @@
 <ion-content>
   <ion-searchbar (ionInput)="getEvents($event)"
                  placeholder="{{dictionary?.list?.inputs?.search}}"></ion-searchbar>
-  <ion-list>
+  <img src="assets/sampleLogoEvent.jpg"
+       *ngIf="events.length == 0" />
+  <ion-list *ngIf="events.length > 0">
     <ion-item *ngFor="let puketeEvent of events">
       <h2 (click)="goToPage(puketeEvent)">{{ puketeEvent.name }}</h2>
       <p (click)="goToPage(puketeEvent)">{{dictionary?.list?.created}}: {{ puketeEvent.creationDate }}</p>
