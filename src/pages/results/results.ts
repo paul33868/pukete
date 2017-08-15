@@ -16,7 +16,7 @@ export class ResultsPage {
   private language: string;
   private event: PuketeEvent;
   private resultsToShare: string = '';
-  private iconToShow: string = 'arrow-dropright-circle';
+  private iconToShow: string;
   private personIDToDisplay: number;
   private defaultCurrency: string;
 
@@ -28,6 +28,7 @@ export class ResultsPage {
     private platform: Platform,
     private socialSharing: SocialSharing) {
     this.event = this.navParams.get('selectedEvent');
+    this.iconToShow = 'arrow-dropright-circle';
     if (this.platform.is('cordova')) {
       this.setDictionary();
     }
@@ -78,15 +79,15 @@ export class ResultsPage {
       this.event.persons.forEach(person => {
         this.resultsToShare += `${person.name} ${(person.balance >= 0) ?
           this.dictionary.results.gets :
-          this.dictionary.results.gives}: $${Math.abs(person.balance).toFixed(2)} (${this.dictionary.results.spentInTotal}: $${(Math.abs(+person.totalSpent)).toFixed(2)})\n`;
+          this.dictionary.results.gives}: ${this.defaultCurrency}${Math.abs(person.balance).toFixed(2)} (${this.dictionary.results.spentInTotal}: ${this.defaultCurrency}${(Math.abs(+person.totalSpent)).toFixed(2)})\n`;
       });
 
       let options = {
-        message: `${this.dictionary.results.totalFor} ${this.event.name}: $${this.event.total.toFixed(2)} \n` + this.resultsToShare,
-        subject: `${this.dictionary.results.totalFor} ${this.event.name}: $${this.event.total.toFixed(2)}`,
+        message: `${this.dictionary.results.totalFor} ${this.event.name}: ${this.defaultCurrency}${this.event.total.toFixed(2)} \n` + this.resultsToShare,
+        subject: `${this.dictionary.results.totalFor} ${this.event.name}: ${this.defaultCurrency}${this.event.total.toFixed(2)}`,
         files: null,
         url: null,
-        chooserTitle: `${this.dictionary.results.totalFor} ${this.event.name}: $${this.event.total.toFixed(2)}`,
+        chooserTitle: `${this.dictionary.results.totalFor} ${this.event.name}: ${this.defaultCurrency}${this.event.total.toFixed(2)}`,
       }
 
       this.socialSharing.shareWithOptions(options)

@@ -10,7 +10,7 @@
 
 <ion-content>
   <ion-item-group>
-    <ion-item-divider color="light">{{dictionary?.settings?.language}}</ion-item-divider>
+    <ion-item-divider color="light">{{dictionary?.settings?.languageSettings}}</ion-item-divider>
     <ion-item>
       <ion-label>{{dictionary?.settings?.language}}</ion-label>
       <ion-select [(ngModel)]="language"
@@ -55,14 +55,14 @@
     </ion-item>
   </ion-item-group>
   <ion-item-group>
-    <ion-item-divider color="light">{{dictionary?.settings?.currencySymbol}}</ion-item-divider>
+    <ion-item-divider color="light">{{dictionary?.settings?.currencySettings}}</ion-item-divider>
     <ion-item>
-      <ion-label>{{dictionary?.settings?.language}}</ion-label>
+      <ion-label>{{dictionary?.settings?.currencySymbol}}</ion-label>
       <ion-select [(ngModel)]="defaultCurrencySymbol"
                   (ionChange)="selectedCurrency($event)">
-        <ion-option value="$">{{dictionary?.settings?.currencies.default}}</ion-option>
-        <ion-option value="€">{{dictionary?.settings?.currencies.euro}}</ion-option>
-        <ion-option value="£">{{dictionary?.settings?.currencies.pound}}</ion-option>
+        <ion-option value="$">{{dictionary?.settings?.currencies?.default}}</ion-option>
+        <ion-option value="€">{{dictionary?.settings?.currencies?.euro}}</ion-option>
+        <ion-option value="£">{{dictionary?.settings?.currencies?.pound}}</ion-option>
       </ion-select>
     </ion-item>
   </ion-item-group>

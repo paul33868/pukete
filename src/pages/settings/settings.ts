@@ -11,7 +11,7 @@ import { esDictionary } from "../../utils/es-dictionary";
 export class SettingsPage {
   private dictionary: any;
   private language: string;
-  private defaultCurrencySymbol: string = '$';
+  private defaultCurrencySymbol: string;
   private defaultExpenses: Array<string> = [];
   private newEvent: string = '';
   private newEventErrorDescription: string = '';

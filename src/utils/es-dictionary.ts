@@ -71,16 +71,18 @@ export var esDictionary = {
     },
     settings: {
         title: "Ajustes",
-        language: "Idioma",
+        language: "Idioma de la app",
+        languageSettings: "Idioma",
         english: "Inglés",
         spanish: "Español",
         defaultExpense: 'Gastos por defecto',
         contact: 'Contacto',
-        currencySymbol: 'Símbolo de moneda por defecto',
+        currencySettings: 'Moneda',
+        currencySymbol: 'Símbolo de moneda',
         currencies: {
-            default: 'Por defecto ($)',
-            euro: 'Euro (€)',
-            pound: 'Libra (£)'
+            default: '$',
+            euro: '€',
+            pound: '£'
         },
         contactText: '¿Alguna duda o error que reportar?',
         popups: {
@@ -109,7 +111,7 @@ export var esDictionary = {
         and: " y",
         gets: "recibe ",
         gives: "da ",
-        isEven: "sale derecho",
+        isEven: "está saldado/a",
         paid: " pagó ",
         for: " por ",
         counted: "fue contado/a",

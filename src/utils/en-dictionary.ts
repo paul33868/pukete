@@ -73,16 +73,18 @@ export var enDictionary = {
     settings: {
         title: "Settings",
         language: "Language",
+        languageSettings: "App language",
         english: "English",
         spanish: "Spanish",
         defaultExpense: 'Default expenses',
         contact: 'Contact',
         contactText: 'Any doubts or bugs to report?',
-        currencySymbol: 'Default currency symbol',
+        currencySettings: 'Currency',
+        currencySymbol: 'Currency symbol',
         currencies: {
-            default: 'Default ($)',
-            euro: 'Euro (€)',
-            pound: 'Pound (£)'
+            default: '$',
+            euro: '€',
+            pound: '£'
         },
         popups: {
             removeExpense: {

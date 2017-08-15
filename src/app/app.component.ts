@@ -65,7 +65,7 @@ export class PuketeApp implements OnDestroy {
       error => {
         // Set default labels for the 1 time. It's going to be in english.
         this.expenses = ['Drinks', 'Food', 'Others'];
-        this.nativeStorage.setItem('settings', { language: 'en', defaultExpenses: this.expenses })
+        this.nativeStorage.setItem('settings', { language: 'en', defaultExpenses: this.expenses, defaultCurrencySymbol: '$' })
           .then(
           () => {
             console.info('Changed language');

@@ -29,8 +29,9 @@
               (click)="showHideExpenseDetails(person)">
       <h2><strong>{{person.name}} </strong>{{dictionary?.results?.spentInTotal}}<strong>{{defaultCurrency}}{{person.totalSpent | number:'1.2-2'}}</strong>{{dictionary?.results?.and}}</h2>
       <h1 [ngClass]="{'person-gets': person.balance > 0, 'person-gives': person.balance < 0, 'person-equal': person.balance == 0}">
-        <span *ngIf="person.balance >= 0">{{dictionary?.results?.gets}} {{defaultCurrency}}{{person.balance | number:'1.2-2'}}</span>
+        <span *ngIf="person.balance > 0">{{dictionary?.results?.gets}} {{defaultCurrency}}{{person.balance | number:'1.2-2'}}</span>
         <span *ngIf="person.balance < 0">{{dictionary?.results?.gives}} {{defaultCurrency}}{{-person.balance | number:'1.2-2'}}</span>
+        <span *ngIf="person.balance == 0">{{dictionary?.results?.isEven}}</span>
       </h1>
       <div *ngIf="personIDToDisplay === person.id && person.arrowToDisplayed === 'arrow-dropup-circle'">
         <p class="payment-details"
