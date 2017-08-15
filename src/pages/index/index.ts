@@ -28,6 +28,10 @@ export class IndexPage {
     private platform: Platform,
     private navCtrl: NavController) {
     this.event = this.navParams.get('event');
+    // If there's no person on the event, we add one by default
+    if (this.event.persons.length === 0) {
+      this.addPerson();
+    }
     if (this.platform.is('cordova')) {
       this.setDictionary();
     }

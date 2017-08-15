@@ -34,8 +34,6 @@
   </ion-item>
   <span class="error-event-message"
         *ngIf="this.event.name.length <= 0">{{dictionary?.index?.noNameEventError}}</span>
-  <img src="assets/sampleLogoEvent.jpg"
-       *ngIf="event.persons.length == 0" />
   <div *ngIf="event.persons.length > 0">
     <ion-card *ngFor="let person of event?.persons">
       <ion-card-content>
