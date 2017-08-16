@@ -16,6 +16,14 @@
 </ion-header>
 
 <ion-content>
+  <button class="btn btn-info"
+          (click)="hideShowAnimation()">
+					Click me!
+				</button>
+  <div class="hideShow text-center"
+       [@hideShowAnimator]="hideShowAnimator">
+    I am out to fade In and Fade Out.
+  </div>
   <ion-item>
     <ion-input type="text"
                placeholder="{{dictionary?.index?.inputs?.event}}"

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { NavParams, AlertController, Platform, NavController } from "ionic-angular";
 import { NativeStorage } from '@ionic-native/native-storage';
 import { PuketeEvent } from "../../model/event";
@@ -7,10 +7,19 @@ import { enDictionary } from "../../utils/en-dictionary";
 import { esDictionary } from "../../utils/es-dictionary";
 import { ResultsPage } from "../results/results";
 import { EventDetailsPage } from "../event-details/event-details";
+import { trigger, state, style, animate, transition } from "@angular/animations";
 
 @Component({
   selector: 'index-page',
-  templateUrl: 'index.html'
+  templateUrl: 'index.html',
+  animations: [
+    trigger('hideShowAnimator', [
+      state('true', style({ opacity: 1 })),
+      state('false', style({ opacity: 0 })),
+      transition('0 => 1', animate('.5s')),
+      transition('1 => 0', animate('.9s'))
+    ])
+  ]
 })
 
 export class IndexPage {
@@ -20,6 +29,8 @@ export class IndexPage {
   private language: string;
   private errorsOnTheEvent: boolean = true;
   private defaultCurrency: string;
+  hideShowAnimator: boolean = true;
+
 
   constructor(
     private alertCtrl: AlertController,
@@ -39,6 +50,10 @@ export class IndexPage {
       this.setLanguage('es');
       this.defaultCurrency = '$';
     }
+  }
+
+  hideShowAnimation() {
+    this.hideShowAnimator = !this.hideShowAnimator;
   }
 
   setDictionary() {

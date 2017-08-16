@@ -13,6 +13,7 @@ import { TextMaskModule } from 'angular2-text-mask';
 import { SettingsPage } from "../pages/settings/settings";
 import { ResultsPage } from "../pages/results/results";
 import { EventDetailsPage } from "../pages/event-details/event-details";
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { EventDetailsPage } from "../pages/event-details/event-details";
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     IonicModule.forRoot(PuketeApp),
     TextMaskModule
   ],
