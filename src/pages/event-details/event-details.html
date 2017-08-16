@@ -15,7 +15,7 @@
       <ion-item class="expense-input">
         <ion-input type="text"
                    placeholder="{{dictionary?.eventDetails?.newExpensePlaceholder}}"
-                   (blur)="checkNewEventName($event)"
+                   (ionBlur)="checkNewEventName($event)"
                    (keyup)="checkNewEventName($event)"
                    [(ngModel)]="newEvent"
                    [attr.maxlength]="15">
@@ -37,7 +37,7 @@
         <ion-input type="text"
                    placeholder="{{dictionary?.eventDetails?.expensePlaceholder}}"
                    [(ngModel)]="expense.name"
-                   (blur)="editEventExpenseName(expense, $event)"
+                   (ionBlur)="editEventExpenseName(expense, $event)"
                    (keyup)="editEventExpenseName(expense, $event)"
                    required
                    [attr.maxlength]="15">

@@ -25,7 +25,7 @@
     <ion-item class="event-name-input">
       <ion-input type="text"
                  placeholder="New expense"
-                 (blur)="checkNewEventName($event)"
+                 (ionBlur)="checkNewEventName($event)"
                  (keyup)="checkNewEventName($event)"
                  [(ngModel)]="newEvent"
                  [attr.maxlength]="15">

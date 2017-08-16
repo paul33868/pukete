@@ -20,7 +20,7 @@
     <ion-input type="text"
                placeholder="{{dictionary?.index?.inputs?.event}}"
                [(ngModel)]="event.name"
-               (blur)="checkEvent()"
+               (ionBlur)="checkEvent()"
                (keyup)="checkEvent()"
                [attr.maxlength]="15">
     </ion-input>
@@ -44,7 +44,7 @@
                 <ion-input type="text"
                            placeholder="{{dictionary?.index?.inputs?.person}}"
                            [(ngModel)]="person.name"
-                           (blur)="checkEvent(person)"
+                           (ionBlur)="checkEvent(person)"
                            (keyup)="checkEvent(person)"
                            autofocus
                            required
@@ -73,7 +73,7 @@
                 <ion-input type="number"
                            [(ngModel)]="personExpense.amount"
                            min="0"
-                           (blur)="checkEvent(person)"
+                           (ionBlur)="checkEvent(person)"
                            (keyup)="checkEvent(person)"
                            [attr.maxlength]="5"
                            placeholder="__.__">
