@@ -14,7 +14,7 @@ index-page {
         }
     }
     .calculate-button{
-        margin: 0px;
+        margin-bottom: 0px;
     }
     .persons-input{
         padding-left: 0px;
@@ -34,8 +34,20 @@ index-page {
     .add-expense-button{
         margin-right: 0px !important;
     }
-    .person-col{
+    .inputs-col{
         position: initial !important;
+    }
+    .footer-md::before, .tabs-md[tabsPlacement="bottom"] > .tabbar::before {
+        height: 0px !important;
+    }
+    ion-footer{
+        text-align: center;
+    }
+
+    .event-name{
+        padding-left: 0 !important;
+        margin-left: 10px !important;
+        max-width: 95%;
     }
 }
 

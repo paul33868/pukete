@@ -1,4 +1,7 @@
 results-page {
+    h1{
+        white-space: normal;
+    }
     .person-gets{
         color: #32db64;
     }
@@ -9,7 +12,7 @@ results-page {
         color: lightgray;
     }
     .payment-details{
-        font-size: x-small;
+        font-size: smaller;
     }
     .event-total{
         color: #488aff

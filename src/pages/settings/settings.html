@@ -28,7 +28,7 @@
                  (ionBlur)="checkNewEventName($event)"
                  (keyup)="checkNewEventName($event)"
                  [(ngModel)]="newEvent"
-                 [attr.maxlength]="15">
+                 (keyup.enter)="addDefaultExpense()">
       </ion-input>
       <button ion-button
               icon-only
@@ -41,7 +41,8 @@
     </ion-item>
     <span class="error-message"
           *ngIf="newEventErrorDescription !== ''">{{newEventErrorDescription}}</span>
-    <ion-item *ngFor="let defaultExpense of defaultExpenses">
+    <ion-item *ngFor="let defaultExpense of defaultExpenses"
+              [@eventItemAnimation]>
       {{defaultExpense}}
       <button ion-button
               icon-only

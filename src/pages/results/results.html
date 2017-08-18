@@ -18,7 +18,7 @@
 <ion-content>
   <ion-list>
     <ion-item>
-      <h2 class="event-total">{{dictionary?.results?.totalFor}} {{event?.name}}: <strong>{{defaultCurrency}}{{event?.total | number:'1.2-2'}}</strong></h2>
+      <h1 class="event-total">{{dictionary?.results?.totalFor}} {{event?.name}}: <strong>{{defaultCurrency}}{{event?.total | number:'1.2-2'}}</strong></h1>
       <div *ngFor="let expense of event?.expenses">
         <p class="person-gives"
            *ngIf="expense.persons === 0 && expense.total > 0">{{dictionary?.results?.attention}} <strong>{{expense.name}}</strong> {{dictionary?.results?.noConsumption}}</p>
@@ -33,7 +33,8 @@
         <span *ngIf="person.balance < 0">{{dictionary?.results?.gives}} {{defaultCurrency}}{{-person.balance | number:'1.2-2'}}</span>
         <span *ngIf="person.balance == 0">{{dictionary?.results?.isEven}}</span>
       </h1>
-      <div *ngIf="personIDToDisplay === person.id && person.arrowToDisplayed === 'arrow-dropup-circle'">
+      <div *ngIf="personIDToDisplay === person.id && person.arrowToDisplayed === 'arrow-dropup-circle'"
+           [@personCardAnimation]>
         <p class="payment-details"
            *ngFor="let personExpense of person.expenses">
           {{dictionary?.results?.paid}}

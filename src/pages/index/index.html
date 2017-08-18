@@ -16,21 +16,13 @@
 </ion-header>
 
 <ion-content>
-  <button class="btn btn-info"
-          (click)="hideShowAnimation()">
-					Click me!
-				</button>
-  <div class="hideShow text-center"
-       [@hideShowAnimator]="hideShowAnimator">
-    I am out to fade In and Fade Out.
-  </div>
-  <ion-item>
+  <ion-item class="event-name">
     <ion-input type="text"
                placeholder="{{dictionary?.index?.inputs?.event}}"
                [(ngModel)]="event.name"
                (ionBlur)="checkEvent()"
                (keyup)="checkEvent()"
-               [attr.maxlength]="15">
+               (keyup.enter)="editEvent(event)">
     </ion-input>
     <button ion-button
             icon-only
@@ -43,47 +35,48 @@
   <span class="error-event-message"
         *ngIf="this.event.name.length <= 0">{{dictionary?.index?.noNameEventError}}</span>
   <div *ngIf="event.persons.length > 0">
-    <ion-card *ngFor="let person of event?.persons">
+    <ion-card *ngFor="let person of event?.persons"
+              [@personCardAnimation]>
       <ion-card-content>
         <ion-grid>
           <ion-row>
-            <ion-col class="person-col">
+            <ion-col class="inputs-col">
               <ion-item class="persons-input">
                 <ion-input type="text"
                            placeholder="{{dictionary?.index?.inputs?.person}}"
                            [(ngModel)]="person.name"
                            (ionBlur)="checkEvent(person)"
                            (keyup)="checkEvent(person)"
+                           (keyup.enter)="goToFirstExpenseFocus($event)"
                            autofocus
-                           required
-                           [attr.maxlength]="10">
+                           required>
                 </ion-input>
-                <button ion-button
-                        icon-only
-                        item-end
-                        clear
-                        color="danger"
-                        *ngIf="person?.name"
-                        (click)="removePerson(person)">
-            <ion-icon name="trash"></ion-icon>
-            </button>
               </ion-item>
             </ion-col>
             <ion-col col-4
                      *ngIf="person?.name">
               <span class="bottom-description">{{dictionary?.index?.alreadyPaid}}</span>
             </ion-col>
+            <ion-col col-2><button ion-button
+                      icon-only
+                      clear
+                      color="danger"
+                      (click)="removePerson(person)">
+            <ion-icon name="trash"></ion-icon>
+            </button>
+            </ion-col>
           </ion-row>
           <ion-row *ngFor="let personExpense of person?.expenses">
-            <ion-col col-5>
+            <ion-col col-5
+                     class="inputs-col">
               <ion-item class="persons-input">
                 <span item-start>{{defaultCurrency}}</span>
                 <ion-input type="number"
                            [(ngModel)]="personExpense.amount"
+                           class="expense-input"
                            min="0"
                            (ionBlur)="checkEvent(person)"
                            (keyup)="checkEvent(person)"
-                           [attr.maxlength]="5"
                            placeholder="__.__">
                 </ion-input>
                 <button ion-button
@@ -91,7 +84,7 @@
                         item-end
                         clear
                         class="add-expense-button"
-                        *ngIf="personExpense.amount > 0"
+                        *ngIf="personExpense.amount >= 0 && personExpense.amount !== ''"
                         (click)="addAmountToExpense(person, personExpense.expense.id)">
             <ion-icon name="add-circle"></ion-icon>
             </button>
@@ -118,7 +111,8 @@
 <ion-footer>
   <button ion-button
           icon-left
-          full
+          block
+          large
           class="calculate-button"
           (click)="calculate()"
           [disabled]="errorsOnTheEvent || errorsOnTheEventsName">

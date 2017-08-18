@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavParams, AlertController, Platform, NavController } from "ionic-angular";
 import { NativeStorage } from '@ionic-native/native-storage';
 import { PuketeEvent } from "../../model/event";
@@ -7,17 +7,22 @@ import { enDictionary } from "../../utils/en-dictionary";
 import { esDictionary } from "../../utils/es-dictionary";
 import { ResultsPage } from "../results/results";
 import { EventDetailsPage } from "../event-details/event-details";
-import { trigger, state, style, animate, transition } from "@angular/animations";
+import { trigger, style, animate, transition, state } from "@angular/animations";
+declare var docuement;
 
 @Component({
   selector: 'index-page',
   templateUrl: 'index.html',
   animations: [
-    trigger('hideShowAnimator', [
-      state('true', style({ opacity: 1 })),
-      state('false', style({ opacity: 0 })),
-      transition('0 => 1', animate('.5s')),
-      transition('1 => 0', animate('.9s'))
+    trigger('personCardAnimation', [
+      transition('void => *', [
+        style({ transform: 'translateX(-100%)' }),
+        animate('0.2s')
+      ]),
+      transition('* => void', [
+        style({ height: '*' }),
+        animate('0.4s', style({ height: 0 }))
+      ])
     ])
   ]
 })
@@ -29,8 +34,7 @@ export class IndexPage {
   private language: string;
   private errorsOnTheEvent: boolean = true;
   private defaultCurrency: string;
-  hideShowAnimator: boolean = true;
-
+  //private cardState: string = 'in';
 
   constructor(
     private alertCtrl: AlertController,
@@ -40,9 +44,9 @@ export class IndexPage {
     private navCtrl: NavController) {
     this.event = this.navParams.get('event');
     // If there's no person on the event, we add one by default
-    if (this.event.persons.length === 0) {
-      this.addPerson();
-    }
+    // if (this.event.persons.length === 0) {
+    //   this.addPerson();
+    // }
     if (this.platform.is('cordova')) {
       this.setDictionary();
     }
@@ -50,10 +54,6 @@ export class IndexPage {
       this.setLanguage('es');
       this.defaultCurrency = '$';
     }
-  }
-
-  hideShowAnimation() {
-    this.hideShowAnimator = !this.hideShowAnimator;
   }
 
   setDictionary() {
@@ -97,7 +97,7 @@ export class IndexPage {
 
   removePerson(person: Person) {
     this.event.persons.forEach((personInEvent, i) => {
-      if (person.name.toLowerCase() === personInEvent.name.toLowerCase()) {
+      if (person.id === personInEvent.id) {
         let alert = this.alertCtrl.create({
           title: this.dictionary.index.popups.removePerson.title,
           buttons: [
@@ -176,7 +176,7 @@ export class IndexPage {
   }
 
   checkEvent(selectedPerson?: Person) {
-    if (this.event.persons.length >= 2 && this.event.name.length > 0) {
+    if (this.event.persons.length >= 2 && this.event.name.length > 0 && this.event.name.length < 16) {
       this.errorsOnTheEvent = false;
     }
     else {
@@ -213,7 +213,9 @@ export class IndexPage {
       }
     }
     if (this.platform.is('cordova')) {
-      this.save();
+      if (this.event.name.length < 15 && selectedPerson.name.length < 15) {
+        this.save();
+      }
     }
   }
 
@@ -254,5 +256,9 @@ export class IndexPage {
       ]
     });
     addAmountToExpenseAlert.present();
+  }
+
+  goToFirstExpenseFocus(event: any) {
+    console.log(docuement);
   }
 }

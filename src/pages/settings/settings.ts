@@ -3,10 +3,24 @@ import { Nav, Events, Platform, AlertController } from "ionic-angular";
 import { NativeStorage } from "@ionic-native/native-storage";
 import { enDictionary } from "../../utils/en-dictionary";
 import { esDictionary } from "../../utils/es-dictionary";
+import { trigger, style, animate, transition } from "@angular/animations";
 
 @Component({
   selector: 'settings-page',
-  templateUrl: 'settings.html'
+  templateUrl: 'settings.html',
+  animations: [
+    trigger('eventItemAnimation', [
+      transition('void => *', [
+        style({ transform: 'scale(0)' }),
+        animate('0.4s', style({ transform: 'scale(1)' }))
+      ]),
+      transition('* => void', [
+        style({ transform: 'scale(1)' }),
+        animate('0.4s', style({ transform: 'scale(0)' }))
+      ])
+
+    ])
+  ]
 })
 export class SettingsPage {
   private dictionary: any;
@@ -110,24 +124,28 @@ export class SettingsPage {
   }
 
   checkNewEventName(event: any) {
-    // Clear expense error
-    this.newEventErrorDescription = '';
-    if (event.target.value === undefined || event.target.value === '') {
-      this.newEventErrorDescription = this.dictionary.settings.noNameExpenseError;
-    }
-    this.defaultExpenses.forEach((defaultExpense, i) => {
-      if (defaultExpense.toLowerCase() === event.target.value.toLowerCase()) {
-        this.newEventErrorDescription = this.dictionary.settings.alredyExpenseError;
+    if (event.target) {
+      // Clear expense error
+      this.newEventErrorDescription = '';
+      if (event.target.value === undefined || event.target.value === '' || event.target.value > 15) {
+        this.newEventErrorDescription = this.dictionary.settings.noNameExpenseError;
       }
-    });
+      this.defaultExpenses.forEach((defaultExpense, i) => {
+        if (defaultExpense.toLowerCase() === event.target.value.toLowerCase()) {
+          this.newEventErrorDescription = this.dictionary.settings.alredyExpenseError;
+        }
+      });
+    }
   }
 
   addDefaultExpense() {
-    this.defaultExpenses.push(this.newEvent);
-    this.newEvent = '';
-    this.newEventErrorDescription = '';
-    if (this.platform.is('cordova')) {
-      this.save(this.language, this.defaultExpenses, this.defaultCurrencySymbol);
+    if (this.newEvent.length > 0 && this.newEvent.length < 15) {
+      this.defaultExpenses.push(this.newEvent);
+      this.newEvent = '';
+      this.newEventErrorDescription = '';
+      if (this.platform.is('cordova')) {
+        this.save(this.language, this.defaultExpenses, this.defaultCurrencySymbol);
+      }
     }
   }
 

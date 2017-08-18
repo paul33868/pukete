@@ -5,10 +5,24 @@ import { enDictionary } from "../../utils/en-dictionary";
 import { esDictionary } from "../../utils/es-dictionary";
 import { PuketeEvent } from "../../model/event";
 import { Expense } from "../../model/expense";
+import { trigger, style, animate, transition } from "@angular/animations";
 
 @Component({
   selector: 'event-details-page',
-  templateUrl: 'event-details.html'
+  templateUrl: 'event-details.html',
+  animations: [
+    trigger('eventItemAnimation', [
+      transition('void => *', [
+        style({ transform: 'scale(0)' }),
+        animate('0.4s', style({ transform: 'scale(1)' }))
+      ]),
+      transition('* => void', [
+        style({ transform: 'scale(1)' }),
+        animate('0.4s', style({ transform: 'scale(0)' }))
+      ])
+
+    ])
+  ]
 })
 export class EventDetailsPage {
   private dictionary: any;
@@ -101,39 +115,43 @@ export class EventDetailsPage {
   }
 
   addExpense() {
-    let newExpense: Expense = new Expense(this.newEvent, new Date().getTime());
-    this.event.expenses.push(newExpense);
-    this.newEvent = '';
-    this.newEventErrorDescription = '';
-    this.event.persons.forEach((personInEvent, i) => {
-      personInEvent.expenses.push({
-        amount: 0,
-        expense: newExpense,
-        isIn: true
-      })
-    });
-    if (this.platform.is('cordova')) {
-      this.save();
+    if (this.newEvent.length > 0) {
+      let newExpense: Expense = new Expense(this.newEvent, new Date().getTime());
+      this.event.expenses.push(newExpense);
+      this.newEvent = '';
+      this.newEventErrorDescription = '';
+      this.event.persons.forEach((personInEvent, i) => {
+        personInEvent.expenses.push({
+          amount: 0,
+          expense: newExpense,
+          isIn: true
+        })
+      });
+      if (this.platform.is('cordova')) {
+        this.save();
+      }
     }
   }
 
   checkNewEventName(event: any) {
     // Clear expense error
     this.newEventErrorDescription = '';
-    if (event.target.value === undefined || event.target.value === '') {
-      this.newEventErrorDescription = this.dictionary.eventDetails.noNameExpenseError;
-    }
-    this.event.expenses.forEach((expenseInEvent, i) => {
-      if (expenseInEvent.name.toLowerCase() === event.target.value.toLowerCase()) {
-        this.newEventErrorDescription = this.dictionary.eventDetails.alredyExpenseError;
+    if (event.target) {
+      if (event.target.value === undefined || event.target.value === '') {
+        this.newEventErrorDescription = this.dictionary.eventDetails.noNameExpenseError;
       }
-    });
+      this.event.expenses.forEach((expenseInEvent, i) => {
+        if (expenseInEvent.name.toLowerCase() === event.target.value.toLowerCase()) {
+          this.newEventErrorDescription = this.dictionary.eventDetails.alredyExpenseError;
+        }
+      });
+    }
   }
 
   editEventExpenseName(expense: Expense) {
     this.event.expenses.forEach(expense => {
       expense.error = '';
-      if (expense.name === undefined || expense.name === '') {
+      if (expense.name === undefined || expense.name === '' || expense.name.length > 15) {
         expense.error = this.dictionary.eventDetails.noNameExpenseError;
       }
     });
@@ -166,7 +184,9 @@ export class EventDetailsPage {
         });
       });
       if (this.platform.is('cordova')) {
-        this.save();
+        if (this.event.name.length < 15 && this.event.name.length > 0) {
+          this.save();
+        }
       }
     }
   }

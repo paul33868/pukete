@@ -5,10 +5,24 @@ import { IndexPage } from "../index/index";
 import { PuketeEvent } from "../../model/event";
 import { enDictionary } from "../../utils/en-dictionary";
 import { esDictionary } from "../../utils/es-dictionary";
+import { trigger, style, animate, transition } from "@angular/animations";
 
 @Component({
   selector: 'page-list',
-  templateUrl: 'list.html'
+  templateUrl: 'list.html',
+  animations: [
+    trigger('eventItemAnimation', [
+      transition('void => *', [
+        style({ transform: 'scale(0)' }),
+        animate('0.2s', style({ transform: 'scale(1)' }))
+      ]),
+      transition('* => void', [
+        style({ transform: 'scale(1)' }),
+        animate('0.2s', style({ transform: 'scale(0)' }))
+      ])
+
+    ])
+  ]
 })
 export class ListPage {
   private events: Array<PuketeEvent> = [];

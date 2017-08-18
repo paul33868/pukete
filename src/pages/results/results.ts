@@ -1,16 +1,30 @@
 import { Component } from '@angular/core';
-import { Nav, Events, Platform, NavParams } from "ionic-angular";
+import { Platform, NavParams } from "ionic-angular";
 import { NativeStorage } from "@ionic-native/native-storage";
 import { enDictionary } from "../../utils/en-dictionary";
 import { esDictionary } from "../../utils/es-dictionary";
 import { PuketeEvent } from "../../model/event";
 import { SocialSharing } from "@ionic-native/social-sharing";
 import { Person } from "../../model/person";
+import { trigger, state, style, animate, transition } from "@angular/animations";
 
 @Component({
   selector: 'results-page',
-  templateUrl: 'results.html'
+  templateUrl: 'results.html',
+  animations: [
+    trigger('personCardAnimation', [
+      transition('void => *', [
+        style({ height: 0 }),
+        animate('0.3s 0.1s ease-in', style({ height: '*' }))
+      ]),
+      transition('* => void', [
+        style({ height: '*' }),
+        animate('0.3s 0.1s ease-out', style({ height: 0 }))
+      ])
+    ])
+  ]
 })
+
 export class ResultsPage {
   private dictionary: any;
   private language: string;
@@ -21,10 +35,8 @@ export class ResultsPage {
   private defaultCurrency: string;
 
   constructor(
-    private nav: Nav,
     private navParams: NavParams,
     private nativeStorage: NativeStorage,
-    private events: Events,
     private platform: Platform,
     private socialSharing: SocialSharing) {
     this.event = this.navParams.get('selectedEvent');
@@ -39,14 +51,13 @@ export class ResultsPage {
   }
 
   showHideExpenseDetails(person: Person) {
-    this.personIDToDisplay = person.id;
-    person.arrowToDisplayed = person.arrowToDisplayed === 'arrow-dropup-circle' ? 'arrow-dropdown-circle' : 'arrow-dropup-circle';
-  }
-
-  checkNoCunsumption() {
-    this.event.expenses.forEach(expense => {
-      if (expense.persons === 0) {
-
+    this.event.persons.forEach(personInEvent => {
+      if (personInEvent.id === person.id) {
+        this.personIDToDisplay = person.id;
+        personInEvent.arrowToDisplayed = personInEvent.arrowToDisplayed === 'arrow-dropup-circle' ? 'arrow-dropdown-circle' : 'arrow-dropup-circle';
+      }
+      else {
+        personInEvent.arrowToDisplayed = 'arrow-dropdown-circle';
       }
     });
   }

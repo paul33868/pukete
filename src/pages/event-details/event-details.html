@@ -18,7 +18,7 @@
                    (ionBlur)="checkNewEventName($event)"
                    (keyup)="checkNewEventName($event)"
                    [(ngModel)]="newEvent"
-                   [attr.maxlength]="15">
+                   (keyup.enter)="addExpense()">
         </ion-input>
         <button ion-button
                 icon-only
@@ -32,15 +32,15 @@
       <span class="error-message-header">{{newEventErrorDescription}}</span>
     </ion-card-header>
 
-    <ion-card-content *ngFor="let expense of event?.expenses">
+    <ion-card-content *ngFor="let expense of event?.expenses"
+                      [@eventItemAnimation]>
       <ion-item class="expense-input">
         <ion-input type="text"
                    placeholder="{{dictionary?.eventDetails?.expensePlaceholder}}"
                    [(ngModel)]="expense.name"
                    (ionBlur)="editEventExpenseName(expense, $event)"
                    (keyup)="editEventExpenseName(expense, $event)"
-                   required
-                   [attr.maxlength]="15">
+                   required>
         </ion-input>
         <button ion-button
                 icon-only
