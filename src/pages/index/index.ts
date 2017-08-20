@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { NavParams, AlertController, Platform, NavController } from "ionic-angular";
 import { NativeStorage } from '@ionic-native/native-storage';
 import { PuketeEvent } from "../../model/event";
@@ -8,7 +8,7 @@ import { esDictionary } from "../../utils/es-dictionary";
 import { ResultsPage } from "../results/results";
 import { EventDetailsPage } from "../event-details/event-details";
 import { trigger, style, animate, transition, state } from "@angular/animations";
-declare var docuement;
+declare var document;
 
 @Component({
   selector: 'index-page',
@@ -34,7 +34,6 @@ export class IndexPage {
   private language: string;
   private errorsOnTheEvent: boolean = true;
   private defaultCurrency: string;
-  //private cardState: string = 'in';
 
   constructor(
     private alertCtrl: AlertController,
@@ -43,10 +42,6 @@ export class IndexPage {
     private platform: Platform,
     private navCtrl: NavController) {
     this.event = this.navParams.get('event');
-    // If there's no person on the event, we add one by default
-    // if (this.event.persons.length === 0) {
-    //   this.addPerson();
-    // }
     if (this.platform.is('cordova')) {
       this.setDictionary();
     }
@@ -165,7 +160,7 @@ export class IndexPage {
 
     this.navCtrl.push(ResultsPage, {
       selectedEvent: this.event
-    });
+    }, { animate: true, animation: 'ios-transition', direction: 'forward' });
   }
 
   save() {
@@ -175,8 +170,8 @@ export class IndexPage {
       (error) => { console.error(`Error storing event: ${JSON.stringify(error)}`) });
   }
 
-  checkEvent(selectedPerson?: Person) {
-    if (this.event.persons.length >= 2 && this.event.name.length > 0 && this.event.name.length < 16) {
+  checkEvent(selectedPerson?: Person, event?: any) {
+    if (this.event.persons.length >= 2 && this.event.name.length > 0) {
       this.errorsOnTheEvent = false;
     }
     else {
@@ -186,7 +181,9 @@ export class IndexPage {
       person.error = '';
       person.expenses.forEach(personExpense => {
         if (personExpense.amount < 0) {
-          person.error = this.dictionary.index.validAmountError;
+          if (this.dictionary) {
+            person.error = this.dictionary.index.validAmountError;
+          }
           this.errorsOnTheEvent = true;
         }
       });
@@ -196,33 +193,37 @@ export class IndexPage {
         for (var index2 = 1; index2 < this.event.persons.length; index2++) {
           if (this.event.persons[index2].name !== undefined && this.event.persons[index2].name !== '') {
             if (this.event.persons[index1].id !== this.event.persons[index2].id && this.event.persons[index1].name.toLowerCase() === this.event.persons[index2].name.toLowerCase()) {
-              this.event.persons[index1].error = this.dictionary.index.alreadyHasNameError;
-              this.event.persons[index2].error = this.dictionary.index.alreadyHasNameError;
+              if (this.dictionary) {
+                this.event.persons[index1].error = this.dictionary.index.alreadyHasNameError;
+                this.event.persons[index2].error = this.dictionary.index.alreadyHasNameError;
+              }
               this.errorsOnTheEvent = true;
             }
           }
           else {
-            this.event.persons[index2].error = this.dictionary.index.noNameError;
+            if (this.dictionary) {
+              this.event.persons[index2].error = this.dictionary.index.noNameError;
+            }
             this.errorsOnTheEvent = true;
           }
         }
       }
       else {
-        this.event.persons[index1].error = this.dictionary.index.noNameError;
+        if (this.dictionary) {
+          this.event.persons[index1].error = this.dictionary.index.noNameError;
+        }
         this.errorsOnTheEvent = true;
       }
     }
     if (this.platform.is('cordova')) {
-      if (this.event.name.length < 15 && selectedPerson.name.length < 15) {
-        this.save();
-      }
+      this.save();
     }
   }
 
   editEvent(event: PuketeEvent) {
     this.navCtrl.push(EventDetailsPage, {
       selectedEvent: this.event
-    });
+    }, { animate: true, animation: 'ios-transition', direction: 'forward' });
   }
 
   addAmountToExpense(person: Person, expenseID: number) {
@@ -258,7 +259,7 @@ export class IndexPage {
     addAmountToExpenseAlert.present();
   }
 
-  goToFirstExpenseFocus(event: any) {
-    console.log(docuement);
+  goToFirstExpense(event: any) {
+    document.getElementById('expense-input').getElementsByTagName('input')[0].focus();
   }
 }

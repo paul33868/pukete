@@ -127,7 +127,7 @@ export class SettingsPage {
     if (event.target) {
       // Clear expense error
       this.newEventErrorDescription = '';
-      if (event.target.value === undefined || event.target.value === '' || event.target.value > 15) {
+      if (event.target.value === undefined || event.target.value === '') {
         this.newEventErrorDescription = this.dictionary.settings.noNameExpenseError;
       }
       this.defaultExpenses.forEach((defaultExpense, i) => {
@@ -139,7 +139,7 @@ export class SettingsPage {
   }
 
   addDefaultExpense() {
-    if (this.newEvent.length > 0 && this.newEvent.length < 15) {
+    if (this.newEvent.length > 0) {
       this.defaultExpenses.push(this.newEvent);
       this.newEvent = '';
       this.newEventErrorDescription = '';

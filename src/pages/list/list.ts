@@ -83,6 +83,9 @@ export class ListPage {
             this.nativeStorage.getItem(data[i])
               .then(
               data => {
+                if (data['name'] === '') {
+                  data['name'] = this.dictionary.list.noNameEvent;
+                }
                 this.items.push(data);
                 this.initializeItems();
               },
@@ -102,7 +105,7 @@ export class ListPage {
   goToPage(selectedEvent: PuketeEvent) {
     this.navCtrl.push(IndexPage, {
       event: selectedEvent
-    });
+    }, { animate: true, animation: 'wp-transition', direction: 'forward' });
   }
 
   addEvent() {

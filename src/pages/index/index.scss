@@ -27,9 +27,12 @@ index-page {
         }
     }
     .bottom-description{
-        position: absolute;
-        bottom: 10px;
         font-size: smaller;
+    }
+    .already-paid-description{
+        font-size: initial;
+        bottom: 10px;
+        position: absolute;
     }
     .add-expense-button{
         margin-right: 0px !important;

@@ -2,9 +2,8 @@ export var esDictionary = {
     index: {
         alreadyPaid: 'ya pagó',
         alreadyHasNameError: 'Otra persona ya tiene este nombre',
-        noNameError: 'Por favor introduzca un nombre entre 1 y 15 caracteres',
+        noNameError: 'Por favor introduzca un nombre',
         validAmountError: "Por favor introduzca un valor válido para todos los gastos",
-        noNameEventError: 'El evento debe tener un nombre entre 1 y 15 caracteres',
         event: 'Evento',
         for: 'por ',
         and: ' y ',
@@ -35,7 +34,7 @@ export var esDictionary = {
         newExpensePlaceholder: 'Nuevo gasto',
         expensePlaceholder: 'Gasto',
         alredyExpenseError: 'Ya existe un gasto con ese nombre',
-        noNameExpenseError: 'Por favor agregar un nombre para el gasto entre 1 y 15 caracteres',
+        noNameExpenseError: 'Por favor agregar un nombre para el gasto',
         popups: {
             removeExpense: {
                 title: "¿Quitar gasto?",
@@ -52,6 +51,7 @@ export var esDictionary = {
     list: {
         title: 'Mis eventos',
         created: 'Creado el',
+        noNameEvent: 'Evento sin nombre',
         inputs: {
             search: "Buscar evento"
         },
@@ -93,7 +93,7 @@ export var esDictionary = {
             },
         },
         alredyExpenseError: 'Otro gasto ya tiene este nombre',
-        noNameExpenseError: 'Por favor introduzca un nombre entre 1 y 15 caracteres',
+        noNameExpenseError: 'Por favor introduzca un nombre',
         defaultLabel1: 'Bebidas',
         defaultLabel2: 'Comida',
         defaultLabel3: 'Otros'
@@ -106,7 +106,7 @@ export var esDictionary = {
     },
     results: {
         title: "Resultados",
-        totalFor: "Total por ",
+        totalFor: "Total por",
         spentInTotal: "gastó en total: ",
         and: " y",
         gets: "recibe ",

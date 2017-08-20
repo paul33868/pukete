@@ -32,8 +32,8 @@
             <ion-icon name="settings"></ion-icon>
             </button>
   </ion-item>
-  <span class="error-event-message"
-        *ngIf="this.event.name.length <= 0">{{dictionary?.index?.noNameEventError}}</span>
+  <img src="assets/sampleLogoEvent.jpg"
+       *ngIf="event.persons.length == 0" />
   <div *ngIf="event.persons.length > 0">
     <ion-card *ngFor="let person of event?.persons"
               [@personCardAnimation]>
@@ -47,15 +47,14 @@
                            [(ngModel)]="person.name"
                            (ionBlur)="checkEvent(person)"
                            (keyup)="checkEvent(person)"
-                           (keyup.enter)="goToFirstExpenseFocus($event)"
-                           autofocus
+                           (keyup.enter)="goToFirstExpense($event)"
                            required>
                 </ion-input>
               </ion-item>
             </ion-col>
             <ion-col col-4
                      *ngIf="person?.name">
-              <span class="bottom-description">{{dictionary?.index?.alreadyPaid}}</span>
+              <span class="already-paid-description">{{dictionary?.index?.alreadyPaid}}</span>
             </ion-col>
             <ion-col col-2><button ion-button
                       icon-only
@@ -73,7 +72,7 @@
                 <span item-start>{{defaultCurrency}}</span>
                 <ion-input type="number"
                            [(ngModel)]="personExpense.amount"
-                           class="expense-input"
+                           id="expense-input"
                            min="0"
                            (ionBlur)="checkEvent(person)"
                            (keyup)="checkEvent(person)"
@@ -92,9 +91,9 @@
             </ion-col>
             <ion-col col-5>
               <span class="bottom-description">{{dictionary?.index?.for}} <strong>{{personExpense?.expense?.name}}</strong> {{dictionary?.index?.and}}
-              <strong *ngIf="personExpense.isIn">{{dictionary?.index?.ItIs}}</strong>
-            <strong *ngIf="!personExpense.isIn">{{dictionary?.index?.ItIsNot}}</strong>{{dictionary?.index?.counted}}
-            </span>
+                <strong *ngIf="personExpense.isIn">{{dictionary?.index?.ItIs}}</strong>
+                <strong *ngIf="!personExpense.isIn">{{dictionary?.index?.ItIsNot}}</strong>{{dictionary?.index?.counted}}
+              </span>
             </ion-col>
             <ion-col col-2>
               <ion-toggle checked="personExpense.isIn"

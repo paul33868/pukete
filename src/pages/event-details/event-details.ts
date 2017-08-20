@@ -151,7 +151,7 @@ export class EventDetailsPage {
   editEventExpenseName(expense: Expense) {
     this.event.expenses.forEach(expense => {
       expense.error = '';
-      if (expense.name === undefined || expense.name === '' || expense.name.length > 15) {
+      if (expense.name === undefined || expense.name === '') {
         expense.error = this.dictionary.eventDetails.noNameExpenseError;
       }
     });
@@ -184,9 +184,7 @@ export class EventDetailsPage {
         });
       });
       if (this.platform.is('cordova')) {
-        if (this.event.name.length < 15 && this.event.name.length > 0) {
-          this.save();
-        }
+        this.save();
       }
     }
   }

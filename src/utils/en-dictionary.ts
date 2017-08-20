@@ -2,9 +2,8 @@ export var enDictionary = {
     index: {
         alreadyPaid: 'already paid',
         alreadyHasNameError: 'Another person already has this name',
-        noNameError: 'Please add a name between 1 and 15 characters',
+        noNameError: 'Please add a name',
         validAmountError: "Please provide a valid amount for all the expenses",
-        noNameEventError: 'The event must have a name between 1 and 15 characters',
         event: 'Event',
         for: 'for ',
         and: ' and ',
@@ -35,7 +34,7 @@ export var enDictionary = {
         newExpensePlaceholder: 'New expense',
         expensePlaceholder: "Expense's name",
         alredyExpenseError: 'There is already an expense with that name',
-        noNameExpenseError: 'Please add a name for the expense between 1 and 15 characters',
+        noNameExpenseError: 'Please add a name for the expense',
         popups: {
             removeExpense: {
                 title: "Remove expense?",
@@ -53,6 +52,7 @@ export var enDictionary = {
     list: {
         title: 'My events',
         created: 'Created on',
+        noNameEvent: 'No name event',
         inputs: {
             search: "Search event"
         },
@@ -94,7 +94,7 @@ export var enDictionary = {
             },
         },
         alredyExpenseError: 'There is already an expense with that name',
-        noNameExpenseError: 'Please add a name for the expense between 1 and 15 characters',
+        noNameExpenseError: 'Please add a name for the expense',
         defaultLabel1: 'Drinks',
         defaultLabel2: 'Food',
         defaultLabel3: 'Others'
@@ -107,7 +107,7 @@ export var enDictionary = {
     },
     results: {
         title: "Results",
-        totalFor: "Total for ",
+        totalFor: "Total for",
         spentInTotal: "spent in total: ",
         and: " and",
         gets: "gets ",
