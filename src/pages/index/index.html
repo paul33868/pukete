@@ -22,7 +22,8 @@
                [(ngModel)]="event.name"
                (ionBlur)="checkEvent()"
                (keyup)="checkEvent()"
-               (keyup.enter)="editEvent(event)">
+               (keyup.enter)="editEvent(event)"
+               [attr.maxlength]="15">
     </ion-input>
     <button ion-button
             icon-only
@@ -32,8 +33,6 @@
             <ion-icon name="settings"></ion-icon>
             </button>
   </ion-item>
-  <img src="assets/sampleLogoEvent.jpg"
-       *ngIf="event.persons.length == 0" />
   <div *ngIf="event.persons.length > 0">
     <ion-card *ngFor="let person of event?.persons"
               [@personCardAnimation]>
@@ -48,6 +47,7 @@
                            (ionBlur)="checkEvent(person)"
                            (keyup)="checkEvent(person)"
                            (keyup.enter)="goToFirstExpense($event)"
+                           [attr.maxlength]="10"
                            required>
                 </ion-input>
               </ion-item>
@@ -60,7 +60,8 @@
                       icon-only
                       clear
                       color="danger"
-                      (click)="removePerson(person)">
+                      (click)="removePerson(person)"
+                      [disabled]="event.persons.length <= 1">
             <ion-icon name="trash"></ion-icon>
             </button>
             </ion-col>
@@ -76,7 +77,8 @@
                            min="0"
                            (ionBlur)="checkEvent(person)"
                            (keyup)="checkEvent(person)"
-                           placeholder="__.__">
+                           placeholder="__.__"
+                           [attr.maxlength]="10">
                 </ion-input>
                 <button ion-button
                         icon-only
@@ -114,7 +116,7 @@
           large
           class="calculate-button"
           (click)="calculate()"
-          [disabled]="errorsOnTheEvent || errorsOnTheEventsName">
+          [disabled]="errorsOnTheEvent">
         <ion-icon name="calculator"></ion-icon>{{dictionary?.index?.calculate}}
       </button>
 </ion-footer>

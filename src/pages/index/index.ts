@@ -32,7 +32,7 @@ export class IndexPage {
   private results: string;
   private dictionary: any;
   private language: string;
-  private errorsOnTheEvent: boolean = true;
+  private errorsOnTheEvent: boolean;
   private defaultCurrency: string;
 
   constructor(
@@ -42,6 +42,10 @@ export class IndexPage {
     private platform: Platform,
     private navCtrl: NavController) {
     this.event = this.navParams.get('event');
+    // If there's no person on the event, we add one by default
+    if (this.event.persons.length === 0) {
+      this.addPerson();
+    }
     if (this.platform.is('cordova')) {
       this.setDictionary();
     }
@@ -49,6 +53,7 @@ export class IndexPage {
       this.setLanguage('es');
       this.defaultCurrency = '$';
     }
+    this.checkEvent();
   }
 
   setDictionary() {
@@ -75,7 +80,6 @@ export class IndexPage {
   }
 
   addPerson() {
-    this.errorsOnTheEvent = true;
     let newPerson: Person = new Person(new Date().getTime());
     this.event.expenses.forEach(eventExpense => {
       newPerson.expenses.push({
@@ -160,7 +164,7 @@ export class IndexPage {
 
     this.navCtrl.push(ResultsPage, {
       selectedEvent: this.event
-    }, { animate: true, animation: 'ios-transition', direction: 'forward' });
+    }, { animate: true, animation: 'wp-transition', direction: 'forward' });
   }
 
   save() {
@@ -183,8 +187,8 @@ export class IndexPage {
         if (personExpense.amount < 0) {
           if (this.dictionary) {
             person.error = this.dictionary.index.validAmountError;
+            this.errorsOnTheEvent = true;
           }
-          this.errorsOnTheEvent = true;
         }
       });
     });
@@ -196,23 +200,23 @@ export class IndexPage {
               if (this.dictionary) {
                 this.event.persons[index1].error = this.dictionary.index.alreadyHasNameError;
                 this.event.persons[index2].error = this.dictionary.index.alreadyHasNameError;
+                this.errorsOnTheEvent = true;
               }
-              this.errorsOnTheEvent = true;
             }
           }
           else {
             if (this.dictionary) {
               this.event.persons[index2].error = this.dictionary.index.noNameError;
+              this.errorsOnTheEvent = true;
             }
-            this.errorsOnTheEvent = true;
           }
         }
       }
       else {
         if (this.dictionary) {
           this.event.persons[index1].error = this.dictionary.index.noNameError;
+          this.errorsOnTheEvent = true;
         }
-        this.errorsOnTheEvent = true;
       }
     }
     if (this.platform.is('cordova')) {

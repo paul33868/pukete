@@ -25,10 +25,11 @@
     <ion-item class="event-name-input">
       <ion-input type="text"
                  placeholder="New expense"
-                 (ionBlur)="checkNewEventName($event)"
-                 (keyup)="checkNewEventName($event)"
+                 (ionBlur)="checkNewExpenseName($event)"
+                 (keyup)="checkNewExpenseName($event)"
                  [(ngModel)]="newEvent"
-                 (keyup.enter)="addDefaultExpense()">
+                 (keyup.enter)="addDefaultExpense()"
+                 [attr.maxlength]="15">
       </ion-input>
       <button ion-button
               icon-only

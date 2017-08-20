@@ -20,7 +20,12 @@ import { trigger, style, animate, transition } from "@angular/animations";
         style({ transform: 'scale(1)' }),
         animate('0.2s', style({ transform: 'scale(0)' }))
       ])
-
+    ]),
+    trigger('noPersonImageAnimation', [
+      transition('void => *', [
+        style({ transform: 'translateY(150%)' }),
+        animate('0.5s 0.5s')
+      ])
     ])
   ]
 })
@@ -105,7 +110,7 @@ export class ListPage {
   goToPage(selectedEvent: PuketeEvent) {
     this.navCtrl.push(IndexPage, {
       event: selectedEvent
-    }, { animate: true, animation: 'wp-transition', direction: 'forward' });
+    }, { animate: true, animation: 'ios-transition', direction: 'forward' });
   }
 
   addEvent() {

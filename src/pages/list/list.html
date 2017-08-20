@@ -19,7 +19,8 @@
   <ion-searchbar (ionInput)="getEvents($event)"
                  placeholder="{{dictionary?.list?.inputs?.search}}"></ion-searchbar>
   <img src="assets/sampleLogoEvent.jpg"
-       *ngIf="events.length == 0" />
+       *ngIf="events.length == 0"
+       [@noPersonImageAnimation]>
   <ion-list *ngIf="events.length > 0">
     <ion-item *ngFor="let puketeEvent of events"
               [@eventItemAnimation]>

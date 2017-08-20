@@ -58,11 +58,9 @@ export class SettingsPage {
   }
 
   selectedLanguage(selectedLanguage: string) {
-    // Changed the default labels
-    let expenses: Array<string> = [];
     this.setLanguage(selectedLanguage);
-    expenses = [this.dictionary.settings.defaultLabel1, this.dictionary.settings.defaultLabel2, this.dictionary.settings.defaultLabel3];
-    this.save(selectedLanguage, expenses, this.defaultCurrencySymbol);
+    this.defaultExpenses = [this.dictionary.settings.defaultLabel1, this.dictionary.settings.defaultLabel2, this.dictionary.settings.defaultLabel3];
+    this.save(selectedLanguage, this.defaultExpenses, this.defaultCurrencySymbol);
   }
 
   selectedCurrency(selectedCurrency: string) {
@@ -123,7 +121,7 @@ export class SettingsPage {
     }
   }
 
-  checkNewEventName(event: any) {
+  checkNewExpenseName(event: any) {
     if (event.target) {
       // Clear expense error
       this.newEventErrorDescription = '';

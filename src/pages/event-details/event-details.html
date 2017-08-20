@@ -18,7 +18,8 @@
                    (ionBlur)="checkNewEventName($event)"
                    (keyup)="checkNewEventName($event)"
                    [(ngModel)]="newEvent"
-                   (keyup.enter)="addExpense()">
+                   (keyup.enter)="addExpense()"
+                   [attr.maxlength]="15">
         </ion-input>
         <button ion-button
                 icon-only
@@ -40,6 +41,7 @@
                    [(ngModel)]="expense.name"
                    (ionBlur)="editEventExpenseName(expense, $event)"
                    (keyup)="editEventExpenseName(expense, $event)"
+                   [attr.maxlength]="15"
                    required>
         </ion-input>
         <button ion-button
