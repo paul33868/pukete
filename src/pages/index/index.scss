@@ -31,8 +31,7 @@ index-page {
     }
     .already-paid-description{
         font-size: initial;
-        bottom: 10px;
-        position: absolute;
+        margin-top: 11px;
     }
     .add-expense-button{
         margin-right: 0px !important;
@@ -46,11 +45,10 @@ index-page {
     ion-footer{
         text-align: center;
     }
-
-    .event-name{
-        padding-left: 0 !important;
-        margin-left: 10px !important;
-        max-width: 95%;
+    .event-card-container{
+        ion-item{
+            padding-left: 0px
+        }
     }
 }
 

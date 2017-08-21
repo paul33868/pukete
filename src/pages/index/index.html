@@ -16,23 +16,28 @@
 </ion-header>
 
 <ion-content>
-  <ion-item class="event-name">
-    <ion-input type="text"
-               placeholder="{{dictionary?.index?.inputs?.event}}"
-               [(ngModel)]="event.name"
-               (ionBlur)="checkEvent()"
-               (keyup)="checkEvent()"
-               (keyup.enter)="editEvent(event)"
-               [attr.maxlength]="15">
-    </ion-input>
-    <button ion-button
-            icon-only
-            item-end
-            clear
-            (click)="editEvent(event)">
+  <ion-card>
+    <ion-card-content class="event-card-container">
+      <ion-item>
+        <ion-input type="text"
+                   placeholder="{{dictionary?.index?.inputs?.event}}"
+                   [(ngModel)]="event.name"
+                   (ionBlur)="checkEvent()"
+                   (keyup)="checkEvent()"
+                   (keyup.enter)="editEvent(event)"
+                   [attr.maxlength]="15">
+        </ion-input>
+        <button ion-button
+                icon-only
+                item-end
+                clear
+                (click)="editEvent(event)">
             <ion-icon name="settings"></ion-icon>
             </button>
-  </ion-item>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
   <div *ngIf="event.persons.length > 0">
     <ion-card *ngFor="let person of event?.persons"
               [@personCardAnimation]>
@@ -54,7 +59,7 @@
             </ion-col>
             <ion-col col-4
                      *ngIf="person?.name">
-              <span class="already-paid-description">{{dictionary?.index?.alreadyPaid}}</span>
+              <p class="already-paid-description">{{dictionary?.index?.alreadyPaid}}</p>
             </ion-col>
             <ion-col col-2><button ion-button
                       icon-only
@@ -71,7 +76,7 @@
                      class="inputs-col">
               <ion-item class="persons-input">
                 <span item-start>{{defaultCurrency}}</span>
-                <ion-input type="number"
+                <ion-input type="tel"
                            [(ngModel)]="personExpense.amount"
                            id="expense-input"
                            min="0"

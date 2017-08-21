@@ -17,16 +17,6 @@ export class PuketeEvent {
         defaultExpenses.forEach((expense, i) => {
             this.expenses.push(new Expense(expense, (new Date().getTime() + i)));
         });
-        switch (language) {
-            case 'en':
-                this.name = 'My new event';
-                break;
-            case 'es':
-                this.name = 'Mi nuevo evento';
-                break;
-            default:
-                break;
-        }
         this.creationDate = new Date().toLocaleString();
     }
 }

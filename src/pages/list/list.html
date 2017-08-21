@@ -20,7 +20,10 @@
                  placeholder="{{dictionary?.list?.inputs?.search}}"></ion-searchbar>
   <img src="assets/sampleLogoEvent.jpg"
        *ngIf="events.length == 0"
-       [@noPersonImageAnimation]>
+       [@noPersonImageAnimation]
+       height="100%"
+       width="100%"
+       alt="noPersonsImage">
   <ion-list *ngIf="events.length > 0">
     <ion-item *ngFor="let puketeEvent of events"
               [@eventItemAnimation]>

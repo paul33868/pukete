@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Nav, Events, Platform, AlertController } from "ionic-angular";
+import { Events, Platform, AlertController } from "ionic-angular";
 import { NativeStorage } from "@ionic-native/native-storage";
 import { enDictionary } from "../../utils/en-dictionary";
 import { esDictionary } from "../../utils/es-dictionary";
@@ -31,7 +31,6 @@ export class SettingsPage {
   private newEventErrorDescription: string = '';
 
   constructor(
-    private nav: Nav,
     private nativeStorage: NativeStorage,
     private events: Events,
     private platform: Platform,
