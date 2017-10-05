@@ -4,7 +4,7 @@ export var enDictionary = {
         alreadyHasNameError: 'Another person already has this name',
         noNameError: 'Please add a name',
         validAmountError: "Please provide a valid amount for all the expenses",
-        event: 'Event',
+        event: 'EVENT',
         for: 'for ',
         and: ' and ',
         ItIs: 'its ',
@@ -29,7 +29,7 @@ export var enDictionary = {
         }
     },
     eventDetails: {
-        title: "Event's details",
+        title: "EVENT'S DETAILS",
         expenses: 'Expenses',
         newExpensePlaceholder: 'New expense',
         expensePlaceholder: "Expense's name",
@@ -50,9 +50,10 @@ export var enDictionary = {
 
     },
     list: {
-        title: 'My events',
+        title: 'MY EVENTS',
         created: 'Created on',
         noNameEvent: 'No name event',
+        noPersonDescription: 'That button should do something important...',
         inputs: {
             search: "Search event"
         },
@@ -71,11 +72,13 @@ export var enDictionary = {
         settings: "Settings"
     },
     settings: {
-        title: "Settings",
+        title: "SETTINGS",
         language: "Language",
+        newExpensePlaceholder: 'New expense',
         languageSettings: "App language",
         english: "English",
         spanish: "Spanish",
+        french: "French",
         defaultExpense: 'Default expenses',
         contact: 'Contact',
         contactText: 'Any doubts or bugs to report?',
@@ -100,24 +103,33 @@ export var enDictionary = {
         defaultLabel3: 'Others'
     },
     help: {
-        title: "Help",
-        appTitle: "Pukete",
-        slogan: "Clean numbers keep friendship :)",
-        skip: "skip"
+        title: "HELP",
+        appTitle: "PUKETE",
+        slogan: "Thanks for chossing the app :) Slide to know how it works",
+        skip: "skip",
+        slide1Title: 'Just add an event',
+        slide2Title: 'Add people and their expenses',
+        slide3Title: 'And Calculate!',
+        slide3SubTitle: 'Also you can share after...',
+        slide3Button: 'Peace of Cake, Let’s Begin!'
     },
     results: {
-        title: "Results",
+        title: "RESULTS",
         totalFor: "Total for",
+        noNameEvent: 'No name event',
         spentInTotal: "spent in total: ",
+        details: 'Details:',
         and: " and",
         gets: "gets ",
         gives: "gives ",
         isEven: "is even",
         paid: " paid ",
-        for: " for ",
+        for: " For ",
         counted: "it was counted",
         notCounted: "it wasn't counted",
         noConsumption: " there's been payments but no consuption.",
-        attention: "Attention, in "
+        attention: "Attention, in ",
+        in: 'In ',
+        itHasBeenSpent: ' it has been spent: '
     }
 };

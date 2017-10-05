@@ -1,2 +1,36 @@
 page-list {
+    h2{
+        color: color($colors, dark) !important;
+        font-weight: 600 !important;
+    }
+    p{
+        color: color($colors, less-dark) !important;
+    }
+    ion-item{
+        button{
+            font-size: unset !important;
+        }
+    }
+    .arrow-no-person{
+        position: absolute;
+        top: 30px;
+        right: 30px;
+    }
+    .mouse-no-person{
+        display: block;
+        margin: 0 auto;
+    }
+    .no-person-desc{
+        color: color($colors, dark) !important;
+        width: 195px;
+        font-weight: bold;
+        display: block;
+        margin: 0 auto;
+        span{
+            font-size: smaller;
+        }
+    }
+    .no-person-container{
+        padding: 16px;
+    }
 }

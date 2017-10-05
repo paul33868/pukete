@@ -1,17 +1,8 @@
 help-page {
-    img {
-            max-width: 80% !important;
+    .swiper-pagination-bullet-active{
+        background: color($colors, primary) !important;
     }
-
-    ion-icon{
-        font-size: -webkit-xxx-large;
-    }
-
-    ion-avatar{
-        width: 60px;
-    }
-
-    p{
-        white-space: initial;
+    .help-desc{
+        font-size: x-large;
     }
 }

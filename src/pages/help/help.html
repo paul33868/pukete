@@ -14,21 +14,40 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
-  <ion-slides pager>
+<ion-content padding>
+  <ion-slides pager
+              color="primary">
     <ion-slide>
-      <img src="assets/icon.png" />
+      <img src="assets/logo-help.png" />
       <h1>{{dictionary?.help?.appTitle}}</h1>
       <p>{{dictionary?.help?.slogan}}</p>
+      <ion-item-group>
+        <ion-item>
+          <ion-label>{{dictionary?.settings?.language}}</ion-label>
+          <ion-select [(ngModel)]="language"
+                      (ionChange)="selectedLanguage($event)">
+            <ion-option value="en">{{dictionary?.settings?.english}}</ion-option>
+            <ion-option value="es">{{dictionary?.settings?.spanish}}</ion-option>
+            <ion-option value="fr">{{dictionary?.settings?.french}}</ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-item-group>
     </ion-slide>
     <ion-slide>
-      <h1>Slide 1</h1>
+      <img src="assets/help-add.png" />
+      <p class="help-desc">{{dictionary?.help?.slide1Title}}</p>
     </ion-slide>
     <ion-slide>
-      <h1>Slide 2</h1>
+      <img src="assets/help-people.png" />
+      <p class="help-desc">{{dictionary?.help?.slide2Title}}</p>
     </ion-slide>
     <ion-slide>
-      <h1>Slide 3</h1>
+      <img src="assets/help-calculate.png" />
+      <p class="help-desc">{{dictionary?.help?.slide3Title}}</p>
+      <p>{{dictionary?.help?.slide3SubTitle}}</p>
+      <button ion-button
+              color="dark"
+              (click)="skip()">{{dictionary?.help?.slide3Button}}</button>
     </ion-slide>
   </ion-slides>
 </ion-content>

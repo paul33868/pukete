@@ -1,70 +1,22 @@
 index-page {
-    .error-message{
-        color: #f53d3d !important;
-    }
-    .error-event-message{
-        color: #f53d3d;
-        margin-left: 16px;
-        font-size: smaller;
-    }
-    .checkbox-container{
-        display: table-cell;
-        div {
-            display: flex;
-        }
-    }
     .calculate-button{
         margin-bottom: 0px;
     }
-    .persons-input{
-        padding-left: 0px;
-        span{
-            margin-right: 0px !important;
-        }
-        input{
-            margin-left: 2px !important;
-            margin-right: 0px !important;
-        }
-    }
-    .bottom-description{
-        font-size: smaller;
-    }
     .already-paid-description{
-        font-size: initial;
-        margin-top: 11px;
+        margin-top: 13px;
+    }
+    #expense-input{
+        input{
+            width: 100%;
+        }
     }
     .add-expense-button{
         margin-right: 0px !important;
     }
-    .inputs-col{
-        position: initial !important;
-    }
     .footer-md::before, .tabs-md[tabsPlacement="bottom"] > .tabbar::before {
         height: 0px !important;
     }
-    ion-footer{
-        text-align: center;
-    }
-    .event-card-container{
-        ion-item{
-            padding-left: 0px
-        }
+    .inputs-col{
+        position: initial !important;
     }
 }
-
-.resume-alert{
-        >div {
-            .alert-head{
-                padding-bottom: 0px;
-            }
-            .person-gets{
-                color: #32db64;
-            }
-            .person-gives{
-                color: #f53d3d;
-            }
-            .person-details{
-                color: #434a54;
-            }
-        }
-    }

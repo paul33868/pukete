@@ -3,18 +3,27 @@ results-page {
         white-space: normal;
     }
     .person-gets{
-        color: #32db64;
+        color: color($colors, primary) !important;
+        font-weight: bold !important;
     }
     .person-gives{
-        color: #f53d3d;
+        color: color($colors, danger) !important;
+        font-weight: bold !important;
     }
     .person-equal{
-        color: lightgray;
+        color: color($colors, light) !important;
+        font-weight: bold !important;
     }
     .payment-details{
-        font-size: smaller;
+        line-height: 20px;
+        font-size: x-small;
     }
     .event-total{
-        color: #488aff
+        color: color($colors, secondary) !important;
+    }
+    .sing-show-hide{
+        font-size: xx-large;
+        font-weight: bold;
+        color: color($colors, light) !important;
     }
 }

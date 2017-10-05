@@ -5,9 +5,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { ListPage } from "../pages/list/list";
 import { NativeStorage } from "@ionic-native/native-storage";
 import { HelpPage } from "../pages/help/help";
-import { enDictionary } from "../utils/en-dictionary";
-import { esDictionary } from "../utils/es-dictionary";
 import { SettingsPage } from "../pages/settings/settings";
+import { DataProvider } from "../providers/data";
 
 @Component({
   templateUrl: 'app.html'
@@ -19,7 +18,6 @@ export class PuketeApp implements OnDestroy {
   private pages: Array<{ title: string, component: any, icon: string }>;
   private isFirstTime: boolean = true;
   private dictionary: any;
-  private expenses: Array<string> = [];
 
   constructor(
     private platform: Platform,
@@ -27,26 +25,51 @@ export class PuketeApp implements OnDestroy {
     private statusBar: StatusBar,
     private splashScreen: SplashScreen,
     private nativeStorage: NativeStorage,
-    private events: Events) {
+    private events: Events,
+    private dataProvider: DataProvider) {
     this.initializeApp();
   }
 
+  initializeApp() {
+    this.platform.ready().then(() => {
+      this.statusBar.styleDefault();
+      this.splashScreen.hide();
+      this.init();
+      this.updateLanguage();
+    });
+  }
+
   init() {
-    if (this.platform.is('cordova')) {
-      this.setLanguage();
-      this.displayHelpPage();
-    }
-    else {
-      this.setDictionary('es');
-      this.rootPage = ListPage;
-    }
-    this.updateLanguage();
+    this.displayHelpPage()
+      .then(() => {
+        if (this.isFirstTime) {
+          this.dataProvider.save('en', ['Drinks', 'Food', 'Others'], '$')
+            .then(() => {
+              this.setLanguage();
+            });
+        }
+        else {
+          this.setLanguage();
+        }
+      });
+  }
+
+  setLanguage() {
+    this.dataProvider.getDictionary()
+      .then(dictionary => {
+        this.dictionary = dictionary;
+        this.setPages();
+      });
   }
 
   updateLanguage() {
     this.events.subscribe('language:changed', (language) => {
-      console.info('changed' + language);
-      this.setDictionary(language);
+      console.info('changed to ' + language);
+      this.dataProvider.getDictionary()
+        .then(dictionary => {
+          this.dictionary = dictionary;
+          this.setPages();
+        });
     });
   }
 
@@ -54,30 +77,8 @@ export class PuketeApp implements OnDestroy {
     this.events.unsubscribe('language:changed');
   }
 
-  setLanguage() {
-    // Set language
-    this.nativeStorage.getItem('settings')
-      .then(
-      data => {
-        this.setDictionary(data.language);
-        this.setPages();
-      },
-      error => {
-        // Set default labels for the 1 time. It's going to be in english.
-        this.expenses = ['Drinks', 'Food', 'Others'];
-        this.nativeStorage.setItem('settings', { language: 'en', defaultExpenses: this.expenses, defaultCurrencySymbol: '$' })
-          .then(
-          () => {
-            console.info('Changed language');
-            this.setDictionary('en');
-            this.setPages();
-          },
-          (error) => { console.error(`Error storing event: ${JSON.stringify(error)}`) });
-      });
-  }
-
   displayHelpPage() {
-    this.nativeStorage.keys()
+    return this.nativeStorage.keys()
       .then(
       data => {
         if (data.length > 0) {
@@ -90,16 +91,10 @@ export class PuketeApp implements OnDestroy {
           this.rootPage = ListPage;
         }
       },
-      error => console.error(error)
-      );
-  }
-
-  initializeApp() {
-    this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
-      this.init();
-    });
+      error => {
+        console.error(error);
+        this.rootPage = ListPage;
+      });
   }
 
   openPage(page) {
@@ -108,22 +103,12 @@ export class PuketeApp implements OnDestroy {
   }
 
   setPages() {
-    this.pages = [
-      { title: this.dictionary.menu.list, component: ListPage, icon: 'list' },
-      { title: this.dictionary.menu.help, component: HelpPage, icon: 'help' },
-      { title: this.dictionary.menu.settings, component: SettingsPage, icon: 'settings' }
-    ];
-  }
-
-  setDictionary(language: string) {
-    switch (language) {
-      case 'en':
-        this.dictionary = enDictionary
-        break;
-      case 'es':
-        this.dictionary = esDictionary
-        break;
+    if (this.dictionary) {
+      this.pages = [
+        { title: this.dictionary.menu.list, component: ListPage, icon: 'list' },
+        { title: this.dictionary.menu.help, component: HelpPage, icon: 'help' },
+        { title: this.dictionary.menu.settings, component: SettingsPage, icon: 'settings' }
+      ];
     }
-    this.setPages();
   }
 }

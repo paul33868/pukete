@@ -9,11 +9,11 @@ import { SocialSharing } from "@ionic-native/social-sharing";
 import { ListPage } from "../pages/list/list";
 import { NativeStorage } from "@ionic-native/native-storage";
 import { HelpPage } from "../pages/help/help";
-import { TextMaskModule } from 'angular2-text-mask';
 import { SettingsPage } from "../pages/settings/settings";
 import { ResultsPage } from "../pages/results/results";
 import { EventDetailsPage } from "../pages/event-details/event-details";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DataProvider } from "../providers/data";
 
 @NgModule({
   declarations: [
@@ -28,8 +28,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    IonicModule.forRoot(PuketeApp),
-    TextMaskModule
+    IonicModule.forRoot(PuketeApp)
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -46,6 +45,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     SplashScreen,
     SocialSharing,
     NativeStorage,
+    DataProvider,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })

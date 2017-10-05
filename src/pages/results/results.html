@@ -16,37 +16,46 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-item>
-      <h1 class="event-total">{{dictionary?.results?.totalFor}} {{event?.name}}: <strong>{{defaultCurrency}}{{event?.total | number:'1.2-2'}}</strong></h1>
+  <ion-item (click)="showHideEventDetails()">
+    <h2>{{dictionary?.results?.totalFor}} <strong>{{event?.name}}:</strong></h2>
+    <h1 class="event-total"><strong>{{defaultCurrency}}{{event?.total | number:'1.2-2'}}</strong></h1>
+    <div *ngFor="let expense of event?.expenses">
+      <p class="person-gives"
+         *ngIf="expense.persons === 0 && expense.total > 0">{{dictionary?.results?.attention}} <strong>{{expense.name}}</strong> {{dictionary?.results?.noConsumption}}</p>
+    </div>
+    <div *ngIf="eventSing === '-'"
+         [@personCardAnimation]>
+      <h3>{{dictionary?.results?.details}}</h3>
       <div *ngFor="let expense of event?.expenses">
-        <p class="person-gives"
-           *ngIf="expense.persons === 0 && expense.total > 0">{{dictionary?.results?.attention}} <strong>{{expense.name}}</strong> {{dictionary?.results?.noConsumption}}</p>
+        <p class="payment-details">{{dictionary?.results?.in}}<strong>{{expense.name}}</strong>{{dictionary?.results?.itHasBeenSpent}} <strong>{{defaultCurrency}}{{expense.total}}</strong></p>
       </div>
-
-    </ion-item>
+    </div>
+    <p item-end
+       class="sing-show-hide">{{eventSing}}</p>
+  </ion-item>
+  <ion-list>
     <ion-item *ngFor="let person of event?.persons"
               (click)="showHideExpenseDetails(person)">
       <h2><strong>{{person.name}} </strong>{{dictionary?.results?.spentInTotal}}<strong>{{defaultCurrency}}{{person.totalSpent | number:'1.2-2'}}</strong>{{dictionary?.results?.and}}</h2>
-      <h1 [ngClass]="{'person-gets': person.balance > 0, 'person-gives': person.balance < 0, 'person-equal': person.balance == 0}">
-        <span *ngIf="person.balance > 0">{{dictionary?.results?.gets}} {{defaultCurrency}}{{person.balance | number:'1.2-2'}}</span>
-        <span *ngIf="person.balance < 0">{{dictionary?.results?.gives}} {{defaultCurrency}}{{-person.balance | number:'1.2-2'}}</span>
-        <span *ngIf="person.balance == 0">{{dictionary?.results?.isEven}}</span>
-      </h1>
-      <div *ngIf="personIDToDisplay === person.id && person.arrowToDisplayed === 'arrow-dropup-circle'"
+      <div [ngClass]="{'person-gets': person.balance > 0, 'person-gives': person.balance < 0, 'person-equal': person.balance == 0}">
+        <h1 *ngIf="person.balance > 0">{{dictionary?.results?.gets}} {{defaultCurrency}}{{person.balance | number:'1.2-2'}}</h1>
+        <h1 *ngIf="person.balance < 0">{{dictionary?.results?.gives}} {{defaultCurrency}}{{-person.balance | number:'1.2-2'}}</h1>
+        <h1 *ngIf="person.balance == 0">{{dictionary?.results?.isEven}}</h1>
+      </div>
+      <div *ngIf="personIDToDisplay === person.id && person.arrowToDisplayed === '-'"
            [@personCardAnimation]>
+        <h3>{{dictionary?.results?.details}}</h3>
         <p class="payment-details"
            *ngFor="let personExpense of person.expenses">
-          {{dictionary?.results?.paid}}
-          <strong>{{defaultCurrency}}{{personExpense?.amount | number:'1.2-2'}}</strong> {{dictionary?.results?.for}}
-          <strong>{{personExpense?.expense?.name}}</strong> {{dictionary?.results?.and}}
+          {{dictionary?.results?.for}}
+          <strong>{{personExpense?.expense?.name}}</strong> {{dictionary?.results?.paid}}
+          <strong>{{defaultCurrency}}{{personExpense?.amount | number:'1.2-2'}}</strong> {{dictionary?.results?.and}}
           <strong *ngIf="personExpense?.isIn">{{dictionary?.results?.counted}}</strong>
           <strong *ngIf="!personExpense?.isIn">{{dictionary?.results?.notCounted}}</strong>
         </p>
       </div>
-      <ion-icon name="{{person.arrowToDisplayed}}"
-                item-end></ion-icon>
+      <p item-end
+         class="sing-show-hide">{{person.arrowToDisplayed}}</p>
     </ion-item>
-
   </ion-list>
 </ion-content>

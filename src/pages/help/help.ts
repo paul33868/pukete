@@ -1,55 +1,51 @@
 import { Component } from '@angular/core';
-import { Nav, Events, Platform } from "ionic-angular";
-import { NativeStorage } from "@ionic-native/native-storage";
-import { enDictionary } from "../../utils/en-dictionary";
-import { esDictionary } from "../../utils/es-dictionary";
+import { Nav, Events } from "ionic-angular";
 import { ListPage } from "../list/list";
+import { DataProvider } from "../../providers/data";
+import { enDictionary } from "../../utils/en-dictionary";
 
 @Component({
   selector: 'help-page',
   templateUrl: 'help.html'
 })
 export class HelpPage {
-  private language: string;
   private dictionary: any;
+  private language: string = 'en';
 
   constructor(
     private nav: Nav,
-    private nativeStorage: NativeStorage,
-    private events: Events,
-    private platform: Platform) {
-
-    if (this.platform.is('cordova')) {
-      this.setDictionary();
-    }
-    else {
-      this.setLanguage('es');
-    }
+    private dataProvider: DataProvider,
+    private events: Events) {
+    // Fix to show the initial values on the select
+    this.dictionary = enDictionary;
+    this.setData();
   }
 
-  setDictionary() {
-    this.nativeStorage.getItem('settings')
-      .then(
-      data => {
-        this.setLanguage(data.language);
-      },
-      error => { console.error(`Error getting the dictionary: ${error}`) });
-  }
+  setData() {
+    this.dataProvider.getLanguage()
+      .then(language => {
+        this.language = language;
+      });
 
-  setLanguage(data) {
-    switch (data) {
-      case 'en':
-        this.dictionary = enDictionary
-        this.language = 'en';
-        break;
-      case 'es':
-        this.dictionary = esDictionary
-        this.language = 'es';
-        break;
-    }
+    this.dataProvider.getDictionary()
+      .then(dictionary => {
+        this.dictionary = dictionary;
+      });
   }
 
   skip() {
     this.nav.setRoot(ListPage);
+  }
+
+  selectedLanguage(language: string) {
+    this.language = language;
+    this.dataProvider.save(language)
+      .then(() => {
+        this.dataProvider.getDictionary()
+          .then(dictionary => {
+            this.dictionary = dictionary;
+            this.events.publish('language:changed', language);
+          });
+      });
   }
 }

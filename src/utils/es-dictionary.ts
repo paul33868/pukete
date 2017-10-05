@@ -4,7 +4,7 @@ export var esDictionary = {
         alreadyHasNameError: 'Otra persona ya tiene este nombre',
         noNameError: 'Por favor introduzca un nombre',
         validAmountError: "Por favor introduzca un valor válido para todos los gastos",
-        event: 'Evento',
+        event: 'EVENTO',
         for: 'por ',
         and: ' y ',
         ItIs: 'está ',
@@ -29,7 +29,7 @@ export var esDictionary = {
         }
     },
     eventDetails: {
-        title: 'Detalles del evento',
+        title: 'DETALLES DEL EVENTO',
         expenses: 'Gastos',
         newExpensePlaceholder: 'Nuevo gasto',
         expensePlaceholder: 'Gasto',
@@ -49,9 +49,10 @@ export var esDictionary = {
         }
     },
     list: {
-        title: 'Mis eventos',
+        title: 'MIS EVENTOS',
         created: 'Creado el',
         noNameEvent: 'Evento sin nombre',
+        noPersonDescription: 'Ese botón debe servir para algo importante...',
         inputs: {
             search: "Buscar evento"
         },
@@ -64,17 +65,19 @@ export var esDictionary = {
         }
     },
     menu: {
-        menu: "Menú",
+        menu: "MENU",
         list: "Eventos",
         help: "Ayuda",
         settings: "Ajustes"
     },
     settings: {
-        title: "Ajustes",
+        title: "AJUSTES",
         language: "Idioma de la app",
         languageSettings: "Idioma",
+        newExpensePlaceholder: 'Nuevo gasto',
         english: "Inglés",
         spanish: "Español",
+        french: "Francés",
         defaultExpense: 'Gastos por defecto',
         contact: 'Contacto',
         currencySettings: 'Moneda',
@@ -99,24 +102,34 @@ export var esDictionary = {
         defaultLabel3: 'Otros'
     },
     help: {
-        title: "Ayuda",
-        appTitle: "Pukete",
-        slogan: "Cuentas claras conservan la amistad :)",
-        skip: "saltar"
+        title: "AYUDA",
+        appTitle: "PUKETE",
+        slogan: "Gracias por elegir la app :) Desliza para saber cómo funciona",
+        skip: "saltar",
+        slide1Title: 'Crea un evento',
+        slide2Title: 'Agrega participantes y gastos',
+        slide3Title: 'Y calcula!',
+        slide3SubTitle: 'También es posible compartir los resultados!',
+        slide3Button: 'Es fácil, empecemos!',
+
     },
     results: {
-        title: "Resultados",
+        title: "RESULTADOS",
         totalFor: "Total por",
+        noNameEvent: 'Evento sin nombre',
         spentInTotal: "gastó en total: ",
+        details: 'Detalles:',
         and: " y",
         gets: "recibe ",
         gives: "da ",
         isEven: "está saldado/a",
         paid: " pagó ",
-        for: " por ",
+        for: " Por ",
         counted: "fue contado/a",
         notCounted: "no fue contado/a",
         noConsumption: " hubo pagos pero no consumos.",
-        attention: "Atención, en "
+        attention: "Atención, en ",
+        in: 'En ',
+        itHasBeenSpent: ' se ha gastado: '
     }
 };

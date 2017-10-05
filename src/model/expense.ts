@@ -4,7 +4,6 @@ export class Expense {
     public persons: number = 0;
     public total: number = 0;
     public totalPerPerson: number = 0;
-    public error: string = '';
 
     constructor(name: string, id: number) {
         this.name = name;

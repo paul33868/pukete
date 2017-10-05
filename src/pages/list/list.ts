@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController, Platform } from 'ionic-angular';
+import { NavController, AlertController, Platform } from 'ionic-angular';
 import { NativeStorage } from '@ionic-native/native-storage';
 import { IndexPage } from "../index/index";
 import { PuketeEvent } from "../../model/event";
-import { enDictionary } from "../../utils/en-dictionary";
-import { esDictionary } from "../../utils/es-dictionary";
 import { trigger, style, animate, transition } from "@angular/animations";
+import { DataProvider } from "../../providers/data";
 
 @Component({
   selector: 'page-list',
@@ -38,44 +37,25 @@ export class ListPage {
 
   constructor(
     private navCtrl: NavController,
-    private navParams: NavParams,
     private nativeStorage: NativeStorage,
     private alertCtrl: AlertController,
-    private platform: Platform) {
-  }
+    private platform: Platform,
+    private dataProvider: DataProvider) { }
 
   ionViewWillEnter() {
-    if (this.platform.is('cordova')) {
-      this.setDictionary();
-      this.init();
-    }
-    else {
-      this.setLanguage('es');
-      this.defaultExpenses = [this.dictionary.settings.defaultLabel1, this.dictionary.settings.defaultLabel2, this.dictionary.settings.defaultLabel3];
-    }
+    this.setData();
   }
 
-  setDictionary() {
-    this.nativeStorage.getItem('settings')
-      .then(
-      data => {
-        this.setLanguage(data.language);
-        this.defaultExpenses = data.defaultExpenses;
-      },
-      error => { console.error(`Error getting the dictionary: ${error}`) });
-  }
-
-  setLanguage(data) {
-    switch (data) {
-      case 'en':
-        this.dictionary = enDictionary
-        this.language = 'en';
-        break;
-      case 'es':
-        this.dictionary = esDictionary
-        this.language = 'es';
-        break;
-    }
+  setData() {
+    this.dataProvider.getDictionary()
+      .then(dictionary => {
+        this.dictionary = dictionary;
+        this.dataProvider.getDefaultExpenses()
+          .then(expenses => {
+            this.defaultExpenses = expenses;
+            this.init();
+          });
+      });
   }
 
   init() {
@@ -88,7 +68,7 @@ export class ListPage {
             this.nativeStorage.getItem(data[i])
               .then(
               data => {
-                if (data['name'] === '') {
+                if (data['name'] === '' || data['name'] === undefined || data['name'].trim().length === 0) {
                   data['name'] = this.dictionary.list.noNameEvent;
                 }
                 this.items.push(data);
@@ -114,13 +94,11 @@ export class ListPage {
   }
 
   addEvent() {
+    console.log(this.defaultExpenses);
     let event = new PuketeEvent(new Date().getTime(), this.language, this.defaultExpenses);
     console.info(`New event created`);
     if (this.platform.is('cordova')) {
-      this.nativeStorage.setItem(event.id.toString(), event)
-        .then(
-        () => { console.info('Stored event!') },
-        (error) => { console.error(`Error storing event: ${JSON.stringify(error)}`) });
+      this.dataProvider.saveEvent(event.id.toString(), event);
     }
     this.goToPage(event);
   }

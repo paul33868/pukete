@@ -17,6 +17,7 @@
                   (ionChange)="selectedLanguage($event)">
         <ion-option value="en">{{dictionary?.settings?.english}}</ion-option>
         <ion-option value="es">{{dictionary?.settings?.spanish}}</ion-option>
+        <ion-option value="fr">{{dictionary?.settings?.french}}</ion-option>
       </ion-select>
     </ion-item>
   </ion-item-group>
@@ -24,7 +25,7 @@
     <ion-item-divider color="light">{{dictionary?.settings?.defaultExpense}}</ion-item-divider>
     <ion-item class="event-name-input">
       <ion-input type="text"
-                 placeholder="New expense"
+                 placeholder="{{dictionary?.settings?.newExpensePlaceholder}}"
                  (ionBlur)="checkNewExpenseName($event)"
                  (keyup)="checkNewExpenseName($event)"
                  [(ngModel)]="newEvent"
@@ -35,13 +36,15 @@
               icon-only
               item-end
               clear
+              color="primary"
               (click)="addDefaultExpense()"
               [disabled]="newEvent === undefined || newEvent === '' || newEventErrorDescription !== ''">
             <ion-icon name="add-circle"></ion-icon>
             </button>
     </ion-item>
-    <span class="error-message"
-          *ngIf="newEventErrorDescription !== ''">{{newEventErrorDescription}}</span>
+    <p padding-left
+       class="error-message"
+       *ngIf="newEventErrorDescription !== ''">{{newEventErrorDescription}}</p>
     <ion-item *ngFor="let defaultExpense of defaultExpenses"
               [@eventItemAnimation]>
       {{defaultExpense}}
@@ -49,7 +52,7 @@
               icon-only
               item-end
               clear
-              color="danger"
+              color="dark"
               [disabled]="defaultExpenses.length < 1"
               (click)="removeDefaultExpense(defaultExpense)">
             <ion-icon name="trash"></ion-icon>
@@ -73,6 +76,7 @@
     <ion-item (click)="sendEmail()">
       {{dictionary?.settings?.contactText}}
       <ion-icon name="mail"
+                color="dark"
                 item-end></ion-icon>
     </ion-item>
   </ion-item-group>

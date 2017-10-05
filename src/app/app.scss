@@ -1,16 +1,69 @@
-// http://ionicframework.com/docs/v2/theming/
+body, span, button, h1, h2, h3, h4, h5, h6, p, ion-item, ion-title, ion-label, ion-select, ion-searchbar {
+    font-family: 'Montserrat' !important;
+    line-height: 1.69 !important;
+    letter-spacing: 0.2px !important;
+  }
 
+.toggle-ios {
+    display: block !important;
+}
+.toggle-md {
+    display: block !important;
+}
+.error-message{
+    color: color($colors, danger) !important;
+}
 
-// App Global Sass
-// --------------------------------------------------
-// Put style rules here that you want to apply globally. These
-// styles are for the entire app and not just one component.
-// Additionally, this file can be also used as an entry point
-// to import other Sass files to be included in the output CSS.
-//
-// Shared Sass variables, which can be used to adjust Ionic's
-// default Sass variables, belong in "theme/variables.scss".
-//
-// To declare rules for a specific mode, create a child rule
-// for the .md, .ios, or .wp mode classes. The mode class is
-// automatically applied to the <body> element in the app.
+ion-label{
+    color: color($colors, less-dark) !important;
+}
+
+ion-select{
+    color: color($colors, dark) !important;
+}
+
+ion-searchbar{
+    .searchbar-search-icon{
+        color: color($colors, dark) !important;
+    }
+    input{
+        color: color($colors, less-dark) !important;
+    }
+}
+
+ion-title{
+    div{
+        font-size: 14px !important;
+        color: color($colors, dark) !important;
+        font-weight: 600 !important;
+    }
+}
+
+ion-navbar{
+    .bar-button-menutoggle{
+        color: color($colors, dark) !important;
+    }
+    .back-button{
+        color: color($colors, dark) !important;
+    }
+}
+
+ion-item-divider{
+    font-size: 14px !important;
+    line-height: 1.93 !important;
+    letter-spacing: 0.1px !important;
+    color: color($colors, dark) !important;
+    font-weight: 600 !important;
+}
+p{
+    color: color($colors, less-dark) !important;
+}
+input{
+    color: color($colors, dark) !important;
+}
+ion-alert{
+    h2{
+        color: color($colors, dark) !important;
+    }
+}
+

@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
-import { Nav, Events, Platform, NavParams, AlertController } from "ionic-angular";
-import { NativeStorage } from "@ionic-native/native-storage";
-import { enDictionary } from "../../utils/en-dictionary";
-import { esDictionary } from "../../utils/es-dictionary";
+import { Platform, NavParams, AlertController } from "ionic-angular";
 import { PuketeEvent } from "../../model/event";
 import { Expense } from "../../model/expense";
 import { trigger, style, animate, transition } from "@angular/animations";
+import { DataProvider } from "../../providers/data";
 
 @Component({
   selector: 'event-details-page',
@@ -26,47 +24,20 @@ import { trigger, style, animate, transition } from "@angular/animations";
 })
 export class EventDetailsPage {
   private dictionary: any;
-  private language: string;
   private event: PuketeEvent;
   private newEvent: string = '';
   private newEventErrorDescription: string = '';
 
   constructor(
-    private nav: Nav,
-    private nativeStorage: NativeStorage,
-    private events: Events,
     private platform: Platform,
     private navParams: NavParams,
-    private alertCtrl: AlertController) {
+    private alertCtrl: AlertController,
+    private dataProvider: DataProvider) {
     this.event = this.navParams.get('selectedEvent');
-    if (this.platform.is('cordova')) {
-      this.setDictionary();
-    }
-    else {
-      this.setLanguage('es');
-    }
-  }
-
-  setDictionary() {
-    this.nativeStorage.getItem('settings')
-      .then(
-      data => {
-        this.setLanguage(data.language);
-      },
-      error => { console.error(`Error getting the dictionary: ${error}`) });
-  }
-
-  setLanguage(data) {
-    switch (data) {
-      case 'en':
-        this.dictionary = enDictionary
-        this.language = 'en';
-        break;
-      case 'es':
-        this.dictionary = esDictionary
-        this.language = 'es';
-        break;
-    }
+    this.dataProvider.getDictionary()
+      .then(dictionary => {
+        this.dictionary = dictionary;
+      });
   }
 
   removeExpense(expense: Expense) {
@@ -92,10 +63,8 @@ export class EventDetailsPage {
                       }
                     });
                   });
-                  this.editEventExpenseName(this.event.expenses[0]);
-                  if (this.platform.is('cordova')) {
-                    this.save();
-                  }
+                  this.checkNewEventName(this.event.expenses[0]);
+                  this.save();
                 }
               }
             ]
@@ -127,9 +96,7 @@ export class EventDetailsPage {
           isIn: true
         })
       });
-      if (this.platform.is('cordova')) {
-        this.save();
-      }
+      this.save();
     }
   }
 
@@ -148,51 +115,9 @@ export class EventDetailsPage {
     }
   }
 
-  editEventExpenseName(expense: Expense) {
-    this.event.expenses.forEach(expense => {
-      expense.error = '';
-      if (expense.name === undefined || expense.name === '') {
-        expense.error = this.dictionary.eventDetails.noNameExpenseError;
-      }
-    });
-    for (var index1 = 0; index1 < this.event.expenses.length; index1++) {
-      for (var index2 = 1; index2 < this.event.expenses.length; index2++) {
-        if (this.event.expenses[index1].name !== undefined && this.event.expenses[index1].name !== '') {
-          if (this.event.expenses[index2].name !== undefined && this.event.expenses[index2].name !== '') {
-            if (this.event.expenses[index1].id !== this.event.expenses[index2].id && this.event.expenses[index1].name.toLowerCase() === this.event.expenses[index2].name.toLowerCase()) {
-              this.event.expenses[index1].error = this.dictionary.eventDetails.alredyExpenseError;
-              this.event.expenses[index2].error = this.dictionary.eventDetails.alredyExpenseError;
-            }
-          }
-          else {
-            this.event.expenses[index2].error = '';
-          }
-        }
-        else {
-          this.event.expenses[index1].error = '';
-        }
-      }
-    }
-    if (expense.error === '') {
-      this.event.expenses.forEach((expenseInEvent, i) => {
-        this.event.persons.forEach((personInEvent, i) => {
-          personInEvent.expenses.forEach((expenseInPerson, i) => {
-            if (expenseInPerson.expense.id === expense.id) {
-              expenseInPerson.expense = expense;
-            }
-          });
-        });
-      });
-      if (this.platform.is('cordova')) {
-        this.save();
-      }
-    }
-  }
-
   save() {
-    this.nativeStorage.setItem(this.event.id.toString(), this.event)
-      .then(
-      () => { console.info('Stored event!') },
-      (error) => { console.error(`Error storing event: ${JSON.stringify(error)}`) });
+    if (this.platform.is('cordova')) {
+      this.dataProvider.saveEvent(this.event.id.toString(), this.event);
+    }
   }
 }

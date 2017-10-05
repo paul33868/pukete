@@ -9,53 +9,38 @@
 </ion-header>
 
 <ion-content>
-  <ion-card>
-    <ion-card-header>
-      <h1 class="expense-title">{{dictionary?.eventDetails?.expenses}}</h1>
-      <ion-item class="expense-input">
-        <ion-input type="text"
-                   placeholder="{{dictionary?.eventDetails?.newExpensePlaceholder}}"
-                   (ionBlur)="checkNewEventName($event)"
-                   (keyup)="checkNewEventName($event)"
-                   [(ngModel)]="newEvent"
-                   (keyup.enter)="addExpense()"
-                   [attr.maxlength]="15">
-        </ion-input>
-        <button ion-button
-                icon-only
-                item-end
-                clear
-                (click)="addExpense()"
-                [disabled]="newEvent === undefined || newEvent === '' || newEventErrorDescription !== ''">
-            <ion-icon name="add-circle"></ion-icon>
-            </button>
-      </ion-item>
-      <span class="error-message-header">{{newEventErrorDescription}}</span>
-    </ion-card-header>
-
-    <ion-card-content *ngFor="let expense of event?.expenses"
-                      [@eventItemAnimation]>
-      <ion-item class="expense-input">
-        <ion-input type="text"
-                   placeholder="{{dictionary?.eventDetails?.expensePlaceholder}}"
-                   [(ngModel)]="expense.name"
-                   (ionBlur)="editEventExpenseName(expense, $event)"
-                   (keyup)="editEventExpenseName(expense, $event)"
-                   [attr.maxlength]="15"
-                   required>
-        </ion-input>
-        <button ion-button
-                icon-only
-                item-end
-                clear
-                color="danger"
-                (click)="removeExpense(expense)">
-            <ion-icon name="trash"></ion-icon>
-            </button>
-      </ion-item>
-      <span class="error-message">{{expense.error}}</span>
-    </ion-card-content>
-
-  </ion-card>
-
+  <ion-item-group>
+    <ion-item-divider color="light">{{dictionary?.eventDetails?.expenses}}</ion-item-divider>
+    <ion-item>
+      <ion-input type="text"
+                 placeholder="{{dictionary?.eventDetails?.newExpensePlaceholder}}"
+                 (keyup)="checkNewEventName($event)"
+                 [(ngModel)]="newEvent"
+                 (keyup.enter)="addExpense()"
+                 [attr.maxlength]="15">
+      </ion-input>
+      <button ion-button
+              icon-only
+              item-end
+              clear
+              (click)="addExpense()"
+              [disabled]="newEvent === undefined || newEvent === '' || newEventErrorDescription !== ''">
+                <ion-icon name="add-circle"></ion-icon>
+      </button>
+    </ion-item>
+    <p padding-left
+       class="error-message">{{newEventErrorDescription}}</p>
+    <ion-item *ngFor="let expense of event?.expenses"
+              [@eventItemAnimation]>
+      {{expense.name}}
+      <button ion-button
+              icon-only
+              item-end
+              clear
+              color="dark"
+              (click)="removeExpense(expense)">
+          <ion-icon name="trash"></ion-icon>
+        </button>
+    </ion-item>
+  </ion-item-group>
 </ion-content>

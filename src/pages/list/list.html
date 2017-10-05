@@ -7,7 +7,9 @@
     <ion-title>{{dictionary?.list?.title}}</ion-title>
     <ion-buttons right>
       <button ion-button
+              color="primary"
               icon-only
+              clear
               (click)="addEvent()">
         <ion-icon name="add-circle"></ion-icon>
       </button>
@@ -16,21 +18,30 @@
 </ion-header>
 
 <ion-content>
+  <div *ngIf="items.length == 0"
+       class="no-person-container">
+    <img src="assets/empty-image.png"
+         alt="noPersonsMouseImage"
+         class="mouse-no-person">
+    <img src="assets/eventslits-arrow.png"
+         alt="noPersonsArrowImage"
+         class="arrow-no-person">
+    <p text-center
+       class="no-person-desc">Hmmm....</p>
+    <h6 text-center
+        class="no-person-desc">{{dictionary?.list?.noPersonDescription}}</h6>
+  </div>
   <ion-searchbar (ionInput)="getEvents($event)"
+                 *ngIf="items.length > 0"
                  placeholder="{{dictionary?.list?.inputs?.search}}"></ion-searchbar>
-  <img src="assets/sampleLogoEvent.jpg"
-       *ngIf="events.length == 0"
-       [@noPersonImageAnimation]
-       height="100%"
-       width="100%"
-       alt="noPersonsImage">
-  <ion-list *ngIf="events.length > 0">
+  <ion-list *ngIf="items.length > 0">
     <ion-item *ngFor="let puketeEvent of events"
               [@eventItemAnimation]>
       <h2 (click)="goToPage(puketeEvent)">{{ puketeEvent.name }}</h2>
       <p (click)="goToPage(puketeEvent)">{{dictionary?.list?.created}}: {{ puketeEvent.creationDate }}</p>
       <button ion-button
-              color="danger"
+              color="dark"
+              clear
               (click)="removeEvent(puketeEvent)"
               item-end>
               <ion-icon name="trash"></ion-icon>

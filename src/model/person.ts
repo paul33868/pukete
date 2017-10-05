@@ -8,7 +8,7 @@ export class Person {
     public totalSpent: number = 0;
     public balance: number = 0;
     public error: string = '';
-    public arrowToDisplayed: string = 'arrow-dropdown-circle';
+    public arrowToDisplayed: string = '+';
 
     constructor(createdID: number) {
         this.id = createdID;

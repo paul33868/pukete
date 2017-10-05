@@ -1,13 +1,11 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavParams, AlertController, Platform, NavController } from "ionic-angular";
-import { NativeStorage } from '@ionic-native/native-storage';
 import { PuketeEvent } from "../../model/event";
 import { Person } from "../../model/person";
-import { enDictionary } from "../../utils/en-dictionary";
-import { esDictionary } from "../../utils/es-dictionary";
 import { ResultsPage } from "../results/results";
 import { EventDetailsPage } from "../event-details/event-details";
-import { trigger, style, animate, transition, state } from "@angular/animations";
+import { trigger, style, animate, transition } from "@angular/animations";
+import { DataProvider } from "../../providers/data";
 declare var document;
 
 @Component({
@@ -31,52 +29,32 @@ export class IndexPage {
   private event: PuketeEvent;
   private results: string;
   private dictionary: any;
-  private language: string;
   private errorsOnTheEvent: boolean;
   private defaultCurrency: string;
 
   constructor(
     private alertCtrl: AlertController,
-    private nativeStorage: NativeStorage,
     private navParams: NavParams,
     private platform: Platform,
-    private navCtrl: NavController) {
+    private navCtrl: NavController,
+    private dataProvider: DataProvider) {
     this.event = this.navParams.get('event');
     // If there's no person on the event, we add one by default
     if (this.event.persons.length === 0) {
       this.addPerson();
     }
-    if (this.platform.is('cordova')) {
-      this.setDictionary();
-    }
-    else {
-      this.setLanguage('es');
-      this.defaultCurrency = '$';
-    }
+
+    this.dataProvider.getDictionary()
+      .then(dictionary => {
+        this.dictionary = dictionary;
+      });
+
+    this.dataProvider.getCurrency()
+      .then(currency => {
+        this.defaultCurrency = currency;
+      });
+
     this.checkEvent();
-  }
-
-  setDictionary() {
-    this.nativeStorage.getItem('settings')
-      .then(
-      data => {
-        this.setLanguage(data.language);
-        this.defaultCurrency = data.defaultCurrencySymbol;
-      },
-      error => { console.error(`Error getting the dictionary: ${error}`) });
-  }
-
-  setLanguage(data) {
-    switch (data) {
-      case 'en':
-        this.dictionary = enDictionary
-        this.language = 'en';
-        break;
-      case 'es':
-        this.dictionary = esDictionary
-        this.language = 'es';
-        break;
-    }
   }
 
   addPerson() {
@@ -89,9 +67,7 @@ export class IndexPage {
       eventExpense.persons += 1;
     });
     this.event.persons.unshift(newPerson);
-    if (this.platform.is('cordova')) {
-      this.save();
-    }
+    this.save();
   }
 
   removePerson(person: Person) {
@@ -109,9 +85,7 @@ export class IndexPage {
               handler: () => {
                 this.event.persons.splice(i, 1)
                 this.checkEvent();
-                if (this.platform.is('cordova')) {
-                  this.save();
-                }
+                this.save();
               }
             }
           ]
@@ -168,60 +142,64 @@ export class IndexPage {
   }
 
   save() {
-    this.nativeStorage.setItem(this.event.id.toString(), this.event)
-      .then(
-      () => { console.info('Stored event!') },
-      (error) => { console.error(`Error storing event: ${JSON.stringify(error)}`) });
+    if (this.platform.is('cordova')) {
+      this.dataProvider.saveEvent(this.event.id.toString(), this.event);
+    }
   }
 
   checkEvent(selectedPerson?: Person, event?: any) {
-    if (this.event.persons.length >= 2 && this.event.name.length > 0) {
-      this.errorsOnTheEvent = false;
-    }
-    else {
-      this.errorsOnTheEvent = true;
-    }
-    this.event.persons.forEach(person => {
-      person.error = '';
-      person.expenses.forEach(personExpense => {
-        if (personExpense.amount < 0) {
-          if (this.dictionary) {
-            person.error = this.dictionary.index.validAmountError;
-            this.errorsOnTheEvent = true;
+    if (this.event.persons) {
+      // Check event's errors
+      if (this.event.persons.length >= 2) {
+        this.errorsOnTheEvent = false;
+      }
+      else {
+        this.errorsOnTheEvent = true;
+      }
+      // Check person's amount errors
+      this.event.persons.forEach(person => {
+        person.error = '';
+        person.expenses.forEach(personExpense => {
+          if (personExpense.amount < 0) {
+            if (this.dictionary) {
+              person.error = this.dictionary.index.validAmountError;
+              this.errorsOnTheEvent = true;
+            }
           }
-        }
+        });
       });
-    });
-    for (var index1 = 0; index1 < this.event.persons.length; index1++) {
-      if (this.event.persons[index1].name !== undefined && this.event.persons[index1].name !== '') {
-        for (var index2 = 1; index2 < this.event.persons.length; index2++) {
-          if (this.event.persons[index2].name !== undefined && this.event.persons[index2].name !== '') {
-            if (this.event.persons[index1].id !== this.event.persons[index2].id && this.event.persons[index1].name.toLowerCase() === this.event.persons[index2].name.toLowerCase()) {
+    }
+    // Check persons's errors
+    if (this.event.persons) {
+      for (var index1 = 0; index1 < this.event.persons.length; index1++) {
+        if (this.event.persons[index1].name !== undefined && this.event.persons[index1].name !== '' && this.event.persons[index1].name.trim().length > 0) {
+          for (var index2 = 1; index2 < this.event.persons.length; index2++) {
+            if (this.event.persons[index2].name !== undefined && this.event.persons[index2].name !== '' && this.event.persons[index1].name.trim().length > 0) {
+              if (this.event.persons[index1].id !== this.event.persons[index2].id && this.event.persons[index1].name.toLowerCase() === this.event.persons[index2].name.toLowerCase()) {
+                if (this.dictionary) {
+                  this.event.persons[index1].error = this.dictionary.index.alreadyHasNameError;
+                  this.event.persons[index2].error = this.dictionary.index.alreadyHasNameError;
+                  this.errorsOnTheEvent = true;
+                }
+              }
+            }
+            else {
               if (this.dictionary) {
-                this.event.persons[index1].error = this.dictionary.index.alreadyHasNameError;
-                this.event.persons[index2].error = this.dictionary.index.alreadyHasNameError;
+                this.event.persons[index2].error = this.dictionary.index.noNameError;
                 this.errorsOnTheEvent = true;
               }
             }
           }
-          else {
-            if (this.dictionary) {
-              this.event.persons[index2].error = this.dictionary.index.noNameError;
-              this.errorsOnTheEvent = true;
-            }
+        }
+        else {
+          if (this.dictionary) {
+            this.event.persons[index1].error = this.dictionary.index.noNameError;
+            this.errorsOnTheEvent = true;
           }
         }
       }
-      else {
-        if (this.dictionary) {
-          this.event.persons[index1].error = this.dictionary.index.noNameError;
-          this.errorsOnTheEvent = true;
-        }
-      }
     }
-    if (this.platform.is('cordova')) {
-      this.save();
-    }
+    this.save();
   }
 
   editEvent(event: PuketeEvent) {
